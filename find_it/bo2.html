@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2025 Hermann von Borries
+     MIT License -->
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Busca organillo</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --card-border: #30363d;
+            --text-main: #c9d1d9;
+            --text-heading: #f0f6fc;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --btn-bg: #238636;
+            --btn-hover: #2ea043;
+            --btn-text: #ffffff;
+            --notice-bg: rgba(88, 166, 255, 0.1);
+            --notice-border: rgba(88, 166, 255, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            color: var(--text-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .action-area {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .scan-btn {
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.8rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .scan-btn:hover {
+            background-color: var(--btn-hover);
+        }
+
+        .scan-btn:active {
+            transform: scale(0.98);
+        }
+
+        .status-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-card h2 {
+            font-size: 1.1rem;
+            color: var(--text-heading);
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .status-group {
+            margin-bottom: 1rem;
+        }
+
+        .status-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .status-group span {
+            color: var(--text-main);
+        }
+
+        .status-group a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.25rem;
+        }
+
+        .status-group a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        .log-section {
+            background-color: #010409;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .log-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .logtext {
+            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            word-break: break-word;
+        }
+
+        .privacy-notice {
+            background-color: var(--notice-bg);
+            border: 1px solid var(--notice-border);
+            color: var(--text-muted);
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        @media (min-width: 600px) {
+            body {
+                padding: 3rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🎼 Busca Organillo</h1>
+            <p>Conéctese a su organillo mediante Bluetooth para obtener su dirección IP en la red.</p>
+        </header>
+
+        <main>
+            <div class="action-area">
+                <button class="scan-btn" onclick="scan()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg>
+                    Busca organillo
+                </button>
+            </div>
+
+            <div class="status-card">
+                <h2>Estado de Conexión</h2>
+                <div class="status-group">
+                    <span id="sta_texto"></span>
+                    <a id="sta_link"></a>
+                </div>
+                <div class="status-group">
+                    <span id="ap_texto"></span>
+                    <a id="ap_link"></a>
+                </div>
+            </div>
+
+            <div class="log-section">
+                <div class="log-title">Registro de Diagnóstico</div>
+                <div id="result" class="logtext">El organillo debe estar energizado.<br></div>
+            </div>
+
+            <div class="privacy-notice">
+                🔒 Esta página no registra ninguna información en internet ni se conecta a ningún servidor.
+            </div>
+        </main>
+    </div>
+
+<script>
+let MCS_UUID = 0x1848 ; //Media Control Service
+// Some private characteristics
+_CHARACTERISTIC_UUIDS = [
+    "2a7c3e29-62f9-47bf-8b00-69db8c3c88f1",
+    "49f99c64-b2c8-40de-a944-ea4fd48b497a",
+    "1732b3cb-c879-4157-a106-65d38cac591b",
+    "c9eb91e8-03ca-4739-a774-8fbee561caee",
+    "98bfa6b0-55fc-4197-905e-635d68e58bf6",
+    "35dcf9be-89be-404b-bb7f-61dde7160e96",
+    "b17957bc-c797-470c-b844-6015c9f7f390"
+    // pending: add MCS UUIDs
+];
+_CHARACTERISTIC_NAMES = [ "stassid1", "stassid2", "apssid", "staip1", "staip2",  "apip", "status"];
+    
+
+function log( s ){
+    let result = document.getElementById("result");
+    if( s == "new"){
+        result.innerText = "";
+        return ;
+    }
+    result.innerHTML = result.innerHTML + s + "<br>";
+}
+// future use?
+async function sleep_ms( t ){
+	await new Promise(r => setTimeout(r, t));
+}
+    
+async function getCharacteristicString( service, uuid ){
+    let characteristic = await service.getCharacteristic(uuid);
+    let value = await characteristic.readValue()
+    return new TextDecoder().decode(value);
+}
+
+async function scan(){
+    log("new");
+    let btinfo = await getBtInfo();
+    let d = new Date();
+    log("Información obtenida " + d.toLocaleDateString() + " " + d.toLocaleTimeString()    );
+    for( k in btinfo ){
+        log(k+": "+btinfo[k]);
+    }
+    let sta_texto = document.getElementById("sta_texto");
+    let sta_link = document.getElementById("sta_link");
+    let ap_texto = document.getElementById("ap_texto");
+    let ap_link = document.getElementById("ap_link");
+    sta_texto.innerText = "";
+    sta_link.innerText = "";
+    sta_link.href = "";
+    ap_texto.innerText = "";
+    ap_link.innerText = "";
+    ap_link.href = "";
+    
+    for( const[sta,other] of [["1","2"], ["2","1"]]){
+        let status = btinfo["stastatus" + sta]  ;
+        let ssid = btinfo["stassid" + sta];
+        if( ssid == "" || status == "n"){
+            continue;
+        }
+        let ssid_other = btinfo["stassid" + other];
+        let staip = btinfo["staip" + sta];
+        if( status == "b"){
+            sta_texto.innerHTML = `El organillo está intentando conectarse a la red WiFi <b>${ssid}</b>. Verifique que esa red esté activada y cerca. `;
+            if( ssid_other != "" ){
+                 sta_texto.innerHTML +=` Si no resulta, el organillo automáticamente probará conectarse a la red Wifi <b>${ssid_other}</b>. `;
+            }
+            sta_texto.innerHTML += " Intente de nuevo.";
+        }
+        else if( status == "c" ){
+            sta_texto.innerHTML = `El organillo está correctamente conectado a la red Wifi <b>${ssid}</b>. Asegúrese que su celular ofrece esta red como hotspot, o que su celular o PC está conectado a esta red. Si es así, haga click `;
+            sta_link.innerText = "aquí para llegar al organillo";
+            sta_link.href = "http://" + staip + "/";
+            break;
+        }
+        // Ignore status == "n"
+        
+    }
+    if( btinfo["apssid"] == undefined){
+        sta_texto.innerHTML = "Intente de nuevo.";
+        return;
+    }
+    let ssid1 = "<b>" + btinfo["stassid1"] + "</b>";
+    let ssid2 = "<b>" + btinfo["stassid2"] + "</b>";
+    if( ssid1 == "<b></b>" ){
+        ssid1 = "(red 1 no definida)";
+    }
+    if( ssid2 == "<b></b>" ){
+        ssid2 = "(red 2 no definida)";
+    }
+    
+    if( sta_texto.innerText == ""){
+        sta_texto.innerHTML = `Ninguna de las redes WiFi ${ssid1} o ${ssid2} están activadas ni visibles. Intente de nuevo.`;
+    }
+    if( btinfo["apstatus"] == "a" ){
+        let apip = btinfo["apip"];
+        let apssid = btinfo["apssid"];
+        
+        ap_texto.innerHTML = `Si no hay forma de conectarse a través ${ssid1} ni ${ssid2}, puede conectarse a la red WiFI propia del organillo <b>${apssid}</b>. Una vez conectado a ese WiFi, haga click `;
+        ap_link.innerText = "aquí para llegar al organillo";
+        ap_link.href = "http://" + apip + "/";
+    }
+    else {
+        ap_texto.innerHTML = "El WiFi propio del organillo no está disponible.";
+    }
+}
+    
+async function getBtInfo(){
+    let options = {}
+    options.filters = [ {services:[MCS_UUID]} ];
+    //options.acceptAllDevices = true;
+    options.optionalServices = [MCS_UUID];
+    let btinfo = {};
+    if( !navigator.bluetooth ){
+        alert("En este browser no funciona bluetooth, use Chrome");
+        return btinfo;
+    }
+    log("Esperando por bluetooth" );
+    try{
+        let device = await navigator.bluetooth.requestDevice(options);
+        console.log("device ", device);
+        btinfo.device_name = device.name;
+        let server = await device.gatt.connect();
+        console.log("server", server);
+        let service = await server.getPrimaryService(MCS_UUID);
+        console.log("service", service);
+
+        for( i = 0; i < _CHARACTERISTIC_UUIDS.length; i++){
+            let value = await getCharacteristicString( service, _CHARACTERISTIC_UUIDS[i]);
+            btinfo[ _CHARACTERISTIC_NAMES[i]] = value;
+        }
+        let status = btinfo["status"];
+        btinfo["stastatus1"] = status[0];
+        btinfo["stastatus2"] = status[1];
+        btinfo["apstatus"] = status[2];
+        console.log("btinfo", btinfo);
+        server.disconnect();
+    }
+    catch(e){
+        log("Problema al conectar con bluetooth"+e);
+        alert("Problema al conectar con bluetooth");
+    }
+    return btinfo;
+}
+</script>
+</body>
+</html>
