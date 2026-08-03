@@ -5,7 +5,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Busca organillo</title>
+    <title>Find my crank organ</title>
 </head>
 <body>
 <style>
@@ -42,7 +42,7 @@ th, td {
   text-align: left;
 }
 </style>
-<button onclick="scan()">Busca organillo</button>
+<button onclick="scan()">Find my crank organ</button>
 <p>
 <span id="sta_texto"></span><a id="sta_link"></a>
 </p>
@@ -51,7 +51,7 @@ th, td {
 </p>
 <hr>
 <p>
-<span id="result" class="logtext">El organillo debe estar energizado.<br></span>
+<span id="result" class="logtext">The crank organ must be switched on.<br></span>
 </p>
 <p></p>
 
@@ -99,7 +99,7 @@ async function scan(){
     log("new");
     let btinfo = await getBtInfo();
     let d = new Date();
-    log("Información obtenida " + d.toLocaleDateString() + " " + d.toLocaleTimeString()    );
+    log("Information date/time " + d.toLocaleDateString() + " " + d.toLocaleTimeString()    );
     for( k in btinfo ){
         log(k+": "+btinfo[k]);
     }
@@ -123,15 +123,15 @@ async function scan(){
         let ssid_other = btinfo["stassid" + other];
         let staip = btinfo["staip" + sta];
         if( status == "b"){
-            sta_texto.innerHTML = `El organillo está intentando conectarse a la red WiFi <b>${ssid}</b>. Verifique que esa red esté activada y cerca. `;
+            sta_texto.innerHTML = `The crank organ is trying to connect to the WiFi network <b>${ssid}</b>. Check that that network is active and near by. `;
             if( ssid_other != "" ){
-                 sta_texto.innerHTML +=` Si no resulta, el organillo automáticamente probará conectarse a la red Wifi <b>${ssid_other}</b>. `;
+                 sta_texto.innerHTML +=`If this doesn't work, the crank organ will automatically try to connect to the WiFi network<b>${ssid_other}</b>. `;
             }
-            sta_texto.innerHTML += " Intente de nuevo.";
+            sta_texto.innerHTML += " Try again.";
         }
         else if( status == "c" ){
-            sta_texto.innerHTML = `El organillo está correctamente conectado a la red Wifi <b>${ssid}</b>. Asegúrese que su celular ofrece esta red como hotspot, o que su celular o PC está conectado a esta red. Si es así, haga click `;
-            sta_link.innerText = "aquí para llegar al organillo";
+            sta_texto.innerHTML = `The crank organ is now connected to the WiFi network <b>${ssid}</b>. Check that your cell phone offers that netork as hotspot, or that your cell phone or PC is connected to that netowkr. If that is the case, click `;
+            sta_link.innerText = "here to navigate to the crank organ";
             sta_link.href = "http://" + staip + "/";
             break;
         }
@@ -139,31 +139,31 @@ async function scan(){
         
     }
     if( btinfo["apssid"] == undefined){
-        sta_texto.innerHTML = "Intente de nuevo.";
+        sta_texto.innerHTML = "Try again.";
         return;
     }
     let ssid1 = "<b>" + btinfo["stassid1"] + "</b>";
     let ssid2 = "<b>" + btinfo["stassid2"] + "</b>";
     if( ssid1 == "<b></b>" ){
-        ssid1 = "(red 1 no definida)";
+        ssid1 = "(network 1 not defined)";
     }
     if( ssid2 == "<b></b>" ){
-        ssid2 = "(red 2 no definida)";
+        ssid2 = "(network 2 not defined)";
     }
     
     if( sta_texto.innerText == ""){
-        sta_texto.innerHTML = `Ninguna de las redes WiFi ${ssid1} o ${ssid2} están activadas ni visibles. Intente de nuevo.`;
+        sta_texto.innerHTML = `None of the WiFi networks ${ssid1} o ${ssid2} are active nor visible. Try again.`;
     }
     if( btinfo["apstatus"] == "a" ){
         let apip = btinfo["apip"];
         let apssid = btinfo["apssid"];
         
-        ap_texto.innerHTML = `Si no hay forma de conectarse a través ${ssid1} ni ${ssid2}, puede conectarse a la red WiFI propia del organillo <b>${apssid}</b>. Una vez conectado a ese WiFi, haga click `;
-        ap_link.innerText = "aquí para llegar al organillo";
+        ap_texto.innerHTML = `If there is no way to connect with ${ssid1} nor ${ssid2}, you can connect to the crank organ's own network <b>${apssid}</b>. Once connected, click `;
+        ap_link.innerText = "here to navigate to the crank organ";
         ap_link.href = "http://" + apip + "/";
     }
     else {
-        ap_texto.innerHTML = "El WiFi propio del organillo no está disponible.";
+        ap_texto.innerHTML = "The crank organ's own network is not available.";
     }
 }
     
@@ -174,10 +174,10 @@ async function getBtInfo(){
     options.optionalServices = [MCS_UUID];
     let btinfo = {};
     if( !navigator.bluetooth ){
-        alert("En este browser no funciona bluetooth, use Chrome");
+        alert("This browser doesn't support bluetooth, use Chrome");
         return btinfo;
     }
-    log("Esperando por bluetooth" );
+    log("Waiting for bluetooth" );
     try{
         let device = await navigator.bluetooth.requestDevice(options);
         console.log("device ", device);
@@ -199,8 +199,8 @@ async function getBtInfo(){
         server.disconnect();
     }
     catch(e){
-        log("Problema al conectar con bluetooth"+e);
-        alert("Problema al conectar con bluetooth");
+        log("There is a problem connecting via bluetooth"+e);
+        alert("There is a problem connecting via bluetooth");
     }
     return btinfo;
 }
@@ -215,5 +215,5 @@ async function getBtInfo(){
 // P: only accepts correct password.
     
 </script>
-Esta página no registra ninguna información en internet ni se conecta a ningún servidor.
+This page does not store any information on the internet nor does it send any information to a server.
 </body>
