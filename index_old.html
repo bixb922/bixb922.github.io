@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bixb922 | Portfolio & Projects</title>
+    <!-- Link to a clean, lightweight standard CSS framework -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <style>
+        body {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .repo-card {
+            border: 1px solid var(--muted);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: var(--background);
+        }
+        .repo-links {
+            margin-top: 15px;
+            display: flex;
+            gap: 15px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Welcome to My GitHub Pages</h1>
+        <p>Hi there! I'm <strong>bixb922</strong>. Below is a collection of my microcontroller, Python, and mechanical music projects.</p>
+    </header>
+
+    <main>
+        <h2>Repositories</h2>
+
+       <!-- Repository 2: crank-organ -->
+        <div class="repo-card">
+            <h3><image src="barrelorgan.png" 
+                       style="width: 8%; height: auto;"/> crank-organ</h3>
+            <p>Complete hardware and software solution for a MIDI-based mechanical crank organ using an ESP32-S3 microcontroller. Includes open source softare and electronics plans.</p>
+            <div class="repo-links">
+                <a href="https://github.com/bixb922/crank-organ" target="_blank">🔗 View Repository</a>
+                <a href="https://github.com/bixb922/crank-organ/blob/main/README.md" target="_blank">📄 Introduction and overview</a>
+            </div>
+             <h4>Documents in the crank organ repository</h4>
+            <ul>
+                <li><a href="https://github.com/bixb922/crank-organ/blob/main/doc-hardware/README.md" target="_blank">📄 The crank organ electronics (schematics and instructions to build)</a>
+                </li>
+                <li><a href="https://github.com/bixb922/crank-organ/blob/main/doc-software/README.md" target="_blank">📄 The crank organ software</a>
+                </li>
+                <li><a href="https://github.com/bixb922/crank-organ/blob/main/building/README.md" target="_blank">📄 How to build a crank organ yourself</a>
+                </li>
+                <li><a href="https://github.com/bixb922/crank-organ/blob/main/doc-hardware/battery.md" target="_blank">📄 Options for batteries</a>
+                </li>
+                <li><a href="https://github.com/bixb922/crank-organ/blob/main/doc-hardware/crank-sensor.md" target="_blank">📄 The crank sensor, a journey</a>
+                </li>
+                <li><a href="https://github.com/bixb922/crank-organ/blob/main/doc-servo/servos.md" target="_blank">📄 Valves with RC servo motors</a>
+                </li>
+                <li><a href="https://github.com/bixb922/crank-organ/blob/main/design-and-development/design_and_development.md" target="_blank">📄 Design and development of the crank organ software</a>
+                </li>
+            </ul>
+            <h4>Busca mi organillo</h4>
+            Para conectarse al organillo usando un celular y bluetooth. Para usar esta página debe chequearse la opción "Advertise WiFi names on Bluetooth" en la página de Configuración General: <a href="find_it/busca_organillo.html">Busca mi organillo</a>
+            
+            <h4>Find my crank organ</h4>
+            Use this page to connect to the crank organ using a cell phone with bluetooth. To use this page, you must check the option "Advertise WiFi names on Bluetooth" on the General Configuration page: <a href="find_it/find_my_crank_organ.html">Find my crank organ</a>
+            
+        </div>
+        
+        
+        <!-- Repository 1: umidiparser -->
+        <div class="repo-card">
+            <h3><span style="font-size: 40px; background-color: white;">🎼</span> umidiparser</h3>
+            <p>MIDI file parser optimized for MicroPython, CircuitPython, and regular Python.</p>
+            <div class="repo-links">
+                <a href="https://github.com/bixb922/umidiparser" target="_blank">🔗 View Repository</a>
+                <a href="https://github.com/bixb922/umidiparser/blob/main/README.md" target="_blank">📄 Description and usage of MIDI file parser</a>
+            </div>
+             <h4>Documents in the MIDI file parser repository</h4>
+            <ul>
+                <li><a href="https://github.com/bixb922/umidiparser/blob/main/midi_over_serial/midi_over_serial.md" target="_blank">📄 Circuit for MIDI output over serial line for microcontrollers like the ESP32 or RP2040</a>
+                </li>
+            </ul>
+
+        </div>
+
+ 
+
+        <!-- Repository 3: freezefs -->
+        <div class="repo-card">
+            <h3><span style="font-size: 40px;background-color: white;">🥶</span> freezefs</h3>
+            <p>Tool to create self-extracting compressed or self-mounting archives for MicroPython from folder structures.</p>
+            <div class="repo-links">
+                <a href="https://github.com/bixb922/freezefs" target="_blank">🔗 View Repository</a>
+                <a href="https://github.com/bixb922/freezefs/blob/main/README.md" target="_blank">📄 Description and usage of this utility program</a>
+            </div>
+        </div>
+
+        <!-- Repository 4: viper-examples -->
+        <div class="repo-card">
+            <h3><span style="font-size: 40px;background-color: white;">🐍</span>
+                 viper-examples</h3>
+            <p>Documentation and practical code examples for MicroPython Viper code performance optimization.</p>
+            <div class="repo-links">
+                <a href="https://github.com/bixb922/viper-examples" target="_blank">🔗 View Repository</a>
+                <a href="https://github.com/bixb922/viper-examples/blob/main/README.md" target="_blank">📄 Overview</a>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <hr>
+        <p style="text-align: center; font-size: 0.85em; color: var(--muted);">
+            Hosted on <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> | 
+            <a href="https://github.com/bixb922" target="_blank">GitHub Profile</a>
+        </p>
+    </footer>
+
+</body>
+</html>
