@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bixb922 | Portfolio & Projects</title>
+    <!-- Link to water.css (light theme) -->
+   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">-->
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+
+    <header>
+        <h1><span class="white-bg-icon emoji-icon">🎪</span> Das Orgelinchen: Some trivia and frequently asked questions</h1>
+    </header>
+
+    <main>
+    <div class="repo-card">
+            <h2><span class="white-bg-icon emoji-icon">🦜</span> What is this contraption called and what is it's origin?</h2>
+    
+        <p>This is called a crank organ or street organ. Before radio, TV and internet, these were a good way get to hear some music. The organ grinders went street by street to play the last hits. The sound is quite sweet due to the type of pipes it uses.</p>
+        
+    </div>
+        <div class="repo-card">
+            <h2><span class="white-bg-icon emoji-icon">🦜</span> Why are there parrots on the crank organ?</h2>
+    
+        <p>Where I live, crank organs on the streets usually have a parrot. The parrots used to pick a card out of the box with a fortune card. </p>
+        <p>I got these parrots from the local zoo. Honest. Well... from a small shop at the entrance. The smaller orange parrot is a gift from my granddaughter (age of 6). The small flying birdie is a gift from a organ grinder in Chile (South America)</p>
+        <p>The parrot's names are Melody (the pale green one), Harmony (the larger orange one) and Cadence (the smaller orange one). As it happens, Melody, Harmony and Cadence are the core building blocks of music.</p>
+        <p>The small flying birdie is Trill. He is the one that sings all these nice little decorations that make the crank organ music special.</p>
+        <p>In other countries, they used to have monkeys for the cran organs.</p>
+    </div>
+        
+    <div class="repo-card">
+        <h2><span class="white-bg-icon emoji-icon">🐙🦑</span> What about the octopus?</h2>
+    
+        <p>The octopus arrived rather recently. He is not very talkative. He seems to have gone through some tough times. When we find out more, for sure we will post it here.</p>
+        
+    </div>
+    
+
+    <div class="repo-card">
+        <h2><span class="white-bg-icon emoji-icon">🎶</span> How was the music stored in the crank organs of old?</h2>
+    
+        <p>100 years ago, you had to make a barrel containing 1 to 8 tunes of 1 minute duration at most. Barrels were made by hand, putting small wire segments into a wooden barrel. Today there may be only 2 or 3 artisans in the world who still know how do that!</p>
+        <p>In the 1920, barrels were replaced by paper rolls with holes (hole=air flows, no hole=no flow) and initially they were punched by hand. These paper rolls were also very common in player pianos (automated pianos). They are really a "binary" storage in the sense of modern computer bits: hole=1=a note plays, no hole=0=no note plays.  These paper rolls were much easier to manufacture than the barrels, and a roll could store 3 or 4 songs (about 8 or 10 minutes of music). Many crank organs had a drawer or box where you could carry 5 or 10 rolls.</p>
+        <p>Nowadays, these paper rolls are made with automated paper roll punching machines driven by MIDI files. So this organ bypasses the middle man and plays the MIDI files directly.</p>
+        <p>This organ has a microcontroller with 16 Mb (Mb means megabytes, not gigabytes!) of storage. Although this is very modest in size, it can store 2000 tunes of 3 or 4 minutes each.</p>
+        <p>A tune is stored as note on and note off commands, plus the exact time of each of these events. Note on commands open the valve for a pipe, and note off commands close the valve for a pipe. The format of these files is the standard MIDI file format.</p>
+        <p>These MIDI files are very small, and unlike MP3 files, they do not store any sound by themselves. All the sound is produced by the air flow in the pipes.</p>
+    </div>
+
+    <div class="repo-card">
+        <h2><span class="white-bg-icon emoji-icon">🔧</span> Why did I build a crank organ?</h2>
+    
+        <p>When I was a kid, you could hear these crank organs play on the streets. I used to run there to hear the sweet music play.</p>
+        <p>When I reminisced one day about crank organs, my family told me "Well, if you like those machines,  buy one". Easier said than done, there are almost no crank organ manufacturers left in the world.</p>
+        <p>So I started to read and, lo and behold, it's not that difficult to build a crank organ oneself. There even  is  a (small) community of organ builders and some forums. So I started designing one that would fit the music I had in mind.</p>
+
+        <p>And then my sons started making musical arrangements. And (of course) they like video game music (but other music too!). And a granddaughter contributed the octopus.</p>
+        
+    </div>
+
+    <div class="repo-card">
+        <h2><span class="white-bg-icon emoji-icon">🚀</span> Does the crank influence the speed of music?</h2>
+    
+        <p>Yes, when turning the crank faster, the music goes faster, and when the crank is slowed down, the music goes slower or even stops.</p>
+        <p>This is achieved by a crank rotation sensor that produces 1000 pulses per revolution. The microcontroller has a pulse counter, and calculates the speed 3 to 5 times per second. Irregularities in the crank speed are filtered out.</p>
+        <p>It requires some attention to detail to keep the crank rotation constant. If this is tiresome, the software accepts an option that makes the music tempo independent of crank rotation. However, stopping the crank will stop the music, resuming when starting again.</p>
+    </div>
+<!--
+    <div class="repo-card">
+        <h2><span class="white-bg-icon emoji-icon"></span> title?</h2>
+    
+        <p></p>
+        
+    </div>
+
+
+    <div class="repo-card">
+        <h2><span class="white-bg-icon emoji-icon"></span> title?</h2>
+    
+        <p></p>
+        
+    </div>
+-->
+        
+    </main>
+</body>

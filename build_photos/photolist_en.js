@@ -630,4 +630,3 @@ const photolist_en=[
         "20240804_piccolo_complete.jpg"
     ]
 ]
-console.log(">>>photolist_en defined elements=", photolist_en.length);

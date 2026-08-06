@@ -3,7 +3,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="/info/static/skeleton.css">
+	<link rel="stylesheet" type="text/css" href="../style.css">
+    
 	<title id="pagetitle">My crank organ "Das Orgelinchen" build log</title>
 
 </head>
@@ -36,7 +37,7 @@ async function fillPhotoList(){
             s += `<br>${textdate}<br>`;
             lastDate = date ;
         }
-        s += `<a href="photo.html?id=1${i}"><image src='thumbnails/thumb_${descriptor[2]}' style='width:auto;height:auto;max-width:80%;max-height:30%;'/></a> `;
+        s += `<a href="photo.html?id=${i}"><image src='thumbnails/thumb_${descriptor[2]}' style='width:auto;height:auto;max-width:80%;max-height:30%;'/></a> `;
     }
     $g("fotos").innerHTML = s ;
 }
