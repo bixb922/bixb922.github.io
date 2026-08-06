@@ -1,0 +1,9 @@
+Tap on tune titles to queue for playing.
+<br>
+Tap on the table header to change the order. Click on <b>Date</b> (Fecha, Datum) to view recent additions or click on <b>Hist</b> to view the tunes played frequently or seldom.
+<br>
+Enter polka  in <b>🔍Search</b> (Búsqueda, Suche) all polkas.
+<br>
+Press the <b>Start</b> (Partir) button to start the first tune (marked ⏳(1) 🎵). 
+<br>
+Press <b>Performance</b> (Actuación, Setlist) to manage the setlist and to see lyrics.

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2023-2025 Hermann von Borries
+ MIT License-->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="skeleton.css">
+</head>
+<body>
+<div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">This page shows some internal information about the microcontroller. In this demo, most information is static and buttons do nothing.
+<br>
+<b>Reset</b> will reboot the microcontroller. <b>Deep sleep</b> will enter power saving mode.
+</div>
+<script type="text/javascript" src="/static/demoserver.js"></script>
+	<script type="text/javascript" src="/static/common.js"></script>
+<script type="text/javascript" src="/static/translations.js"></script>
+
+<span id="description_span">   
+<table>
+    <tbody>
+		<tr><td>Descripción</td><td id="description"></td></tr>
+        <tr><td>Host name</td><td id="name"></td></tr>
+	     <tr>
+			<td>
+				<button type="button" onclick="alert('Show error log not implemented in demo')" id="showLogButton">
+					Ver log
+				</button>
+			</td>
+			<td>
+				<span id="logfilename"></span><br>
+				(<span id="errors_since_reboot"></span>&nbsp;<span>errores)</span>
+			</td>
+		</tr>
+        <tr>
+            <td>
+                <button type="button" onclick="alert('Reset not implemented in demo')">Reset</button>
+            </td>
+			<td>
+                 <button type="button" onclick="alert('Deep sleep not implemented in demo')">Deep sleep</button>
+            </td>
+
+        </tr>
+		<tr><td>Versión MicroPython</td><td id="mp_version"></td></tr>
+		<tr><td>Imagen MicroPython</td>	<td id="mp_bin"></td></tr>
+		<tr><td>Fecha/hora</td>			<td id="last_refresh"></td></tr> 
+		<tr><td>Zona horaria</td>		<td id="time_zone_info"></td></tr> 
+		<tr><td>Tiempo desde reboot</td><td id="reboot_mins"></td><td>mm:ss</td></tr>
+		<tr><td>Flash libre</td>		<td id="free_flash"></td><td>[bytes]</td></tr>
+		<tr><td>Flash usada</td>		<td id="used_flash"></td><td>[bytes]</td></tr>
+		<tr><td>RAM libre</td>			<td id="free_ram"></td><td>[bytes]</td></tr>
+		<tr><td>RAM usada</td>			<td id="used_ram"></td><td>[bytes]</td></tr>
+        <tr><td>Tiempo para gc</td>		<td id="gc_collect_time"></td><td>[mseg]</td></tr>
+		<tr><td>Máximo tiempo para gc</td>		<td id="max_gc_collect_time"></td><td>[mseg]</td></tr>
+		<tr><td>Fecha/hora compilación</td> <td id="compile_date"></td><td></td></tr>
+		<tr><td>Configuración actuadores</td> <td id="solenoid_devices"></td></tr>
+		<tr><td>Archivos MIDI</td>		<td id="midi_files"></td></tr>
+		<tr><td>Carpeta música</td>		<td id="tunelib_folder"></td></tr>
+		<tr id="mcserver_row" style="display:none"><td>MC server</td> <td id="mcserver"></td></tr>
+		<tr><td>Manivela instalada</td>	<td id="crank_installed"></td></tr>
+		<tr id="crankGraphButton">
+			<td>
+				<button onclick="crankGraph()">Gráfico manivela</button>
+			</td>
+			<td>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</span>
+<span id="wifi_span">
+  <div class="middlediv">Configuración WIFI</div>
+  <table>
+	<tbody id="wifiConfig">
+	<tr>	
+		<td>Host name, AP SSID, BLE name:</td><td id="hostname"></td>
+	</tr>
+	<tr>	
+		<td>IP de clientes activos</td><td id="client_IPs"></td>
+	</tr>
+	<tr>
+		<td colspan="2"><b>Como WiFi station</b></td>
+	</tr>
+	<tr>	
+		<td>Se conecta a SSID</td><td id="sta_if_ssid"></td>
+	</tr>
+	<tr>	
+		<td>IP</td><td id="sta_if_ip"></td>
+	</tr>
+	<tr>	
+		<td>Activa</td><td id="sta_if_active"></td>
+	</tr>
+	<tr>	
+		<td>Conectado a un SSID</td><td id="sta_if_connected"></td>
+	</tr>
+	<tr>	
+		<td>Connection status</td><td id="sta_if_status"></td>
+	</tr>
+	<tr>
+		<td colspan="2"><b>Como WiFi access point</b></td>
+	</tr>
+	<tr>	
+   		 <td>SSID</td>  <td id="ap_if_ssid"></td>
+	</tr>
+	<tr>	
+		<td>IP</td>  <td id="ap_if_ip"></td>
+	</tr>
+	<tr>	
+		<td>Alguien conectado</td><td id="ap_if_connected"></td>
+	</tr>
+	<tr>	
+		<td>Activa</td><td id="ap_if_active"></td>
+	</tr>
+	</tbody>
+  </table>
+
+
+<div class="middlediv">WiFi scan</div>
+<button type="button" onclick="wifiScan()">
+	WiFi scan
+</button>
+<table>
+	<thead>
+		<tr>
+			<td>SSID</td>
+			<td>dBm</td>
+		</tr>
+	</thead>
+	<tbody id="scanInfo">
+	</tbody>
+</table>
+</span>
+<span id="crank_graph_span" style="display:none">
+<div class="middlediv">Manivela</div>
+<canvas id="rpsChart"></canvas>
+</span>
+
+<div class="footerdiv"></div>
+</body>
+
+<script>
+// (c) Copyright 2025 Hermann Paul von Borries. All rights reserved.
+// MIT License
+
+// PageHeader.setTitle(headerTitle, upAction)
+let pageHeader = new PageHeader().setTitle( "Sistema", "index" );
+
+async function getWifiStatus() {
+	setAllTextById(  await fetch_json( "/get_wifi_status" ) );
+	// Now do the wifi scan
+	await wifiScan() ;
+}
+
+
+async function wifiScan() {
+	let wifiData = await fetch_json( "/wifi_scan" );
+	// Each row is [ ssid, bssid, channel, rssi, authmode, hidden ]
+	var s = "";
+	let scanInfo = document.getElementById( "scanInfo" );
+	scanInfo.innerHTML = "";
+	for( let i = 0; i < wifiData.length; i++ ) {
+		w = wifiData[i] ;
+		// insert ssid and rssi.
+		// channel seems to be the channel definition of the local WiFi
+		// and not the channel of the SSID.
+		insertRow( scanInfo, [ w[0], w[3] ] );
+	}
+}
+
+
+async function getDiagInfo( ) {
+    // General microcontroller information
+	let diag = await fetch_json( "/diag" );
+	// Move corresponding (cobol?) fields from json to html page
+	setAllTextById( diag ); 
+	htmlById("solenoid_devices", diag["solenoid_devices"]);
+    getWifiStatus() ;
+	showHideElement( "crankGraphButton", diag["crank_installed"]);
+	console.log("mcserver=", diag["mcserver"]);
+	showHideElement( "mcserver_row",  diag["mcserver"] );
+		// value was alredy set by setAllText
+
+	commonGetProgress.setSleep( 5_000 );
+    commonGetProgress.startBackground();
+
+}
+
+
+function showLog() {
+	window.location.href = "/errorlog" ;
+}
+
+async function deepSleep() {
+    await fetch_json( "/deep_sleep" ) ;
+}
+async function reset() {
+    await fetch_json( "/reset") ;
+	await sleep_ms(6000);
+	// Refresh this page when the microcontroller comes back
+	window.location.href = "/static/diag.html";
+}
+
+function* generateNumbers(N, step) {
+  for (let i = 0; i < N; i++) yield Math.round(i*step*10)/10;
+}
+function createArray(N, step){
+	if( step == null ){
+		step = 1 ;
+	}
+	return [...generateNumbers(N, step)];
+} ;
+
+async function crankGraph(){
+	function horizontalLine( chart, datasetNumber, value, length ){
+		let lineData = Array( length );
+		lineData.fill( value ) ;
+		chart.data.datasets[datasetNumber].data = lineData ;
+	}
+	showHideElement("crankGraphButton", false);
+	showHideElement("description_span", false);	
+	showHideElement("wifi_span", false);
+	showHideElement( "crank_graph_span", true);
+
+
+	// Get chart.js controlling error if not available
+	// in case there is no internet
+	let cjs = document.getElementById("chartjs");
+	if( cjs == undefined ){
+		let file_url =  "https://cdn.jsdelivr.net/npm/chart.js";
+		let scriptElement = document.createElement("script");
+		scriptElement.setAttribute("type", "text/javascript");
+		scriptElement.id = "chartjs";
+		try{
+			let response = await fetch(file_url) ;
+			scriptElement.text = await response.text() ;
+		}
+		catch(e){
+			console.warn("Could not fetch chart.js", e);
+			return ;
+		}
+ 		document.body.append(scriptElement) ;
+		console.info("chartjs appended");
+	}
+
+	// Define graphs, no data
+	const rpsChartCanvas = document.getElementById("rpsChart");
+	let rpsChart = new Chart(rpsChartCanvas, {
+		type: 'line',
+		data: {
+		labels: [],
+		datasets: [
+			{
+				label: 'filtered rev/s',
+				data: [],
+				borderWidth: 3,
+				borderColor: '#428B26',
+				backgroundColor: 'white',
+				pointRadius: 2,
+				order:1,
+				cubicInterpolationMode: 'monotone', 
+      			tension: 0.4
+			},
+			{
+				label: 'raw rev/s',
+				data: [],
+				borderWidth: 3,
+				borderColor: '#9B5B26',
+				backgroundColor: 'white',
+				pointRadius: 2,
+				order:1,
+				cubicInterpolationMode: 'monotone', 
+      			tension: 0.4
+			},
+			{
+				label:"normal",
+				type:"line",
+				data: [],
+				borderWidth: 2,
+				borderColor: '#425B26',
+				backgroundColor: 'white',
+				pointRadius: 0,
+			},
+			{
+				label:"higher threshold",
+				type:"line",
+				data: [],
+				borderWidth: 2,
+				borderColor: '#41A026',
+				backgroundColor: 'white',
+				pointRadius: 0,
+			},
+			{
+				label:"lower threshold",
+				type:"line",
+				data: [],
+				borderWidth: 2,
+				borderColor: '#B08026',
+				backgroundColor: 'white',
+				pointRadius: 0,
+			},
+
+			{
+				label:"stopped",
+				type:"line",
+				data: [],
+				borderWidth: 2,
+				borderColor: '#E04226',
+				backgroundColor: 'white',
+				pointRadius: 0,
+			},
+
+		]
+		},
+		options: {
+			aspectRatio: 1.4,// width/height
+			animation: false,
+			scales:{
+				x:{type:'linear'},
+				y:{min:0, max:2}
+			},
+			elements: {
+				point:{
+					radius: 0
+				}
+			}
+		}
+		}
+	);
+
+
+	for(;;){
+		await sleep_ms(100);
+		let tdata = await fetch_json( "/tacho_irq_report") ;
+		let dataLength = tdata["rpsecList"].length;
+
+		rpsChart.data.labels = tdata["timesList"];
+		rpsChart.data.datasets[0].data = tdata["rpsecList"];
+		rpsChart.data.datasets[1].data = tdata["rawList"];
+
+		horizontalLine( rpsChart, 2, tdata["normal_rpsec"], dataLength );
+		horizontalLine( rpsChart, 3, tdata["higher_threshold_rpsec"], dataLength );
+		horizontalLine( rpsChart, 4, tdata["lower_threshold_rpsec"], dataLength );
+		horizontalLine( rpsChart, 5, tdata["stopped_rpsec"], dataLength );
+		rpsChart.update();
+
+	}
+}
+
+translate_html();
+getDiagInfo();
+</script>
+</html>

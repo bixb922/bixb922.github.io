@@ -1,0 +1,13 @@
+Press the <b>Start</b> (Partir) button to start playing music. The touchpad/start switch or crank rotation sensor will also start the current tune. 
+<br>
+You can rearrange the order of the setlist here, that's the purpose of the little buttons next to each title. 
+<br>
+To add a new tune, go back to the "Tune List" page.
+<br>
+The <b>Shuffle all</b> (Desordenar todos, Alle Melodien mischen) button and the <b>Shuffle ⭐⭐⭐</b> (Desordenar ⭐⭐⭐) will also establish a setlist and shuffle tunes randomly. You also can save a prepared setlist to load it later.
+<br>
+The tunes with 🎤 have lyrics. Press "Show lyrics" button to see them.
+<br>
+Use the <b>History</b> (Historia, Verlauf) button to add comments and rating to recently played tunes.
+<br>
+In this demo, only one stored setlist is enabled. The software allows for nine stored setlists.

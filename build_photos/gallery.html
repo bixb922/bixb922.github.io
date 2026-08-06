@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/info/static/skeleton.css">
+	<title id="pagetitle">My crank organ "Das Orgelinchen" build log</title>
+
+</head>
+
+<body>
+
+<span id="popup" class="popuptext"></span>
+<div class="headerdiv">
+	<span class="headerleft">
+        <a href="../index.html">&#11013;</a>
+    </span>
+	<span class="headerright" id="header_time"></span>
+</div>
+<h1>Click on a photo for details</h1>
+<span id="fotos"></span>
+
+<script src="photolist_en.js"></script>
+<script>
+function $g(id){
+    return document.getElementById(id) ;
+}
+async function fillPhotoList(){
+    let lastDate = "";
+    let s = "";
+    for( let i=0; i<photolist_en.length; i++ ){
+        let descriptor = photolist_en[i];
+        let date = descriptor[1].substring(0, 7) ;
+        if( date > lastDate ){
+            let textdate = formatYYYYMM( date );
+            s += `<br>${textdate}<br>`;
+            lastDate = date ;
+        }
+        s += `<a href="photo.html?id=1${i}"><image src='thumbnails/thumb_${descriptor[2]}' style='width:auto;height:auto;max-width:80%;max-height:30%;'/></a> `;
+    }
+    $g("fotos").innerHTML = s ;
+}
+fillPhotoList() ;
+
+function getLocalizedMonth(monthNumber, locale = 'default', format = 'long') {
+  // Convert 1-12 month number to a 0-11 zero-based index for the API
+  const formatter = new Intl.DateTimeFormat(locale, { month: format });
+  return formatter.format(new Date(2000, monthNumber - 1, 1));
+}
+function formatYYYYMM( date ){
+    yyyy = date.substring(0,4);
+    mo = getLocalizedMonth(parseInt( date.substring(5,7) )) ;
+    return mo + " " + yyyy ;
+}
+</script>
+</body>

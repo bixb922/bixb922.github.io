@@ -1,0 +1,3 @@
+Shows the tunes that have been played.
+<br>
+You can queue them again to play by clicking on the title.

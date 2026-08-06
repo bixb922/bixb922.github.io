@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/info/static/skeleton.css">
+	<title id="pagetitle"></title>
+
+</head>
+
+<body>
+<span id="popup" class="popuptext"></span>
+<div class="headerdiv">
+	<span class="headerleft">
+        <a onclick="window.location.href = 'gallery.html';" id="pageUp">&#11013;</a>
+    </span>
+	<span class="headerright" id="header_time"></span>
+</div>
+<span id="date"></span>
+
+<div> 
+<a id="previous" style="vertical-align:top;font-size:200%">&#x25C0;</a>&nbsp;&nbsp;
+<img id="foto" style="width:auto;height:auto;max-width:80%;max-height:30%;">
+<a id="next" style="vertical-align:top;font-size:200%">&#x25BA</a>
+</div>
+
+<span id="text"></span>
+<br>
+
+</body>
+<script src="photolist_en.js"></script>
+<script>
+function $g(id){
+    return document.getElementById(id);
+}
+function getResourceFromURL(){
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("id");
+}
+async function showPhoto(){
+    let index = parseInt(getResourceFromURL());
+    let photolist =  photolist_en;
+    let descriptor = photolist[index];
+    let filename = descriptor[2];
+    $g("foto").src = `photos/${filename}`;
+    let date = formatYYYYMM(descriptor[1].substring(0, 7) ) ;
+    let text = descriptor[0] ;
+    $g( "text" ).innerText = text ;
+    $g( "date" ).innerText = date ;
+    let prevPhoto = (index-1+photolist.length)%(photolist.length);
+    let nextPhoto = (index+1)%(photolist.length);
+    $g("previous").href = `photo.html?id=${prevPhoto}`;
+    $g("next").href = `photo.html?id=${nextPhoto}`;
+}
+showPhoto();
+
+
+function formatYYYYMM( date ){
+    yyyy = date.substring(0,4);
+    mm = parseInt( date.substr(5,7) );
+    mo = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"][mm-1] ;
+    return mo + " " + yyyy ;
+}
+</script>

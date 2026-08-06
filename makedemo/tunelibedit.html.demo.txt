@@ -1,0 +1,3 @@
+Here you can add title, genre, year, author, lyrics and other information to the MIDI files. Since this page is rather wide, it is best used on device with a screen larger than a cell phone.
+<br>
+In this demo, changes will not be saved.

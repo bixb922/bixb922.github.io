@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2023-2025 Hermann von Borries
+ MIT License-->
+ <html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="skeleton.css">
+	<link rel="icon" type="image/png" href="favicon.png?a=1"/>	
+</head>
+<body>
+<div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">The crank organ microcontroller has a small web server inside. You select tunes and configure the crank organ software with a browser on a PC or cell phone over WiFi to the microcontroller. 
+<br>
+Press the <b>Tune list</b> (Lista de melodías, Melodieliste) and select some tunes.
+<br>
+Bear in mind that you can also play music on the crank organ software without any cell phone nor using these pages: Just tap the touch button, and/or turn the crank, and the music will play. No further technology needed.
+<br>
+For detailed description see <a href="https://www.github.com/bixb922/crank-organ">here</a>.
+</div>
+<div style="clear:both" height=1></div>
+
+<script type="text/javascript" src="/static/demoserver.js"></script>
+	<script type="text/javascript" src="/static/common.js"></script>
+<script type="text/javascript" src="/static/translations.js"></script>
+
+<table>
+	<tbody>
+		<tr>
+			<td>
+				<button type="button" onclick="navigate('tunelist')">
+					Lista de melodías
+				</button>
+				<br>
+				<button type="button" onclick="navigate('play')">
+					Actuación
+				</button>
+			</td>
+			<td>
+				<img src="/static/crank.jpg" width=100>
+                <span id="serverinfo" style="display:none"><br>
+                    <a href="" id="serverlink">Server link</a>
+                </span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button type="button" onclick="navigate('notelist')">
+                    Afinador
+				</button>
+			</td>
+			<td>
+				<!-- wrench emoji -->
+				<span style="font-size:36px">&#x1F527;</span>
+			</td>
+        </tr>
+        <tr>
+			<td>
+				<button type="button" onclick="navigate('history')">
+                    Historia
+				</button>
+			</td>
+			<td>
+                <!-- tear off calendar emoji -->
+				<span style="font-size:36px">&#x1F4C6;</span>
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				<button type="button" onclick="navigate('tunelibedit')">
+                    Editar tunelib
+				</button>
+			</td>
+			<td>
+                <!-- palette emoji -->
+				<span style="font-size:36px">&#x1F3A8;</span>
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				<button type="button" onclick="navigate('config')">
+                    Config. general
+				</button>
+			</td>
+			<td>
+                <!-- gear emoji &#9881; -->
+                <!-- control knob emoji +1F39B U+FE0F-->
+				<span style="font-size:36px">&#x1F39B;</span>
+			</td>
+		</tr>
+        <tr>
+			<td>
+				<button type="button" onclick="navigate('pinout')">
+                    Configuración pins/MIDI
+				</button>
+			</td>
+			<td id="pinout_description">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button type="button" onclick="navigate('diag')">
+					Sistema
+				</button>
+			</td>
+			<td>
+			<!-- Antenna with signal emoji &#128246;-->
+            <!-- magnifying glass 1F50D -->
+				<span style="font-size:36px">&#x1f50d;</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button type="button" onclick="alert('File Manager not implemented in demo')">
+					Archivos
+				</button>
+			</td>
+			<td>
+			<!-- Open folder emoji &#x1f4c2 -->
+			 <!-- Book stack emoji &#x1F4DA-->
+				<span style="font-size:36px">&#x1F4DA;</span>
+			</td>
+		</tr>
+
+	</tbody>
+</table>
+<div class="middlediv">Batería</div>
+<table>
+	<tbody>
+		<tr><td>Tiempo remanente</td><td id="remaining_seconds"></td><td>[hh:mm]</td></tr>
+        <tr>
+			<td>Alcanza para</td><td id="tunes_remaining"></td>
+            <td>[melodías]</td>
+		</tr>
+		<tr>
+			<td>Tiempo operación</td><td id="operating_seconds"></td><td>[hh:mm]</td>
+		</tr>
+        <tr>
+			<td>Tiempo tocando</td><td id="playing_seconds"></td><td>[hh:mm]</td>
+		</tr>
+        <tr>
+			<td>Melodías tocadas</td><td id="tunes_played"></td><td>[melodías]</td>
+		</tr>
+        <tr>
+			<td>Tiempo solenoides energizados</td><td id="solenoid_on_seconds"></td><td>[hh:mm]</td>
+		</tr>
+        <tr><td>Puesto en cero</td><td id="date_zero"></td><td></td></tr>
+    </tbody>
+</table>
+<table style="width:100%">
+	<tbody>
+        <tr id="batterygraph_row">
+            <td><span>Remanente</span>&nbsp
+            <span id="percent_remaining"></span>
+		</td>
+        </tr>
+		<tr>
+			<td><canvas id="batterygraph" is="bar-graph"></canvas>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<button type="button" onclick="battery_zero()" id="resetBatteryButton">
+	Poner contadores en cero
+</button>
+<button type="button" onclick="battery_level()" id="batteryLevelButton">
+	Calibrar indicación batería
+</button>
+<br>
+<!-- 
+ You are not allowed to remove nor hide this copyright notice.
+ No está autorizado borrar ni ocultar esta marca de derechos de autor
+ Das Entfernen oder Ausblenden dieses Copyright-Hinweises ist nicht gestattet. -->
+ <span style="font-size:smaller">
+© Copyright 2023-2025 Hermann Paul von Borries. Source code and documentation at https://www.github.com/bixb922/crank-organ
+All rights reserved.
+</span>
+<div class="footerdiv"></div>
+
+
+<script>
+// (c) Copyright 2025 Hermann Paul von Borries. All rights reserved.
+// MIT License
+
+// PageHeader.setTitle(headerTitle, upAction)
+let pageHeader = new PageHeader().setTitle( tlt("Índice"), false ) ;
+
+async function getPageData(){
+    resp = await fetch_json( "/get_index_page_info" ) ;
+    textById( "pinout_description", resp.pinout_description ) ;
+    if( resp["servernode"] ){
+        document.getElementById("serverinfo").style.display = "" ;
+		let server = resp["servernode"];
+		if( server != "" ){
+			if( !server.startsWith("http")){
+				if( server.endsWith(".com")){
+					server = "https://" + server;
+				}
+				else{
+					server = "http://" + server;
+				}
+			}
+		}
+        document.getElementById("serverlink").href = server;
+    }
+	let bg = document.getElementById("batterygraph");
+	bg.setParam( 80, 0, 100 ); // width, min, max
+
+    getBatteryInfo();
+    commonGetProgress.setSleep( 5_000 );
+	commonGetProgress.startBackground();
+
+}    
+   
+
+function navigate( newpage ){
+    window.location.href = "/static/" + newpage + ".html" ;
+}
+
+async function getBatteryInfo( ) {
+    // This is the detailed battery info in the body
+    // of the page, the battery info in the header
+    // gets updated in common.js class GetProgress/PageHeader.
+	while( true ) {
+		updateBatteryInfo( await fetch_json( "/battery" ) ) ;
+		await sleep_ms( 15000 ) ;
+	}
+}
+
+function updateBatteryInfo( battery ) {
+	// Needed for /battery and /battery_zero
+	if( is_no_number(battery.percent_remaining)){
+		// Calibration not done, show dash and hide battery graph
+		textById("percent_remaining", "-" ) ;
+		document.getElementById("batterygraph_row").style.display = "none" ;
+	}
+	else{
+		let percent_remaining = Math.round(battery.percent_remaining) ;
+		textById("percent_remaining", "" + percent_remaining + "%") ;
+		document.getElementById("batterygraph").draw( percent_remaining );
+	}
+	let tr = battery.tunes_remaining
+	if( is_no_number(tr)){
+		textById("tunes_remaining", "-" ) ;
+	}
+	else {
+		textById("tunes_remaining", Math.floor(tr)  ) ;
+	}
+	textById("remaining_seconds", 
+				format_secHHMM( battery.remaining_seconds )) ;
+	textById("operating_seconds",  
+				format_secHHMM( battery.operating_seconds )) ;
+	textById("playing_seconds", 
+				format_secHHMM( battery.playing_seconds )) ;
+    textById("date_zero", battery.date_zero ) ;
+    textById("solenoid_on_seconds", format_secHHMM( battery.solenoid_on_seconds )) ;
+	textById("tunes_played", battery.tunes_played) ;
+}
+
+async function battery_zero() {
+	showPopup( "resetBatteryButton", tlt("Contadores batería en cero"));
+	updateBatteryInfo( await fetch_json( "/battery_zero" ) ) ;
+}
+    
+async function battery_level(){
+	// this click handler takes very long... since it
+	// asks for user input. That reports as a Violation in the 
+	// browser console.
+    let level = window.prompt(tlt("Ingresa nivel carga actual de la batería, 100=lleno, 0=vacío (usado para estimar descarga), reset=borrar calibración"), "")
+    if( level == "" || level == " " || level == null ) {
+        return ;
+    }
+    let i = 0 ;
+    if( level != "reset" ){
+        if( isNaN(level) ){
+            window.alert(tlt("Nivel debe ser numérico")) ;
+            return ;
+        }
+        i = parseInt(level) ;
+        if( !( 0 <= i && i <= 100)){
+            window.alert(tlt("Nivel debe estar entre 0 y 100")) ;
+            return ;
+        }
+    }
+    else{
+        i = "reset" ;
+    }
+    level_json = {"level": i } ;
+    await fetch_json( "/record_battery_level", level_json) ;
+	showPopup( "batteryLevelButton", tlt("Nivel de batería registrado"));
+}
+
+
+translate_html();
+getPageData() ; 
+
+
+   
+</script>
+</body>
+</html>

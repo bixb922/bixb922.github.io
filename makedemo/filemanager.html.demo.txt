@@ -1,0 +1,7 @@
+This is a file manager for the microcontroller. The main use is to upload new MIDI files over WiFi. You also can update the software and configuration files here.
+<br>
+To upload files, it's easiest to do that with the <b>Upload to auto folder</b> button. It will ask for files to be uploaded, and the correct folder will be selected automatically based on file type.
+<br>
+You can also view and delete files.
+<br>
+In this demo, navigating to folders, upload, download and delete is disabled.

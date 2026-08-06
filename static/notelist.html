@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2023-2025 Hermann von Borries
+ MIT License-->
+ <html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="skeleton.css">
+</head>
+<body>
+<div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">If you don't have a microphone installed: this page allows to play scales, if you navigate to a sound, make a single note sound to aid in tuning and intonation.
+<br>
+If you have a microphone installed, press <b>Tune all</b> (Afinar todos, Alle Noten stimmen) and one pipe will sound after the other, and tuning and volume will be shown as here on this demo. Tuning takes about 1 second per pipe.
+<br>
+Normally all or most notes should be in the green range, or near the green range. This generated tuning shows a rather badly tuned scenario.
+<br>
+Click on the note name to navigate to the individual tuning page.
+</div>
+<script type="text/javascript" src="/static/demoserver.js"></script>
+	<script type="text/javascript" src="/static/common.js"></script>
+<script type="text/javascript" src="/static/translations.js"></script>
+
+<button type="button" onclick="tuneAll()" id="tuneAllButton">Afinar todos</button>
+<button type="button" onclick="scaleTest()" id="scaleTestButton">Escala de prueba</button>
+<button type="button" onclick="allPinTest()" id="allPinTestButton">Prueba pins</button>
+<button type="button" onclick="clearTuning()" id="clearTuningButton">Borrar afinación</button>
+<button type="button" id="avg_frequency_button" onclick="set_avg_frequency()" style="display:none">Usar frecuencia media</button>
+<button type="button" onclick="stopTuning()" id="stopTuningButton">Stop</button>
+<div class="middlediv"></div>
+<span>Afinar a</span> <span id="tuning_frequency">...</span>Hz, 
+<span id="tuned_ok">...</span> <span>afinados</span>,
+<span id="tuned_not_ok">...</span> <span>desafinados</span>,
+<span id="not_tested">...</span> <span>no probados</span>.
+<span id="avg_frequency_span">
+	<span>Frecuencia media</span> 
+	<span id="avg_frequency">...</span>
+	<span>Hz.</span>
+</span>
+<!-- "pins" and "tuning_cents" only to avoid errors of setAllTextById -->
+<span id="pins" style="display:none"></span>
+<span id="tuning_cents" style="display:none"></span>
+<div class="tableFixHead">
+    <table id="notelistTable">
+		<thead>
+			<tr>
+				<th>Programa y nota</th>
+				<th colspan="2">Afinación (cents)</th>
+				<th colspan="2" name="amp_related">Amplitud (db)</th>
+				<th>Pin</th>
+			</tr>
+		</thead>
+		<tbody id="notelistBody">
+		</tbody>
+    </table>
+</div>
+<div class="footerdiv"></div>
+
+</body>
+
+<script>
+// PageHeader.setTitle(headerTitle, upAction)
+let pageHeader = new PageHeader().setTitle( tlt("Afinar notas"), "index");
+
+
+let tuning_cents = 5 ; // default, will be updated from config
+
+async function refreshNoteList() {
+	// refresh every 5 seconds
+	while( true ) {
+		// ensure tuning_cents is updated before updateNoteList()
+		await updateTuningStats();
+		await updateNoteList( await fetch_json( "/get_organtuner_json" ) );
+		await sleep_ms( 5_000 ) ;
+	}
+}
+
+async function updateNoteList( notelist ) {
+	// With a flask server, notelist can be a dict {"tuning": notelist }
+	// decode that here
+	if( "tuning" in notelist ){
+		notelist = notelist["tuning"] ;
+	}
+	// takes 5 msec for 20 notes
+	let notelistBody = document.getElementById("notelistBody");
+	let amplitude_seen = false
+    // notelist is a dictionary, key=midi note number
+	// Clear table
+    notelistBody.innerHTML = "";
+	// Populate table with values from notelist
+	let config = await configCache.get();
+	tuning_cents = config["tuning_cents"] ; // global tuning_cents
+	for( let midi in notelist ){
+		let note = notelist[midi]  ;
+        let ampdb = note["ampdb"] ;
+        if( ampdb == null ){
+            ampdb = "-";
+        }
+        else{
+            ampdb = Math.round( ampdb ) ;
+			amplitude_seen = true ;
+        }
+        let cents = note["cents"] ;
+        if( cents == null ){
+            cents = "-" ;
+        }
+        else {
+            cents = Math.round( cents ) ;
+        }
+		let row = insertRow( notelistBody, ["", cents, "", ampdb, "", note["pinname"]] );
+		// Column 0: note name, link to note
+		// Column 1: cents as number
+		// Column 2: cents as bar graph, id `tuning${midi}`
+		// Column 3: amplitude as number (amp_related)
+		// Column 4: amplitude as bar graph, id `amp${midi} (amp_related)
+		// Column 5: pin name
+		let link = document.createElement("a");
+		// >>> needs testing
+		link.href = `/static/note.html?id=${midi}`;
+		link.innerText = note["name"];
+		row.cells[0].appendChild( link ) ;
+		let centsBar = document.createElement("canvas", {is:"needle-bar"});
+		centsBar.id = `tuning${midi}`;
+		centsBar.setParam( 20, -MAX_CENTS, MAX_CENTS, tuning_cents );
+		row.cells[2].appendChild( centsBar );
+		let dBBar = document.createElement("canvas", {is:"needle-bar"});
+		dBBar.id = `amp${midi}`;
+		dBBar.setParam( 20, MIN_DB, MAX_DB, 0 );
+		row.cells[4].appendChild( dBBar );
+
+		// Set name of amplitude related columns to be able to show/hide them
+		// based on whether amplitude values are present
+		row.cells[3].setAttribute( "name", "amp_related" ) ;
+		row.cells[4].setAttribute( "name", "amp_related" );
+	};
+
+	// Show/hide amplitude columns. 
+	// If no amplitude values are present, hide the columns
+	let amp_visibility = amplitude_seen ? "" : "none" ;
+	for( let ele of document.getElementsByName("amp_related") ){
+		ele.style.display = amp_visibility ;
+	}	
+
+	for( let midi in notelist ){
+		let note = notelist[midi] ;
+        let cents = note["cents"]  ;
+		// Insert tuning bar graph, if there is a cents value
+        let elename = `tuning${midi}` ;
+        let docele = document.getElementById( elename ) ;
+        if( cents != null ){
+			docele.style.visibility = "visible" ;
+			docele.draw( cents );
+        }
+        else {
+            docele.style.visibility = "hidden" ;
+        }
+		// Insert amplitude bar graph, if there is a amplitude value
+        let ampdb = note["ampdb"] ;
+        elename = `amp${midi}`;
+        docele = document.getElementById( elename ) ;
+        if( ampdb != null ){
+          docele.style.visibility = "visible" ;
+		  //dbBar( elename, ampdb, 15 ) ;
+		  docele.draw( ampdb ) ;
+        }
+        else {
+            docele.style.visibility = "hidden" ;
+        }
+    }	
+}
+
+async function tuneAll() {
+	// >>> may be interesting to leave disabled or
+	// >>> with "active" color until tuning has finished?
+	// but then, the other buttons here should also have same behavior, e.g. stop button should be active until tuning has stopped.
+	await fetch_json( "/tune_all" ) ;
+}
+    
+async function clearTuning() {
+    await fetch_json( "/clear_tuning") ;
+}
+    
+async function stopTuning() {
+    await fetch_json( "/stop_tuning" ) ;
+}
+
+
+async function scaleTest() {
+    await fetch_json( "/scale_test" ) ;   
+}
+
+async function allPinTest(){
+	await fetch_json( "/all_pin_test" );
+}
+
+async function updateTuningStats(){
+	let stats = await fetch_json( "/get_tuning_stats" );
+	// Show results on page
+	setAllTextById( stats ) ;
+	let avgfreq =  stats["avg_frequency"];
+	if( avgfreq != null && !isNaN(avgfreq)){
+		$g("avg_frequency").innerText = Math.round( avgfreq*10 )/10;
+		showHideElement( "avg_frequency_span", true );
+		showHideElement( "avg_frequency_button", true );
+	}
+	else{
+		showHideElement( "avg_frequency_span", false );
+		showHideElement( "avg_frequency_button", true );
+
+	}
+}
+
+async function set_avg_frequency(){
+	// Ask server to start using average frequency
+	await fetch_json( "/set_avg_frequency");
+	await updateTuningStats();
+}
+
+translate_html();
+refreshNoteList() ;
+commonGetProgress.setSleep( 5_000 );
+commonGetProgress.startBackground();
+
+</script>
+</html>

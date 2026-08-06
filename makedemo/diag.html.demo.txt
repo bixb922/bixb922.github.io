@@ -1,0 +1,3 @@
+This page shows some internal information about the microcontroller. In this demo, most information is static and buttons do nothing.
+<br>
+<b>Reset</b> will reboot the microcontroller. <b>Deep sleep</b> will enter power saving mode.

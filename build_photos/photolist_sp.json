@@ -1,0 +1,632 @@
+const photolist_sp=[
+    [
+        "Primer intento de válvula de escape tipo VMT (válvula de membrana tangencial)",
+        "2021-12-09",
+        "20220409_VMT_valve_parts_1.jpg"
+    ],
+    [
+        "Primeros pasos: hacer un fuelle. 4 paredes y 2 marcos",
+        "2021-12-18",
+        "20211218_bellows_boards_cut_and_drilled.jpg"
+    ],
+    [
+        "Se prensa bien - no debe quedar ningún escape!",
+        "2021-12-18",
+        "20211218_bellows_pressing_hinge_leather_2021_12_18.jpg"
+    ],
+    [
+        "El primer intento de válvula de escape resultó no tener la capacidad adecuada. Hay que probar otro tipo de válvula, esta requiere mucho más espacio que lo disponible",
+        "2021-12-18",
+        "20211218_VMT_relief_valve_assembled_1.jpg"
+    ],
+    [
+        "Eje conector entre fuelle y manivela",
+        "2021-12-19",
+        "20211219_reservoir_bellows_-_rod_2021_12_19.jpg"
+    ],
+    [
+        "El fuelle es con cuero de oveja, reforzado con cartones",
+        "2022-01-22",
+        "20220122_leather_and_cardboard_9.jpg"
+    ],
+    [
+        "Ahora está pegado el cartón para un fuelle, se puede recortar con un borde para pegar",
+        "2022-01-22",
+        "20220122_leather_and_cardboard_11.jpg"
+    ],
+    [
+        "Las partes del fuelle inferior: tablas, refuerzo, empaquetadura",
+        "2022-01-28",
+        "20220128_bottom_bellows_with_leather_and_gasket_2.jpg"
+    ],
+    [
+        "¿Qué presión produce? Se mide con un manómetro de columna de agua. Como no hay aún un resorte, habrá que usar una piedra",
+        "2022-02-08",
+        "20220208_bellows_measuring_pressure_2022_02_08.jpg"
+    ],
+    [
+        "Biela de manivela armada",
+        "2022-02-10",
+        "20220210_connecting_rod_3.jpg"
+    ],
+    [
+        "La biela de la manivela",
+        "2022-02-10",
+        "20220210_connecting_rod_1_2022_02_10.jpg"
+    ],
+    [
+        "Las partes de la biela de la manivela",
+        "2022-02-11",
+        "20220211_connecting_rod_(open)_1_2022_02_11.jpg"
+    ],
+    [
+        "Montaje de manivela en su eje",
+        "2022-02-14",
+        "20220214_crank_with_key_and_rod_3.jpg"
+    ],
+    [
+        "Montaje de manivela en su eje, con traba",
+        "2022-02-14",
+        "20220214_crank_with_key_and_rod_5.jpg"
+    ],
+    [
+        "Plan de la manivela, dos bosquejos.",
+        "2022-02-15",
+        "20220215_crank_drawings.jpg"
+    ],
+    [
+        "Ya se puede ver el fuelle armado",
+        "2022-02-21",
+        "20220221_093547bellows_.jpg"
+    ],
+    [
+        "Partes del soporte para la manivela, con machihembrado para resistir el movimiento",
+        "2022-02-23",
+        "20220223_crank_assembly_parts.jpg"
+    ],
+    [
+        "Soporte de manivela armado",
+        "2022-02-24",
+        "20220224_crank_assembly_before_installation_1.jpg"
+    ],
+    [
+        "Ahora se coloca el resorte de torsión y se mide presión con el manómetro de agua. No funciona muy bien aún. La válvula de escape es muy tiesa, el resorte es demasiado grueso, y por eso el nivel de presion no se mantiene estable. Eso es malo, porque la afinación de las flautas tampoco será estable...",
+        "2022-03-08",
+        "20220308_bellows_first_time_manometer_3.jpg"
+    ],
+    [
+        "Un muy buen amigo regaló cuerda de piano! Excelente material para hacer resortes duraderos. Se arma una ayuda para producir los resortes, con una tabla con ranura, un pedazo de aldaba y una broca del diametro suficiente.",
+        "2022-03-12",
+        "20220312_bending_spring_piano_wire_2.jpg"
+    ],
+    [
+        "Resortes listos!",
+        "2022-03-12",
+        "20220312_bending_spring_piano_wire_3.jpg"
+    ],
+    [
+        "La tercera es la vencida! Esta versión de válvula de escape sí funcionó. Tiene dos resortes hechos de cuerdas de piano.",
+        "2022-03-12",
+        "20220312_relief_valve_piano_wire_springs.jpg"
+    ],
+    [
+        "Ahora el fuelle ya tiene manivela y tubo de salida (¿se parece a un tubo de aspiradora, cierto?)",
+        "2022-03-13",
+        "20220313_bellows_6.jpg"
+    ],
+    [
+        "Detalle del armado de la manivela",
+        "2022-03-13",
+        "20220313_crank_assembly_2.jpg"
+    ],
+    [
+        "Detalle de manivela y biela",
+        "2022-03-20",
+        "20220320_180003_connecting_rod.jpg"
+    ],
+    [
+        "Nos pusimos modernos. Ahora se mide la presión con un circuito integrado BMP280. Pero eso no mejora que la presión varía mucho, es un problema",
+        "2022-03-21",
+        "20220321_192810_measure_with_BMP280.jpg"
+    ],
+    [
+        "Se prueba una (y solo una) flauta con el fuelle",
+        "2022-04-14",
+        "20220414_170947_vocing_box.jpg"
+    ],
+    [
+        "El primer lote núcleos terminado",
+        "2022-05-24",
+        "20220524_pipe_feet_74,_77-87_.jpg"
+    ],
+    [
+        "y luego se corta el labio de exactamente el mismo ancho que el núcleo ",
+        "2022-05-26",
+        "20220526_cut_upper_lip_4.jpg"
+    ],
+    [
+        "Van 22 núcleos y labios - pero quiero hacer 34!",
+        "2022-06-01",
+        "20220601_feet_and_upper_lips_2.jpg"
+    ],
+    [
+        "Las paredes de las flautas se cortan con tip top de madera balsa",
+        "2022-06-03",
+        "20220603_cutting_balsa_4.jpg"
+    ],
+    [
+        "Las flautas deben quedar excelentemente selladas. Para el pegado se hace un artefacto para prensar las paredes en su lugar",
+        "2022-06-08",
+        "20220608_pipe_jig_1.jpg"
+    ],
+    [
+        "16 de 34 flautas",
+        "2022-06-08",
+        "20220608_pipes.jpg"
+    ],
+    [
+        "Fabricación de núcleos de flautas. Se dibujan los cortes sobre la madera. El primer corte es en ángulo",
+        "2022-06-13",
+        "20220613_151200_making_pipe_foot_1.jpg"
+    ],
+    [
+        "Corte para la cámara",
+        "2022-06-13",
+        "20220613_152448_making_pipe_foot_12.jpg"
+    ],
+    [
+        "Ahora la cámara está formada",
+        "2022-06-13",
+        "20220613_151306_making_pipe_foot_2.jpg"
+    ],
+    [
+        "Mejor hacer otro repaso por la cámara, para quitar rebarbas",
+        "2022-06-13",
+        "20220613_152534_making_pipe_foot_13.jpg"
+    ],
+    [
+        "Corte final para desprender el núcleo de la madera. Ahora se lija y sella con barniz (excepto las caras que deben aceptar pegamento)",
+        "2022-06-13",
+        "20220613_151344_making_pipe_foot_5.jpg"
+    ],
+    [
+        "Prueba de un tapón de flauta con espuma EVA. Es un fracaso, bajo presión no se expande y se requiere que selle perfectamente.",
+        "2022-06-13",
+        "20220613_EVA_foam_stopper_compressed.jpg"
+    ],
+    [
+        "Prueba con un tapón de silicona, que se expande al apretar, excelente!",
+        "2022-06-13",
+        "20220613_silicone_stopper_compressed_2.jpg"
+    ],
+    [
+        "",
+        "2022-06-13",
+        "20220613_152404_making_pipe_foot_11.jpg"
+    ],
+    [
+        "Para hacer los labios de la flauta, se corta una madera en bisel de ángulo 14 grados",
+        "2022-06-15",
+        "20220615_172246_upper_lip_sawing_the_angle_1.jpg"
+    ],
+    [
+        "Paso 1: Se presentan las partes. Se requiere una tajada de núcleo para mantener las paraedes en su lugar",
+        "2022-06-15",
+        "20220615_182517_making_a_pipe_1.jpg"
+    ],
+    [
+        "Paso 2: núcleo con pegamento, se pegan paredes laterales a núcleo y pared trasera",
+        "2022-06-20",
+        "20220620_100319__making_a_pipe_2.jpg"
+    ],
+    [
+        "Paso 3: se pega pared frontal",
+        "2022-06-20",
+        "20220620_100616__making_a_pipe_4.jpg"
+    ],
+    [
+        "Ahora dejar secar",
+        "2022-06-21",
+        "20220621_110738_glueing_pipe.jpg"
+    ],
+    [
+        "Las flautas deben estar perfectamente selladas. Se prepara el proceso",
+        "2022-06-30",
+        "20220630_111717_sealing_pipes.jpg"
+    ],
+    [
+        "Se llena flauta con barniz poliuretano",
+        "2022-06-30",
+        "20220630_114638_sealing_pipes.jpg"
+    ],
+    [
+        "Se tapa y se asegura que todas las caras estén impregnadas",
+        "2022-06-30",
+        "20220630_114827_sealing_pipes.jpg"
+    ],
+    [
+        "El exceso se reutiliza",
+        "2022-06-30",
+        "20220630_115039_sealing_pipes_.jpg"
+    ],
+    [
+        "Se deja secar y se repite. Se requieren 4 a 5 manos",
+        "2022-06-30",
+        "20220630_111701_sealing_pipes.jpg"
+    ],
+    [
+        "",
+        "2022-06-30",
+        "20220630_115034_sealing_pipes.jpg"
+    ],
+    [
+        "28 flautas, ahora con los tubos de bronce donde entra el aire en el pie de flauta",
+        "2022-07-06",
+        "20220706_164626_pipes_with_brass_tube_4.jpg"
+    ],
+    [
+        "",
+        "2022-07-06",
+        "20220706_164014_pipes_with_brass_tube_1.jpg"
+    ],
+    [
+        "Siempre hay que verificar medidas, se requiere un buen torpedo con todas las medidas",
+        "2022-07-10",
+        "20220710_191833~2_pipe_measurements.jpg"
+    ],
+    [
+        "ups!! un diminuto hoyo en el pegamento. Eso impide que la flauta suene bien!!!",
+        "2022-07-21",
+        "20220721_125306_pinhole_in_PVA_glue.jpg"
+    ],
+    [
+        "Se corta una sección de cada flauta como molde para la silicona del tapón",
+        "2022-08-01",
+        "20220801_150929~2___pipe_stopper_molds_5.jpg"
+    ],
+    [
+        "En el jarro de vidrio se prepara silicona de dos componentes, y se vierte en cada molde. Se deja curar por 24 horas",
+        "2022-08-01",
+        "20220801_215401_pipe_stopper_molds_filled_1.jpg"
+    ],
+    [
+        "Lo simpático es que la silicona curada se desprende con gran facilidad de los moldes",
+        "2022-08-01",
+        "20220801_215420_pipe_stopper_molds_filled_3.jpg"
+    ],
+    [
+        "",
+        "2022-08-01",
+        "20220801_150907__pipe_stopper_molds_2.jpg"
+    ],
+    [
+        "El tapón de la flauta 46 (la más grande)",
+        "2022-08-03",
+        "20220803__stopper_pipe_46_11.jpg"
+    ],
+    [
+        "El tapón de la flauta 46 (la más grande)",
+        "2022-08-03",
+        "20220803_stopper_pipe_46_13.jpg"
+    ],
+    [
+        "Cada tapón de silicona necesita una tapa superior e inferior de madera, a manera de sandwich, con un hoyo para un perno",
+        "2022-08-04",
+        "20220804__drill_pipe_stopper_board_2.jpg"
+    ],
+    [
+        "El tapón de la flauta 74 (la 87 es la más chica)",
+        "2022-08-05",
+        "20220805_121426_pipe_stopper_silicone_cured_1.jpg"
+    ],
+    [
+        "Las flautas insertadas en su base, que es una madera con una perforación por flauta",
+        "2022-08-10",
+        "20220810_pipes_and_top_board_3.jpg"
+    ],
+    [
+        "Lo mismo, vista delantera",
+        "2022-08-10",
+        "20220810_pipes_and_top_board_8.jpg"
+    ],
+    [
+        "",
+        "2022-08-10",
+        "20220810_pipes_and_top_board.jpg"
+    ],
+    [
+        "A medir de nuevo, verificar todas las medidas",
+        "2022-08-19",
+        "20220819_dimensions_largest_pipes_2.jpg"
+    ],
+    [
+        "Llegaron las válvulas electromagnéticas (válvulas solenoide) para las flautas. Debajo e cada flauta hay una de estas",
+        "2022-08-19",
+        "20220819_dimensions_Peterson_solenoid.jpg"
+    ],
+    [
+        "Piezas para la caja de aire número 1: dos corridas de flautas para (a futuro) poder hacer un registro de flautas celeste, la regla blanca para cambiar el registro, empaquetadura de cuero y madera chapa para 'vestir' el material MDF usado",
+        "2022-10-10",
+        "20221010_top_windchest_and_veneer.jpg"
+    ],
+    [
+        "Se realizan las perforaciones para las flautas, según las medidas de tubo de cada flauta",
+        "2022-10-10",
+        "20221010_drilling_top_board_windchest.jpg"
+    ],
+    [
+        "Ahora ya estamos armando la caja 1",
+        "2022-10-22",
+        "20221022_windchest_assembly_2.jpg"
+    ],
+    [
+        "La hilera de válvulas. Hubo que hacer 3 versiones de esto, por diferentes problemas de construcción...",
+        "2022-10-23",
+        "20221023_chest_1_solenoids_3.jpg"
+    ],
+    [
+        "Una válvula por flauta",
+        "2022-10-23",
+        "20221023__solenoid_assembly_(failed)_2.jpg"
+    ],
+    [
+        "Se fresan los canales para conectar el segundo registro de flautas. Esto lo tuve que hacer 3 veces, la fresa se 'pasa' con mucha facilidad",
+        "2022-11-10",
+        "20221110_router_canals_for_register.jpg"
+    ],
+    [
+        "",
+        "2022-11-14",
+        "20221114_tighten_nut_for_solenoids_1.jpg.jpg"
+    ],
+    [
+        "Primera prueba de la caja! Son 18 flautas en escala crómatica, eso permite tocar melodías!!!",
+        "2022-11-24",
+        "20221124__first_test_chest_3_2.jpg"
+    ],
+    [
+        "La electrónica aún está en estado de prueba, en un protoboard, con 10 baterías AA",
+        "2022-11-24",
+        "20221124__first_test_chest_3.jpg"
+    ],
+    [
+        "Así se ven los solenoides ya conectados y cableados",
+        "2022-11-25",
+        "20221125_cabling_solenoids_6.jpg"
+    ],
+    [
+        "Después de probar muchas veces las flautas y corregir la posición del labio, ahora los labios se pegan en forma definitiva. ¿Hay que asumir compromisos, cierto?",
+        "2022-12-26",
+        "20221226_commitment_gluing_pipe_foot_10.jpg"
+    ],
+    [
+        "Se pega también la empaquetadura (cartón blanco) y la contratapa que forma el canal de aire",
+        "2022-12-26",
+        "20221226_commitment_gluing_pipe_foot_2.jpg"
+    ],
+    [
+        "Con pegamento, listo para pegar",
+        "2022-12-26",
+        "20221226_commitment_gluing_pipe_foot_6.jpg"
+    ],
+    [
+        "Aquí va la electrónica versión 2: con un expansor de puertos. Para 34 flautas se requieren 34 puertos en el microcontrolador, la única forma de lograrlo es con el expansor",
+        "2023-02-02",
+        "20230202_protoboard_version_2-1.jpg"
+    ],
+    [
+        "Este es el enchufe externo de la caja de flautas. Con 9 alambres se entrega 12V, tierra y señales para las 18 flautas",
+        "2023-02-13",
+        "20230213_DB9_closeup_2.jpg"
+    ],
+    [
+        "Dentro de la caja va el controlador con el expansor de puertos y un amplificador de corriente para cada válvula",
+        "2023-03-03",
+        "20230303_controller_board_in_chest_4.jpg"
+    ],
+    [
+        "y por fuera queda el enchufe para conectar el microcontrolador",
+        "2023-03-03",
+        "20230303_DB9_chest_1.jpg"
+    ],
+    [
+        "Este es el controlador de cerca, va uno en cada caja",
+        "2023-03-03",
+        "20230303_solenoid_controller_board_1.jpg"
+    ],
+    [
+        "Ruedas con rodamiento para la cuerda de tensión del resorte",
+        "2023-03-12",
+        "20230312_bellows_spring_cord_on_bearing.jpg"
+    ],
+    [
+        "Aquí se ve el resorte. Hay espacio para otro, pero no fue necesario",
+        "2023-03-12",
+        "20230312_bellows_spring_1.jpg"
+    ],
+    [
+        "Los núcleos necesitan sello por debajo también",
+        "2023-03-13",
+        "20230313_sealing_pipe_feed_tubes_3.jpg"
+    ],
+    [
+        "Las partes de un tapón de flauta: tapón de silicona, tapa superior e inferior y perno con tuerca y golillas para presionar.",
+        "2023-03-20",
+        "20230320_silicone_pipe_stopper.jpg"
+    ],
+    [
+        "La segunda caja de flautas vista por debajo: están presentados los solenoides en su posición",
+        "2023-04-27",
+        "20230427_solenoid_layout_chest_2.jpg"
+    ],
+    [
+        "Aquí va la segunde caja, con sus flautas. ¿Son un poco largas, cierto? Después se cortarán en pedacitos!! (y no es broma)",
+        "2023-04-27",
+        "20230427_windchest_2_pipes.jpg"
+    ],
+    [
+        "Revisitando el fuelle: Ahora probamos con un resorte espiral por debajo del fuelle. Eso libra espacio, pero muy importantemente estabiliza considerablemente la presión. Ahora sí!!!",
+        "2023-07-10",
+        "20230710_new_spring.jpg"
+    ],
+    [
+        "Baterías AA son incómodas de cargar. Se puede usar un battery pack USB?",
+        "2023-07-14",
+        "20230714_battery_measure_current_and_volts_2.jpg"
+    ],
+    [
+        "Vamos midiendo corriente y voltaje... parece que se puede, pero se requiere un circuito para engañarlo. Afortunamente Ali provee todo",
+        "2023-07-14",
+        "20230714_battery_measure_current_and_volts.jpg"
+    ],
+    [
+        "Controlador de solenoides versión 2",
+        "2023-08-08",
+        "20230808_solenoid_controller_version_2.jpg"
+    ],
+    [
+        "Qué horror! Hay que cortar la flauta en pedacitos!!!",
+        "2023-09-27",
+        "20230927_miter_bass_pipe_1.jpg"
+    ],
+    [
+        "...pero se pega de nuevo y queda igual de buena y más corta. El proceso se denomina 'ingleteado' de las flautas y solo aplica a las más largas",
+        "2023-09-27",
+        "20230927_miter_bass_pipe_2.jpg"
+    ],
+    [
+        "Ahora el microcontrolador ya está en su placa definitiva (versión 2) con batería",
+        "2023-10-10",
+        "20231010_microcontroller__5V_converter_battery.jpg"
+    ],
+    [
+        "Este es el microcontrolador, un ESP32-S3 de 8MB de RAM y 16MB de memoria flash (M=mega, no giga!)",
+        "2023-10-10",
+        "20231010_microcontroller_version_2.jpg"
+    ],
+    [
+        "Invasión a la mesa de cocina! Todas las componentes presentadas: fuelle, 34 flautas, las 2 cajas, microcontrolador y estructura",
+        "2023-11-23",
+        "20231123_all_components_kitchen_table.jpg"
+    ],
+    [
+        "",
+        "2023-11-23",
+        "20231123_glue_a_pipe.jpg.jpg"
+    ],
+    [
+        "Aquí de nuevo: primera fila las flautas. Segunda fila de izquierda a derecha: estructura con fuelle, microcontrolador, caja 1 y caja 2",
+        "2023-11-24",
+        "20231124_all_components.jpg"
+    ],
+    [
+        "Al fin! El fuelle tiene una rejilla en la toma de aire superior. Si se caía algo adentro, chao fuelle.",
+        "2023-11-24",
+        "20231124_grid_air_entrance_bellows.jpg"
+    ],
+    [
+        "mmm se luce la nueva manilla",
+        "2023-11-24",
+        "20231124_structure.jpg"
+    ],
+    [
+        "Otro invento más, los tubos de las flautas reciben una cinta adhesiva de ancho variable para hacerlas ligeramente cónicas. Con eso se sostienen mejor y en forma más estanca",
+        "2023-11-26",
+        "20231126_tapering_tube.jpg"
+    ],
+    [
+        "Falta hacer una cajita para el microcontrolador: aquí estan las paredes. En vez de madera chapa de cerezo, esta vez se usa madera chapa de eucaliptus",
+        "2023-12-11",
+        "20231211_box_vernier.jpg"
+    ],
+    [
+        "Este corte es para fabricar parte del pie de las flautas piccolos.",
+        "2024-05-03",
+        "20240503_piccolo_pipe_first_cut_2.jpg"
+    ],
+    [
+        "La placa del microcontrolador ya evolucionó. Ahora hay 2 conversores de voltaje, uno para 13.5V para las válvulas, otro de 5V para el microcontrolador.",
+        "2024-05-09",
+        "20240509_main_board_3.jpg"
+    ],
+    [
+        "El carro está listo! Ahora se puede transportar sobre ruedas, porque ya pesa bastante.",
+        "2024-05-09",
+        "20240509_crank_organ_with_cart_2.jpg"
+    ],
+    [
+        "Los cortes necesarios para fabricar los pie de las flautas piccolo. Tres de las piezas se ensamblan posteriormente",
+        "2024-05-13",
+        "20240513_piccolo_cuts_2_(1).jpg"
+    ],
+    [
+        "Terminé la tapa, es de madera terciada recubierta de chapa de cerezo, con dos listones de madera alternada pino oregón y roble.",
+        "2024-05-14",
+        "20240514_lid.jpg"
+    ],
+    [
+        "Se están pegando los pies de las flautas piccolo.",
+        "2024-06-10",
+        "20240610_pressing_piccolos.jpg"
+    ],
+    [
+        "Los pies de flauta piccolo terminados.",
+        "2024-06-11",
+        "20240611_piccolo_pipe_feet.jpg"
+    ],
+    [
+        "Silicona dos componentes para el tapón de las flautas piccolo. Se corta en tajadas, como si fuera vienesa.",
+        "2024-06-26",
+        "20240626_piccolo_stopper_silicone.jpg"
+    ],
+    [
+        "Estos son los discos para los tapones superiores de las flautas piccolo. 13 flautas = 26 discos de 15mm de diámetro, cortados con sierra calar.",
+        "2024-06-26",
+        "20240626_piccolo_stopper_disks.jpg"
+    ],
+    [
+        "Los tapones superiores de las flautas piccolo. Estos tapones son esenciales para el sonido, pues en la cabeza de tuerca se refleja la onda sonora. Moy imnportante: sirven también para afinar las flautas.",
+        "2024-06-26",
+        "20240626_silicone_stoppers.jpg"
+    ],
+    [
+        "Colocación de las válvulas solenoide para las flautas piccolo.",
+        "2024-07-03",
+        "20240703_mounting_piccolo_solenoids.jpg"
+    ],
+    [
+        "Listo, ahora las flautas piccolo tienen su propio controlador, que es conectado con un cable paralelo de 10 conductores con el microcontrolador. El controlador permite comandar hasta 16 válvulas, pero se conectan solo 13.",
+        "2024-07-03",
+        "20240703_piccolo_controller.jpg"
+    ],
+    [
+        "Este es el quinto intento de hacer un sensor de giro. El sensor usa luz infrarroja, y sensa la distancia con las paletas del disco.",
+        "2024-07-06",
+        "20240706_crank_sensor_disk.jpg"
+    ],
+    [
+        "Probando las válvulas, una por una.",
+        "2024-07-10",
+        "20240710_testing_piccolo_solenoids.jpg"
+    ],
+    [
+        "Este es el labio de las flautas piccolo, se corta de madera chapa (cerezo) para luego ir probando la posición exacta.",
+        "2024-07-23",
+        "20240723_cutting_piccolo_labium.jpg"
+    ],
+    [
+        "Se ve bonito con la nueva hilera de flautas!",
+        "2024-07-25",
+        "20240725_front_view_piccolos.jpg"
+    ],
+    [
+        "Así se pega un pie de flauta piccolo. Para ajustar el sonido, es muchas veces necesario cortar el pie y reponerlo con una nueva posición, para así corregir el flujo de aire, que debe ir en dirección del labio de madera chapa.",
+        "2024-08-02",
+        "20240802_piccolo_pipe_foot_glued.jpg"
+    ],
+    [
+        "Flauta piccolo completa, pegando el labio.",
+        "2024-08-27",
+        "20240804_piccolo_complete.jpg"
+    ]
+]

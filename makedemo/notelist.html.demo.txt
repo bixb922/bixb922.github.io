@@ -1,0 +1,7 @@
+If you don't have a microphone installed: this page allows to play scales, if you navigate to a sound, make a single note sound to aid in tuning and intonation.
+<br>
+If you have a microphone installed, press <b>Tune all</b> (Afinar todos, Alle Noten stimmen) and one pipe will sound after the other, and tuning and volume will be shown as here on this demo. Tuning takes about 1 second per pipe.
+<br>
+Normally all or most notes should be in the green range, or near the green range. This generated tuning shows a rather badly tuned scenario.
+<br>
+Click on the note name to navigate to the individual tuning page.

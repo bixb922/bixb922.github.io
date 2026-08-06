@@ -1,0 +1,10 @@
+This page allows configuration of most options.
+<br>
+After installing you will need to configure one or two WiFi access points for the microcontroller to connect, typically your home WiFi router (to use at home) and an access point on your cell phone or tablet (to use on the road).
+<br>
+The rest of the configuration parameters is explained in the form. Change what you think will be more convenient. Some parameters are available mainly to explain behaviour of the software.
+<br>
+In this demo, changes will not be saved.
+<br>
+Configuration is best done on a PC or Mac. You can use the browser to translate to your language.
+<br>

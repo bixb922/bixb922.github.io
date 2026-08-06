@@ -1,0 +1,9 @@
+You can select preconfigured organ scales here, and set the new scale, also you can transpose that scale.
+<br>
+For example, if you have a 31 note Raffin scale on your organ, you select that scale and press <b>Save scale</b>.
+<br>
+You can view and change the pin assignment for the scale here, and test the pins. If the wiring is incorrect, it's easier to change the pin assignment here than to replace wires.
+<br>
+Configuration is best done on a PC or Mac. You can use the browser to translate to your language.
+<br>
+In this demo, changes will not be saved.

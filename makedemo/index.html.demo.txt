@@ -1,0 +1,7 @@
+The crank organ microcontroller has a small web server inside. You select tunes and configure the crank organ software with a browser on a PC or cell phone over WiFi to the microcontroller. 
+<br>
+Press the <b>Tune list</b> (Lista de melodías, Melodieliste) and select some tunes.
+<br>
+Bear in mind that you can also play music on the crank organ software without any cell phone nor using these pages: Just tap the touch button, and/or turn the crank, and the music will play. No further technology needed.
+<br>
+For detailed description see my Github repository <a href="https://www.github.com/bixb922/crank-organ">here</a>.

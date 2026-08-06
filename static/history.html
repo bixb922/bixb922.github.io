@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<!-- Copyright (c) 2023-2025 Hermann von Borries
+ MIT License-->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="skeleton.css">
+</head>
+
+<body>
+<div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">Shows the tunes that have been played.
+<br>
+You can queue them again to play by clicking on the title.
+</div><!--<<span id="popup" class="popuptext"></span>
+div class="headerdiv">
+	<span class="headerleft">
+        <a onclick="pageUp()">&#11013;</a>
+		&nbsp;<span>Historia</span>
+    </span>
+	<span class="headerright" id="header_time"></span>
+</div>
+-->
+
+<script type="text/javascript" src="/static/demoserver.js"></script>
+	<script type="text/javascript" src="/static/common.js"></script>
+<script type="text/javascript" src="/static/translations.js"></script>
+
+<div class="tableFixHead">
+
+    <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Melodía</th>
+            <th>Avance %</th>
+            <th style="display:none"><span>Pedido</span>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody">
+        </tbody>
+    </table>
+</div>
+<div class="middlediv"></div>
+	<span>Si historia más antigua que</span>
+	<input type="text" size="3" value="90" id="days"/><span>días</span>,
+	<button onclick="deleteHistory()" id="purgeButton">Borrar</button>
+<div class="footerdiv"></div>
+</body>
+
+<script>
+// (c) Copyright 2025 Hermann Paul von Borries. All rights reserved.
+// MIT License
+
+// PageHeader.setTitle(headerTitle, upAction)
+let pageHeader = new PageHeader().setTitle( tlt("Historia"), "back" );
+
+
+async function getHistory( ) {
+    // Don't use cached version here, we need to show history up-to-date.
+	let histlist = await fetch_json( "/data/history.json" ) ;
+    // sort by timestamp 
+    histlist.sort( (a,b)=>(b[1]-a[1]) );
+	let s = "" ;
+    let previous_date = "";
+    let body = document.getElementById( "historyBody" );
+    body.innerHTML = "";
+    let i = 0;
+    let multipleSetlists = await isMultipleSetlistsEnabled();
+    let tunelib = await tunelibCache.get();
+
+    for( let hist_element of histlist){
+        // 0 tuneid
+        // 1 date in seconds since 2000/1/1 (ESP32 epoch)
+        // 2 percentage
+        // 3 RFU 
+
+        // Convert date from seconds in ESP32 epoch to string
+        // date: yyyy-mm-dd, time: hh:mm
+        let d = new Date(946_684_800_000); // ESP32 epoch start
+        d.setUTCSeconds( hist_element[1] );
+        let datetime = "2000-01-01T00:00" ;
+        try{
+            datetime = d.toISOString() ; // e.g. 2024-05-13T08:40:49.000Z
+        } catch(e){
+            console.error("Error converting date", e, "hist_element=", hist_element );
+            continue;
+        }
+        let tsplit = datetime.split("T");
+        let date = tsplit[0] ;
+        let time = tsplit[1].substring(0,5) ;
+
+        // Insert separator row with date when date changes
+        if( date != previous_date) {
+            let row = insertRow( body, [date, "", ""]);
+            row.cells[0].colSpan = 2;
+            row.cells[0].style.fontWeight="bold";
+            let deleteDay = document.createElement("button");
+            deleteDay.innerText = "🗑️";
+            deleteDay.onclick = ()=>{deleteHistoryDate(date)};
+            row.cells[1].appendChild( deleteDay );
+         };
+        previous_date = date ;
+
+        // Mark if tune has been requested via web site
+        //let user_request = "" ;
+        //if( hist_element[3] ) {
+            // user request
+        //    user_request = "✔️" ; // check mark &#x2714;
+        //}
+        let row = insertRow( body, [time, "", "" ]);
+
+        // Get title (if still in tunelib...)
+        let tuneid = hist_element[0];
+    	let tune = tunelib[tuneid]; // may be undefined if tune was deleted
+        if( tune != undefined ){
+            let tuneTitle = document.createElement( "span", {"is":"tune-title"});
+            // format "hpt%msd"
+            // We are calling isMultipleSetlistsEnabled() here, so menu only appears if needed.
+            tuneTitle.setTune( tune, { beforeFormat:"hpt", afterFormat:"ms", shortClick:true, menu:multipleSetlists } );
+            row.cells[1].appendChild( tuneTitle );
+            row.cells[2].innerText = await make_history_percentage(  tune, hist_element[2] );
+        }
+        else{
+            let tuneTitle = document.createElement( "span" );
+            tuneTitle.innerText = tlt("(borrado)");
+            row.cells[1].appendChild( tuneTitle );
+            row.cells[2].innerText = "";
+        }
+        
+        i += 1;
+    }
+    commonGetProgress.setSleep( 2_000 );
+    commonGetProgress.registerCallback( (progress)=>TuneTitle.updateProgress( progress ) );
+    JsonCache.setReloadIfTunelibChanged(true);
+    commonGetProgress.startBackground();
+}
+
+
+async function deleteHistory(){
+    // Purge old elements from history
+	let days = parseInt( document.getElementById("days").value );
+    if( isNaN(days) ){
+        showPopup(document.getElementById("days"), "must be numeric" );
+        return;
+    }
+	resp = await fetch_json( "/delete_history/" + days ) ;
+    showPopup("", tlt("Historia truncada") ); 
+    await sleep_ms(1000);
+    window.location.reload() ;
+}
+
+async function make_history_percentage( tune, percentage ){
+    let text = "" + percentage + "%";
+    if( tune != undefined ){
+        text += " " + formatMilliMMSS( Math.round(tune[TLCOL_TIME]*percentage/100));
+    }
+    return text ;
+}
+
+async function deleteHistoryDate( date ){
+    if( confirm( tlt("Borrar historia de") + " " + date + " ?") ){
+        let resp = await fetch_json( "/delete_history_date/" + date ) ;
+        showPopup("", tlt("Historia truncada") ); 
+        await sleep_ms(1000);
+        window.location.reload() ;
+    }
+}
+translate_html() ;
+getHistory() ;
+
+
+
+</script>
+</html>

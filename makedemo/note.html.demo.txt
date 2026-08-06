@@ -1,0 +1,3 @@
+If you have a microphone installed on the microcontroller: Press <b>Afinar</b> to record the tuning and volume of a note. 
+<br>
+If you don't have a microphone installed: you can make this individual pipe sound with the <b>Note test</b> button, either with long notes or with a repetition test that increases tempo.
