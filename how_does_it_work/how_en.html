@@ -1,183 +1,182 @@
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="skeleton.css">
-	<title id="pagetitle"></title>
-
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title id="pagetitle">How the Crank Organ Works</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
-<span id="popup" class="popuptext"></span>
-<div class="headerdiv">
-	<span class="headerleft">
-        <a onclick="pageUp()" id="pageUp">&#11013;</a>
-		&nbsp;Lista de melodías
-    </span>
-	<span class="headerright" id="header_time"></span>
-</div>
-<h1>Cómo funciona</h1>
-<image src="animacion_organillo.gif" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
-<p>El fuelle produce un flujo continuo de aire de presión constante, que llega a las bases de las flautas. 
-Cada flauta corresponde a una nota. En la base cada flauta hay una válvula electromagnética. Cuando se abre la válvula, suena esa nota.
-</p>
-
-<p>
-La música está almacenada como en archivos en un microcontrolador, que comanda las válvulas. Estos archivos son formato MIDI, es decir, contienen las órdenes en qué momento exacto debe abrir y cerrar cada válvula para hacer sonar la nota correspondiente.
-</p>
-<h1>Las partes del organillo</h1>
-<img src="IMG_20231124_172545.jpg" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
-<p>
-Primera fila, de izquierda a derecha:</p>
-<ul>
-<li>Las flautas bajas. Tres flautas están "dobladas" (ingleteadas) porque son muy largas</li>
-<li>Las flautas de acompañamiento</li>
-<li>Las flautas de melodía</li>
-</ul>
-<p>
-Segunda fila, de izquierda a derecha:</p>
-<ul>
-<li>La armazón con el fuelle y su tubo de conexión</li>
-<li>El microcontrolador, con batería y conversores de voltaje</li>
-<li>La caja de flautas de acompañamiento y melodía</li>
-<li>La caja de flautas de bajos</li>    
-</ul>
-<p>
-El organillo tiene 47 flautas, desde el Si bemol 2 hasta el Mi bemol 7, es decir abarca 3 octavas y media. A partir del Do4 la escala es cromática, bajo el Do4 están los bajos, que por razones de tamaño son notas saltadas, con lo cual el centro tonal de preferencia del organillo es Mi bemol. 
-</p>
-
-<h1>Las flautas</h1>
-<br>
-<image src="20220608 test pipe 3.jpg"  style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
-<p>
-Esta es una flauta, aun no terminada. A la izquierda se ve el tubo de entrada de aire a la cámara. La tapa de la cámara está sujeta con un elástico, para poder hacer cambios, así como el labio biselado, que puede aun ajustado. El sonido se produce en la ventanilla, al chocar el flujo de aire con el labio biselado. A la derecha asoma el tapón, que regula la afinación de la flauta.
-</p>
+    <span id="popup" class="popuptext"></span>
     
-<image src="animacion_flujo_aire.gif"/>
-<br>
-Imagen de <a href="https://orgue-bernard.blog4ever.com/anatomie-d-une-flute-et-conventions">https://orgue-bernard.blog4ever.com/anatomie-d-une-flute-et-conventions</a>
-<p>
-El aire entra por abajo a la flauta a una pequeña cámara que tiene una salida en forma de apertura plana, de aproximadamente medio milímetro de ancho. Se produce un flujo de aire hacia la lengua de la flauta, que choca de frente con el labio en forma de bisel y el aire comienza a oscilar con una frequencia que depende del largo de la flauta. Esa oscilación es el sonido de la flauta.
-</p>
-<p>
-<image src="labialpfeifen_b.jpg" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
-<br>
-Imagen de <a href="https://www.bach.de/werk/labial.html">https://www.bach.de/werk/labial.html</a>
-<p>
-Las flautas de este organillo son del tipo "tapadas" (gedackte Holzpfeifen, en la jerga). Hay una larga historia de cientos de años, en que se ha perfeccionado el diseño, las medidas como la razón de altura vs. ancho y la progresión de tamaños, producto que estas flautas son muy comunes en los órganos. La mayoría de las descripciones técnicas están en alemán, francés e inglés.
-</p>
-<p>
-Cada flauta consta de 15 piezas construidas con medidas diferentes para cada flauta, más un perno, tornillo y golillas:
-<ul>
-<li>Un tubo en el pie de la flauta, para insertarla en su base y permitir que entre aire. El diámetro debe aumentar con el tamaño de la flauta.</li>
-<li>El núcleo, que forma la cámara de aire en el pie de la flauta.</li>
-<li>Un tubo metálico en que permite la entrada de aire en el pie de la flauta</li>
-<li>La tapa frontal. El aire se escapa entre núcleo y tapa frontal para impactar el labio</li>
-<li>La empaquetadura, que se hace de cartulina, para formar el espesor del escape de aire</li>
-<li>El labio superior biselado, en el cual choca el flujo de aire, produciendo el sonido. No debe ser afilado, sino adecuadamente redondeado.</li>
-<li>Las cuatro paredes de la flauta. En este caso son de madera balsa bien sellada con al menos cuatro capas de barniz poliuretano.</li>
-<li>Las orejas, que son pequeñas paredes a los lados de las aperturas, y que dirigen y mejoran el sonido</li>
-<li>El tapón, que consta de un núcleo de silicona moldeado al tamaño exacto de la flauta, en sandwich entre dos maderas reflectantes del sonido, con un perno y tuerca para comprimir el núcleo y sellar la salida. </li>
-<li>Y falta aún colocar el adorno de tapón.</li>
-</ul>
-Para 34 flautas son 408 piezas construidas a medida.
-<p></p>
-    
-<h1>El fuelle</h1>
-<p>
-El fuelle consta de un reservorio central, que almacena un par de litros de aire comprimido, y dos fuelles que aspiran el aire exterior y lo empujan al reservorio.
-Tanto cuando sube o baja, se bombea aire. El fuelle tiene válvulas de cuero para impedir que el aire retorne.
-</p>
-<img src="20220221_093607bellows .jpg"
-     style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
-<p>
-Por debajo el fuelle tiene un resorte que provoca una presión constante de aire:
-<br>
-<img src="20230312 bellows spring 2.jpg"
-style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
-</p>
-<p>
-En la parte superior del fuelle hay una válvula de escape, que regula la presión de aire a unos 8 cm columna de agua. Cuando el fuelle sube mucho, el cordel tira la palanca de la válvula, y el exceso de aire escapa, manteniéndose así una presión casi constante.
-<br>
-<img src="20220312 relief valve piano wire springs.jpg"
-  style="width:auto;height:auto;max-width:90%;max-height:60%;"/>   
-</p>
-<p>
+    <div class="nav-bar">
+        <a onclick="pageUp()" id="pageUp">&#11013; &nbsp;Home</a>
+        <span id="header_time"></span>
+    </div>
 
-</p>
-<p>
-El fuelle está hecho con cuero de oveja reforzado internamente con cartulina. Este material es duradero y estanco.
-</p>
-<h1>La música</h1>
-<p>
-Actualmente hay alrededor de 160 melodías en el organillo. Los organillos antiguos tenían un máximo de 8 melodías de un minuto y medio de duración. Con el formato MIDI usado por este organillo, ya no tiene esas restricciones.
-</p>
-<p>Las melodías deben ser adaptadas específicamente para este organillo: deben ser usadas las notas y escalas específicas que este organillo toca, pero también muchas veces se agregan melodías de contrapunto, así como adornos en forma de escalas, trinos o respuestas. El estilo tradicional de melodías de organillo en general tiene melodía, adorno, contrapunto, respuestas, acordes y bajo, aprovechando las capacidades de las flautas.
-</p>
-<p>
-La música muchas veces se edita en formato de "rollo de piano". Cada fila es una nota. Los colores son los registros, y las líneas en blanco son las notas que no tienen flauta.
-<br>
-<img src="Screenshot 2023-12-22 at 15.14.04.png"
-  style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
-<br>
-</p>
+    <header>
+        <h1>How a crank organ works</h1>
+        <p>An inside look at the mechanics, electronics, and craftsmanship behind the crank organ.</p>
+    </header>
 
-<h1>La electrónica y el software</h1>
-<p>
-La electrónica y el software también se hicieron específicamente para este organillo.    
-</p>
-<p>
-La electrónica se basa en un pequeño microcontrolador de modelo ESP32-S3 con 8 Mb de memoria RAM y 8 a 16Mb de memoria flash. Las melodías se almacenan en la memoria flash y caben aproximadamente 700 melodías. También se podría agregar una tarjeta SD, pero sería más complicación que beneficio.
-</p>
-<p>
-Esta es la tarjeta del microcontrolador:
-<br>
-<image src="microcontroller-board.jpg" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
-</p>
-<p>
-Los puertos de salida del microcontrolador no tienen la capacidad suficiente para mover las válvulas solenoide. Por eso que en cada caja hay un controlador de 16 puertos con un amplificador de corriente. Los diseños electrónicos los dejé  <a href="https://github.com/bixb922/crank-organ">aquí</a>.
-<p>
-Esta es una tarjeta controladora:
-<br>
-<img src="controller-board.jpg" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
-</p>
-<p>
-El software fue hecho íntegramente para este organillo y tiene las siguientes funciones:
-</p>
-<ul>
-<li>Toca archivos formato MIDI las melodías en como instrucciones de cuándo abrir/cerrar las válvulas</li>
-<li>Tiene una interfaz de uso con un browser vía WiFi. El browser en el celular se conecta a un pequeño web server en el microcontrolador.</li>
-<li>Permite agregar descripción a las melodías como autor, año en que se compuso, género y otra información</li>
-<li>Permite definir una setlist, es decir, lista de melodías para tocar, o bien, seleccionar una a una la melodía que se tocará.</li>
-<li>Contiene un afinador, que permite en forma rápida revisar la afinación de las flautas y hacer pruebas de sonido de ellas.</li>
-<li>Optimiza el uso de batería y se apaga solo si no hay actividad. Lleva el estado de consumo de la batería</li>
-<li>Registra la historia de las melodías que se han tocado</li>
-<li>Maneja el botón capacitivo (tarea: buscar dónde estáese botón)</li>
-<li>Maneja 3 formas de conectarse vía WiFi con el celular, y si no hay WiFi, funciona en forma totalmente autónoma</li>
-<li>El sistema servidor, que está alojado en internet, permite a los espectadores escanear un QR con el código específico para la hora y lugar, ver las melodías, hacer pedidos y visualizar las melodías por tocar. Se sincroniza contínuamente con el microcontrolador del organillo.</li>
-<li>Tiene todas las funciones de configuración y parametrización, como por ejemplo cuáles son las notas que toca, en qué puerto está cada flauta, cuál es el nombre de servidor WiFi, etc.</li>
-</ul>
-<p>
-El software está hecho en MicroPython, que es una versión del lenguaje computacional Python especial para microcontroladores, y HTML5/JSON/CSS con Javascript modalidad REST API para la parte del browser. El software en el microcontrolador son alrededor de 6500 líneas de código Python, corren alrededor de 24 procesos y hay unas 12 páginas HTML.
-</p>
-<p>
-El software resultante lo dejé "open source" y está <a href="https://github.com/bixb922/crank-organ">aquí.</a>
-</p>
+    <div class="repo-card">
+        <img src="animacion_organillo.gif" alt="Crank organ mechanism animation" class="img-center" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
+        <p>The bellows produces a continuous flow of air at constant pressure, which reaches the bases of the pipes. Each pipe corresponds to a musical note. At the base of each pipe is an electromagnetic valve. When the valve opens, that note sounds.</p>
+        <p>The music is stored as files in a microcontroller, which controls the valves. These files are in MIDI format, meaning they contain instructions for the exact moment each valve must open and close to sound the corresponding note.</p>
+    </div>
 
-<h1>Historia</h1>
-<p>
-Se originaron en el siglo 18 y se conocen principalmente como instrumento musical callejero.
-</p>
-<p>
-Antes de la popularidad de la radio, los organillos, también llamados organitos, fueron una de las pocas maneras de escuchar música (excepto tocar música uno mismo). En Argentina, por ejemplo, los tangos pricipalmente se difundieron porque se tocaban en organito. </p>
-<p>
-Con la llegada de la radio prácticamente han desaparecido los organitos. La mayoría de los organillos en Chile fueron construidos a comienzos del siglo pasado en Alemania. Hoy casi no hay manufacturas de organillos, y su construcción se realiza principalmente en forma manual o artesanal.
-</p>
+    <h2>The Parts of the Crank Organ</h2>
+    <div class="repo-card">
+        <img src="IMG_20231124_172545.jpg" alt="Crank organ components overview" class="img-center" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
+        
+        <div class="doc-section">
+            <h4>First row, from left to right:</h4>
+            <ul>
+                <li><strong>Bass pipes:</strong> Three pipes are bent (mitred) because they are very long.</li>
+                <li><strong>Accompaniment pipes</strong></li>
+                <li><strong>Melody pipes</strong></li>
+            </ul>
+        </div>
+
+        <div class="doc-section">
+            <h4>Second row, from left to right:</h4>
+            <ul>
+                <li>The frame with the bellows and its connecting tube</li>
+                <li>The microcontroller, equipped with a battery and voltage converters</li>
+                <li>The chest for accompaniment and melody pipes</li>
+                <li>The chest for bass pipes</li>    
+            </ul>
+        </div>
+
+        <p>The crank organ has 47 pipes ranging from B-flat 2 to E-flat 7, covering 3 and a half octaves. Starting from C4, the scale is chromatic; below C4 are the bass notes, which for size reasons skip certain notes, making E-flat the organ’s preferred tonal center.</p>
+    </div>
+
+    <h2>The Pipes</h2>
+    <div class="repo-card">
+        <img src="20220608 test pipe 3.jpg" alt="Crank organ pipe detail" class="img-center" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
+        <p>This is a pipe, not yet finished. On the left, you can see the air inlet tube leading to the foot chamber. The chamber cap is held with an elastic band to allow adjustments, as is the bevelled lip, which can still be tuned. Sound is produced at the mouth (labium window) when the airflow strikes the bevelled lip. On the right, the stopper protrudes, which regulates the tuning of the pipe.</p>
+        
+        <img src="animacion_flujo_aire.gif" alt="Airflow animation" class="img-center"/>
+        <p style="font-size: 0.85em; text-align: center;">
+            Image source: <a href="https://orgue-bernard.blog4ever.com/anatomie-d-une-flute-et-conventions" target="_blank" rel="noopener">orgue-bernard.blog4ever.com</a>
+        </p>
+
+        <p>Air enters the pipe from the bottom into a small chamber with a flat slit-shaped opening approximately half a millimeter wide. An airflow is directed toward the pipe's languid, colliding head-on with the bevelled upper lip. The air then begins to oscillate at a frequency that depends on the length of the pipe. This oscillation generates the pipe's sound.</p>
+
+        <img src="labialpfeifen_b.jpg" alt="Stopped pipe diagram" class="img-center" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
+        <p style="font-size: 0.85em; text-align: center;">
+            Image source: <a href="https://www.bach.de/werk/labial.html" target="_blank" rel="noopener">bach.de</a>
+        </p>
+
+        <p>The pipes in this crank organ are of the "stopped" type (known as <em>gedackte Holzpfeifen</em> in organ builder jargon). There is a centuries-old history of perfecting this design, refining dimensions such as the ratio of height to width and scaling progressions, as these pipes are very common in organs. Most technical descriptions are available in German, French, and English.</p>
+
+        <div class="doc-section">
+            <h4>Each pipe consists of 15 custom-built pieces made to unique dimensions, plus a bolt, screw, and washers:</h4>
+            <ul>
+                <li><strong>Foot Pipe:</strong> A tube at the foot of the pipe to insert into its base and allow air entry. The diameter increases with the size of the pipe.</li>
+                <li><strong>The Core/Block:</strong> Forms the air chamber inside the pipe foot.</li>
+                <li><strong>Metal Inlet Tube:</strong> Allows air to enter the foot of the pipe.</li>
+                <li><strong>Front Cap:</strong> Air escapes between the core and front cap to strike the lip.</li>
+                <li><strong>Gasket:</strong> Made of paperboard to set the exact thickness of the air escape gap.</li>
+                <li><strong>Bevelled Upper Lip:</strong> The airflow strikes this lip to produce sound. It must not be razor-sharp, but properly rounded.</li>
+                <li><strong>Pipe Walls:</strong> The four side walls. In this case, they are made of balsa wood thoroughly sealed with at least four coats of polyurethane varnish.</li>
+                <li><strong>Ears:</strong> Small wooden side projections at the mouth opening that direct and improve the acoustic output.</li>
+                <li><strong>Stopper:</strong> Features a silicone core molded to the exact internal shape of the pipe, sandwiched between two sound-reflecting wooden blocks, held together by a bolt and nut to compress the silicone and seal the top opening.</li>
+                <li><strong>Decorative Top:</strong> Final ornamental top plug (yet to be attached).</li>
+            </ul>
+            <p>For 34 pipes, that totals 408 custom-crafted individual pieces!</p>
+        </div>
+    </div>
+
+    <h2>The Bellows</h2>
+    <div class="repo-card">
+        <p>The bellows system consists of a central reservoir storing a couple of liters of compressed air, and two feeder bellows that draw in outside air and push it into the reservoir. Air is pumped continuously on both the upstroke and downstroke. The bellows use leather flap valves to prevent air backflow.</p>
+
+        <img src="20220221_093607bellows .jpg" alt="Bellows unit" class="img-center" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
+
+        <p>Underneath, a heavy spring supplies constant air pressure:</p>
+        <img src="20230312 bellows spring 2.jpg" alt="Bellows spring mechanism" class="img-center" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
+
+        <p>At the top of the bellows is a relief/escape valve that regulates the air pressure to roughly 8 cm water column. When the bellows rise too high, a cord pulls the valve lever, allowing excess air to escape and maintaining near-constant pressure.</p>
+        <img src="20220312 relief valve piano wire springs.jpg" alt="Relief valve mechanism" class="img-center" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
+
+        <p>The bellows are crafted from sheepskin leather internally reinforced with cardstock—a combination that is both durable and airtight.</p>
+    </div>
+
+    <h2>The Music</h2>
+    <div class="repo-card">
+        <p>There are currently around 160 melodies stored in the organ. Traditional vintage organs held a maximum of 8 melodies, each lasting about a minute and a half. With the MIDI format used by this organ, those length and storage restrictions no longer apply.</p>
+        <p>Melodies must be adapted specifically for this organ: they must fit the exact scale and notes available. Additionally, counterpoint lines, scale runs, trills, and call-and-response figures are frequently added. Traditional crank organ arrangements typically combine melody, ornamentation, counterpoint, responses, chords, and bass lines to maximize the pipes' expressiveness.</p>
+        <p>Music is usually edited in a "piano roll" view. Each row represents a musical pitch, colors denote registers/sections, and blank rows indicate pitches that do not have a physical pipe on the instrument.</p>
+
+        <img src="Screenshot 2023-12-22 at 15.14.04.png" alt="MIDI piano roll arrangement layout" class="img-center" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
+    </div>
+
+    <h2>Electronics & Software</h2>
+    <div class="repo-card">
+        <p>The electronics and software were custom built from scratch for this instrument.</p>
+
+        <div class="tool-box">
+            <h4>Microcontroller Specs</h4>
+            <p>The system relies on an ESP32-S3 microcontroller with 8 MB of RAM and 8 to 16 MB of flash memory. Melodies are stored directly in flash memory, which holds up to approximately 700 songs. An SD card slot could be added, but built-in flash storage keeps the system reliable and simple.</p>
+        </div>
+
+        <p>Here is the main microcontroller board:</p>
+        <img src="microcontroller-board.jpg" alt="ESP32-S3 microcontroller board" class="img-center" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
+
+        <p>The output pins of the microcontroller cannot supply enough current to directly drive the solenoid valves. Therefore, each pipe chest includes a 16-channel driver board equipped with current amplifiers.</p>
+        
+        <div class="repo-links">
+            <a href="https://github.com/bixb922/crank-organ" target="_blank" rel="noopener">
+                <span class="emoji-icon">⚡</span> &nbsp;View Hardware Schematics on GitHub
+            </a>
+        </div>
+
+        <p>Here is one of the driver boards:</p>
+        <img src="controller-board.jpg" alt="16-channel driver board" class="img-center" style="width:auto;height:auto;max-width:90%;max-height:60%;"/>
+
+        <div class="doc-section">
+            <h4>Software Capabilities:</h4>
+            <ul>
+                <li>Plays MIDI files as timed triggers opening and closing pipe valves.</li>
+                <li>Features a web-based user interface accessible over Wi-Fi. A smartphone web browser connects directly to a micro web server running on the ESP32-S3.</li>
+                <li>Stores metadata for each song, including composer, year, genre, and custom notes.</li>
+                <li>Supports setlists for sequential playback or manual song selection.</li>
+                <li>Includes an integrated pipe tuner to quickly test single pipes and verify pitch alignment.</li>
+                <li>Manages battery consumption, auto-powers down during inactivity, and monitors real-time battery status.</li>
+                <li>Logs playback history for performed songs.</li>
+                <li>Processes input from a hidden capacitive touch button.</li>
+                <li>Supports 3 Wi-Fi connection modes with smartphones, and operates completely offline if no network is available.</li>
+                <li>Includes a cloud server component allowing spectators to scan location-specific QR codes, browse the song list, submit requests, and see upcoming tracks synced live with the organ.</li>
+                <li>Offers full configuration menus for note mapping, valve pin assignments, Wi-Fi SSID settings, and more.</li>
+            </ul>
+        </div>
+
+        <p>The firmware is written in <strong>MicroPython</strong> (a optimized Python 3 runtime for microcontrollers), combined with an HTML5/CSS/JSON and JavaScript REST API frontend. The microcontroller codebase consists of ~6,500 lines of Python across 24 concurrent processes, along with 12 web application pages.</p>
+
+        <div class="repo-links">
+            <a href="https://github.com/bixb922/crank-organ" target="_blank" rel="noopener">
+                <span class="emoji-icon">💻</span> &nbsp;View Open Source Code Repository
+            </a>
+        </div>
+    </div>
+
+    <h2>History</h2>
+    <div class="repo-card">
+        <p>Crank organs originated in the 18th century and became iconic worldwide as street performance instruments.</p>
+        <p>Before the advent of radio broadcasting, street organs were one of the few ways people could listen to recorded or automated music outdoors. In Argentina, for instance, early tangos gained widespread popularity primarily through street organ performances.</p>
+        <p>With the rise of radio and modern recording technology, traditional street organs nearly vanished. Most vintage organs found in Chile were imported from Germany during the early 20th century. Today, commercial organ production has virtually ceased, making modern organ building a craft practiced almost exclusively by hand by independent artisans.</p>
+    </div>
+
+    <footer>
+        <hr>
+    </footer>
+
+    <script>
+        function pageUp() {
+            window.location.href = "/index.html";
+        }
+    </script>
 </body>
-
-<script>
-function pageUp() {
-   window.location.href = "/index.html";
-}
-</script>
+</html>

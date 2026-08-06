@@ -5,15 +5,198 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bixb922 | Portfolio & Projects</title>
     <!-- Link to water.css (light theme) -->
-   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">-->
-    <link rel="stylesheet" href="style.css">
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
+    <style>
+        :root {
+            --bg-warm: #fdf8f2;
+            --card-bg: #fffdf9;
+            --card-border: #d4a373;
+            --tool-bg: #fbf0d9;
+            --accent-primary: #d94e34;
+            --accent-brass: #e67e22;
+            --accent-brass-hover: #d35400;
+            --btn-bg: #fff3e0;
+            --btn-hover: #ffe0b2;
+            --text-color: #2c3e50;
+            --heading-color: #8b3a2b;
+            --link-color: #c0392b;
+        }
+
+        body {
+            max-width: 820px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background-color: var(--bg-warm) !important;
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 28px 20px;
+            background: linear-gradient(135deg, #fff2e1 0%, #ffe5d9 100%);
+            border: 2px solid #f4a261;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(217, 78, 52, 0.08);
+        }
+
+        header h1 {
+            color: var(--heading-color);
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 1.05em;
+        }
+
+        h2 {
+            color: var(--heading-color);
+            border-bottom: 2px solid #f4a261;
+            padding-bottom: 6px;
+            margin-top: 30px;
+        }
+
+        .repo-card {
+            border: 2px solid var(--card-border);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 28px;
+            background: var(--card-bg) !important;
+            box-shadow: 0 6px 16px rgba(184, 115, 51, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .repo-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(184, 115, 51, 0.18);
+            border-color: var(--accent-brass);
+        }
+
+        .repo-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: var(--heading-color);
+            font-size: 1.4em;
+        }
+
+        .white-bg-icon {
+            background-color: #ffffff !important;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 6px 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        img.white-bg-icon {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            box-sizing: border-box;
+        }
+
+        .emoji-icon {
+            font-size: 28px;
+        }
+
+        .repo-links {
+            margin-top: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .repo-links a {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background-color: var(--btn-bg) !important;
+            color: var(--link-color) !important;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 600;
+            border: 1px solid #f4a261;
+            transition: all 0.15s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .repo-links a:hover {
+            background-color: var(--btn-hover) !important;
+            color: var(--accent-brass-hover) !important;
+            border-color: var(--accent-brass);
+            transform: translateY(-1px);
+        }
+
+        .doc-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed #e9c46a;
+        }
+
+        .doc-section h4 {
+            color: var(--heading-color);
+            margin-top: 10px;
+            margin-bottom: 12px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        a {
+            color: var(--link-color);
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--accent-brass-hover);
+        }
+
+        .tool-box {
+            background: var(--tool-bg) !important;
+            border-left: 5px solid var(--accent-brass);
+            padding: 14px 18px;
+            border-radius: 4px 10px 10px 4px;
+            margin-top: 16px;
+            border-top: 1px solid #e9c46a;
+            border-right: 1px solid #e9c46a;
+            border-bottom: 1px solid #e9c46a;
+        }
+
+        .tool-box h4 {
+            color: var(--heading-color);
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+
+        footer hr {
+            border: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #f4a261, transparent);
+            margin-top: 40px;
+        }
+    </style>
 </head>
 <body>
 
     <header>
-        <h1><span class="white-bg-icon emoji-icon">🎪</span> Welcome to My GitHub Pages <span class="white-bg-icon emoji-icon">🎶</span></h1>
-        <p>Hi there! I'm bixb922. Below is a collection of my mechanical music, microcontroller and Python projects.</p>
+        <h1>🎪 Welcome to My GitHub Pages 🎶</h1>
+        <p>Hi there! I'm <strong>bixb922</strong>. Below is a collection of my microcontroller, Python, and mechanical music projects.</p>
     </header>
 
     <main>
@@ -25,7 +208,7 @@
                 <img src="barrelorgan.png" alt="Crank Organ Icon" class="white-bg-icon" />
                 crank-organ
             </h3>
-            <p>Complete hardware and software solution for a MIDI-based mechanical crank organ using a microcontroller. Includes open source software and electronics plans (schematics)    .</p>
+            <p>Complete hardware and software solution for a MIDI-based mechanical crank organ using an ESP32-S3 microcontroller. Includes open source software and electronics plans.</p>
             
             <div class="repo-links">
                 <a href="https://github.com/bixb922/crank-organ" target="_blank">🔗 View Repository</a>
@@ -33,13 +216,10 @@
             </div>
 
             <div class="doc-section">
-                <h4>List of documents</h4>
+                <h4>Documents in the crank organ repository</h4>
                 <ul>
-                    <li><a href="how_does_it_work/how_en.html" target="_blank">📄 This is how a crank organ works (with animated diagram)</a></li>
-                    <li><a href="how_does_it_work/how_sp.html" target="_blank">📄 Así como funciona un organillo u organito (con animación, en español)</a></li>
                     <li><a href="https://github.com/bixb922/crank-organ/blob/main/doc-hardware/README.md" target="_blank">📄 The crank organ electronics (schematics and instructions to build)</a></li>
                     <li><a href="https://github.com/bixb922/crank-organ/blob/main/doc-software/README.md" target="_blank">📄 The crank organ software</a></li>
-                    <li><a href="static/index.html" target="_blank">📄 Online demo of the crank organ software</a></li>
                     <li><a href="https://github.com/bixb922/crank-organ/blob/main/building/README.md" target="_blank">📄 How to build a crank organ yourself</a></li>
                     <li><a href="https://github.com/bixb922/crank-organ/blob/main/doc-hardware/battery.md" target="_blank">📄 Options for batteries</a></li>
                     <li><a href="https://github.com/bixb922/crank-organ/blob/main/doc-hardware/crank-sensor.md" target="_blank">📄 The crank sensor, a journey</a></li>
