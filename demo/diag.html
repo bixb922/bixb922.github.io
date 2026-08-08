@@ -13,9 +13,9 @@
 <br>
 <b>Reset</b> will reboot the microcontroller. <b>Deep sleep</b> will enter power saving mode.
 </div>
-<script type="text/javascript" src="/static/demoserver.js"></script>
-	<script type="text/javascript" src="/static/common.js"></script>
-<script type="text/javascript" src="/static/translations.js"></script>
+<script type="text/javascript" src="/demo/demoserver.js"></script>
+	<script type="text/javascript" src="/demo/common.js"></script>
+<script type="text/javascript" src="/demo/translations.js"></script>
 
 <span id="description_span">   
 <table>
@@ -198,7 +198,7 @@ async function reset() {
     await fetch_json( "/reset") ;
 	await sleep_ms(6000);
 	// Refresh this page when the microcontroller comes back
-	window.location.href = "/static/diag.html";
+	window.location.href = "/demo/diag.html";
 }
 
 function* generateNumbers(N, step) {

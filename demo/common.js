@@ -523,7 +523,7 @@ class PageHeader{
 		}
 		else{
 			// Came from another page (not the parent) navigate to this page
-			window.location.href = "/static/" + this.pageupAction + ".html" ;
+			window.location.href = "/demo/" + this.pageupAction + ".html" ;
 		}
 	}
 	async #updateConnectedProcess( ){

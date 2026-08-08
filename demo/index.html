@@ -20,9 +20,9 @@ For detailed description see my Github repository <a href="https://www.github.co
 </div>
 <div style="clear:both" height=1></div>
 
-<script type="text/javascript" src="/static/demoserver.js"></script>
-	<script type="text/javascript" src="/static/common.js"></script>
-<script type="text/javascript" src="/static/translations.js"></script>
+<script type="text/javascript" src="/demo/demoserver.js"></script>
+	<script type="text/javascript" src="/demo/common.js"></script>
+<script type="text/javascript" src="/demo/translations.js"></script>
 
 <table>
 	<tbody>
@@ -37,7 +37,7 @@ For detailed description see my Github repository <a href="https://www.github.co
 				</button>
 			</td>
 			<td>
-				<img src="static/crank.jpg" width=100>
+				<img src="/demo/crank.jpg" width=100>
                 <span id="serverinfo" style="display:none"><br>
                     <a href="" id="serverlink">Server link</a>
                 </span>
@@ -217,7 +217,7 @@ async function getPageData(){
    
 
 function navigate( newpage ){
-    window.location.href = "/static/" + newpage + ".html" ;
+    window.location.href = "/demo/" + newpage + ".html" ;
 }
 
 async function getBatteryInfo( ) {

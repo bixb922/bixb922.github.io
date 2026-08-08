@@ -1,12 +1,13 @@
 import sys
-
+print(">>>START BUTTON DOES NOT START,")
+print(">>>CLEAR SESSION STORAGE AT SOME POINT")
 
 REPLACEMENTS = [ 
     # In HTML files, include demoserver.js before common.js 
     # define new fetch_json()
         ['<script type="text/javascript" src="/static/common.js"></script>',
-         '<script type="text/javascript" src="/static/demoserver.js"></script>\n'
-         '\t<script type="text/javascript" src="/static/common.js"></script>'
+         '<script type="text/javascript" src="/demo/demoserver.js"></script>\n'
+         '\t<script type="text/javascript" src="/demo/common.js"></script>'
         ],
     # fetch_json in common.js is overridden by demoserver.js
         ['async function fetch_json(', 'async function fetch_json_REPLACED('],
@@ -15,6 +16,9 @@ REPLACEMENTS = [
         ['onclick="showLog()"', "onclick=\"alert('Show error log not implemented in demo')\""],
         ['onclick="reset()"', "onclick=\"alert('Reset not implemented in demo')\""],
         ['onclick="deepSleep()"', "onclick=\"alert('Deep sleep not implemented in demo')\""],
+        ['"/static/', '"/demo/'],
+        ["'/static/", "'/demo/"],
+        ["`/static/", "`/demo/"]
         ]
 
 def add_html_prefix( filename, line ):

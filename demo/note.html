@@ -6,7 +6,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="/static/skeleton.css">
+	<link rel="stylesheet" type="text/css" href="/demo/skeleton.css">
 </head>
 <body>
 <div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">If you have a microphone installed on the microcontroller: Press <b>Afinar</b> to record the tuning and volume of a note. 
@@ -15,15 +15,15 @@ If you don't have a microphone installed: you can make this individual pipe soun
 </div><!--<span id="popup" class="popuptext"></span>
 <div class="headerdiv">
 	<span class="headerleft">
-        <a onclick="pageUp('/static/notelist')">&#11013;</a>
+        <a onclick="pageUp('/demo/notelist')">&#11013;</a>
     </span>
 	<span class="headerright" id="header_time"></span>
 </div>
 -->
 
-<script type="text/javascript" src="/static/demoserver.js"></script>
-	<script type="text/javascript" src="/static/common.js"></script>
-<script type="text/javascript" src="/static/translations.js"></script>
+<script type="text/javascript" src="/demo/demoserver.js"></script>
+	<script type="text/javascript" src="/demo/common.js"></script>
+<script type="text/javascript" src="/demo/translations.js"></script>
 
 <button type="button" onclick="startTuning()" id="startTuningButton">Afinar</button>
 <button type="button" onclick="soundNote()" id="soundNoteButton">Sonar nota</button>
@@ -310,7 +310,7 @@ async function nextNote(){
 		note_number = 0;
 	}
 	// >>> needs testing
-	window.location.href = "/static/note.html?id=" + note_number ;
+	window.location.href = "/demo/note.html?id=" + note_number ;
 }
 translate_html();
 getNoteInfo() ;

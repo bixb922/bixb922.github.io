@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="/static/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="/demo/skeleton.css">
 </head>
 
 <body>
@@ -28,9 +28,9 @@ In this demo, navigating to folders, upload, download and delete is disabled.
     </div>
     -->
 
-    <script type="text/javascript" src="/static/demoserver.js"></script>
-	<script type="text/javascript" src="/static/common.js"></script>
-    <script type="text/javascript" src="/static/translations.js"></script>
+    <script type="text/javascript" src="/demo/demoserver.js"></script>
+	<script type="text/javascript" src="/demo/common.js"></script>
+    <script type="text/javascript" src="/demo/translations.js"></script>
 
     <div>
         <input type="file" id="folderDialogButton" style="display:none;" webkitdirectory directory onchange="processFolderDialog()">
@@ -568,7 +568,7 @@ In this demo, navigating to folders, upload, download and delete is disabled.
     function pageUp() {
         if (CURRENT_PATH == "/" || CURRENT_PATH == "") {
             // if at root, go back to index page
-            window.location.href = "/static/index.html";
+            window.location.href = "/demo/index.html";
         }
         else {
             // Should go one up in current path...

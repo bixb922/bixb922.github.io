@@ -6,9 +6,9 @@ import flask
 app = flask.Flask(__name__)
 
 
-@app.route("/static/<filename>")
+@app.route("/demo/<filename>")
 def iot_serve_static_file( filename ):
-    return flask.send_from_directory( "../static/", filename )
+    return flask.send_from_directory( "../demo/", filename )
 
 
 if __name__ == '__main__':

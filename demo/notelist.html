@@ -17,9 +17,9 @@ Normally all or most notes should be in the green range, or near the green range
 <br>
 Click on the note name to navigate to the individual tuning page.
 </div>
-<script type="text/javascript" src="/static/demoserver.js"></script>
-	<script type="text/javascript" src="/static/common.js"></script>
-<script type="text/javascript" src="/static/translations.js"></script>
+<script type="text/javascript" src="/demo/demoserver.js"></script>
+	<script type="text/javascript" src="/demo/common.js"></script>
+<script type="text/javascript" src="/demo/translations.js"></script>
 
 <button type="button" onclick="tuneAll()" id="tuneAllButton">Afinar todos</button>
 <button type="button" onclick="scaleTest()" id="scaleTestButton">Escala de prueba</button>
@@ -116,7 +116,7 @@ async function updateNoteList( notelist ) {
 		// Column 5: pin name
 		let link = document.createElement("a");
 		// >>> needs testing
-		link.href = `/static/note.html?id=${midi}`;
+		link.href = `/demo/note.html?id=${midi}`;
 		link.innerText = note["name"];
 		row.cells[0].appendChild( link ) ;
 		let centsBar = document.createElement("canvas", {is:"needle-bar"});
