@@ -59,7 +59,7 @@ function initSessionState() {
 // --- Route Handlers ---
 
 async function demo_config_json(){
-    return {"webserver_cache": true, "tempo_follows_crank": false, "max_age": 300, "lower_threshold_rpsec": 0.3, "max_polyphony": 9, "normal_rpsec": 1.2, "battery_heartbeat_period": 0, "access_point2": "MyCellPhoneAP", "password2": "@encrypted_c31596f0e61ef247e50f835155724a49e45d966576b19f94f6c7ace48ed6cb27", "serverpassword": "@encrypted_c9bdc0a0954076ece1e109cd8e27475ada5087c90341db003631c573c43fd57d", "access_point1": "MyHomeRouter", "password1": "@encrypted_03283b3a750803d2b2056f6ea8cab3a5258e26543e3c8c3172f2a76fe782bfe5", "higher_threshold_rpsec": 0.7, "servernode": "", "mic_signal_low": -18, "mic_store_signal": false, "pulses_per_revolution": 12, "battery_heartbeat_duration": 0, "mic_test_mode": true, "password_required": true, "idle_deepsleep_minutes": 15, "description": "Das Orgelinchen", "ap_max_idle": 120, "rotary_tempo_mult": 1, "touchpad_big_change": 20000, "automatic_delay": 0, "ap_ip": "192.168.144.1", "name": "orgelinchen", "ap_password": "@encrypted_6016ce1e03a9101d959bc4ff148638772bfbf6c4ec809c033b08cb78f9c2139e"}
+    return {"webserver_cache": true, "tempo_follows_crank": false, "max_age": 300, "lower_threshold_rpsec": 0.3, "max_polyphony": 9, "normal_rpsec": 1.2, "battery_heartbeat_period": 0, "access_point2": "MyCellPhoneAP", "password2": "password2", "serverpassword": "serverpassword", "access_point1": "MyHomeRouter", "password1": "password1", "higher_threshold_rpsec": 0.7, "servernode": "", "mic_signal_low": -18, "mic_store_signal": false, "pulses_per_revolution": 12, "battery_heartbeat_duration": 0, "mic_test_mode": false, "password_required": true, "idle_deepsleep_minutes": 15, "description": "Das Orgelinchen", "ap_max_idle": 120, "rotary_tempo_mult": 1, "touchpad_big_change": 20000, "automatic_delay": 0, "ap_ip": "192.168.144.1", "name": "orgelinchen", "ap_password": "ap_password", "crank_interval":100, "stopped_rpsec":0.1, "filter_window_msec":1000, "tuning_cents": 10, "tuning_frequency":440, "i2c_frequency_khz":100, "auto_purge_history":0,"rc_max_moving":10, "rc_moving_time":80, "rc_min_pulse":1000, "rc_max_pulse":2000, }
 }
 async function demo_history_json(){
     return [["ieITIdKC1", 780358216, 100, false], ["iT7STPh0R", 780366969, 100, false], ["iT7STPh0R", 780375187, 10, false], ["iSjAUw0-i", 780507100, 100, false], ["iT7STPh0R", 780515082, 9, false], ["iT7STPh0R", 807200411, 100, false], ["i9oQcMFpz", 807218118, 9, false]]
@@ -671,6 +671,8 @@ function matchRoute(routePattern, targetPath) {
  * @param {Object} [payload] - Optional JSON body/data
  */
 async function fetch_json(uri, payload = {}) {
+    // Make sure session state was initialized before simulation fetch_json()
+    // Even if this is not the first page visited.
     initSessionState();
     console.log(">>>>fetch json for", uri);
     await sleep_ms(300);
