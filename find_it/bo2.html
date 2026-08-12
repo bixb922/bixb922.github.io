@@ -6,6 +6,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Busca organillo</title>
+    <link rel="stylesheet" href="/style.css">
+<!--
     <style>
         :root {
             --bg-color: #0d1117;
@@ -172,13 +174,14 @@
             }
         }
     </style>
+-->
 </head>
 <body>
 
     <div class="container">
         <main>
             <div class="action-area">
-            <p>Conéctese a su organillo mediante Bluetooth para obtener su dirección en la red.</p>
+            <h3>Conéctese a su organillo mediante Bluetooth para obtener su dirección en la red.</h3>
                 <button class="scan-btn" onclick="scan()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg>
                     Busca organillo
@@ -199,7 +202,7 @@
 
             <div class="log-section">
                 <div class="log-title">Registro de Diagnóstico</div>
-                <div id="result" class="logtext">El organillo debe estar energizado.<br></div>
+                <div id="result" class="log-text">El organillo debe estar energizado.<br></div>
             </div>
 
             <div class="privacy-notice">

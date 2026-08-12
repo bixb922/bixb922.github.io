@@ -4,4 +4,6 @@ Press the <b>Tune list</b> (Lista de melodías, Melodieliste) and select some tu
 <br>
 Bear in mind that you can also play music on the crank organ software without any cell phone nor using these pages: Just tap the touch button, and/or turn the crank, and the music will play. No further technology needed.
 <br>
+This page does not store any information on the internet nor does it send any information to a server.
+<br>
 For detailed description see my Github repository <a href="https://www.github.com/bixb922/crank-organ">here</a>.

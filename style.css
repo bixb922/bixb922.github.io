@@ -195,3 +195,103 @@ footer hr {
     background: linear-gradient(to right, transparent, var(--american_gold), transparent);
     margin-top: 40px;
 }
+
+
+
+        .status-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-card h2 {
+            font-size: 1.1rem;
+            color: var(--text-heading);
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .status-group {
+            margin-bottom: 1rem;
+        }
+
+        .status-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .status-group span {
+            color: var(--text-main);
+        }
+
+        .status-group a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.25rem;
+        }
+
+        .status-group a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        .log-section {
+            background-color: white;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+       .scan-btn {
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.8rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .scan-btn:hover {
+            background-color: var(--btn-hover);
+        }
+
+        .scan-btn:active {
+            transform: scale(0.98);
+        }
+
+        .privacy-notice {
+            background-color: var(--notice-bg);
+            border: 1px solid var(--notice-border);
+            color: var(--text-muted);
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .log-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .log-text {
+            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            word-break: break-word;
+        }
