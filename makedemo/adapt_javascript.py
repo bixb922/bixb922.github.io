@@ -1,7 +1,4 @@
 import sys
-print(">>>START BUTTON DOES NOT START,")
-print(">>>CLEAR SESSION STORAGE AT SOME POINT")
-
 
 REPLACEMENTS = [ 
     # In HTML files, include demoserver.js before common.js 
