@@ -2,6 +2,7 @@ import sys
 print(">>>START BUTTON DOES NOT START,")
 print(">>>CLEAR SESSION STORAGE AT SOME POINT")
 
+
 REPLACEMENTS = [ 
     # In HTML files, include demoserver.js before common.js 
     # define new fetch_json()
@@ -21,6 +22,14 @@ REPLACEMENTS = [
         ["`/static/", "`/demo/"]
         ]
 
+NOSAFARI = """
+<script>
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+if( isSafari ){
+        document.body.innerHTML = "<h1>Safari not supported, demo will not work!</h1>";
+}
+</script>
+"""
 def add_html_prefix( filename, line ):
     out = line
     if "<body" in line:
@@ -34,6 +43,7 @@ def add_html_prefix( filename, line ):
             print(f"File {fn} not found")
             pass
     return out
+
 
 def main():
     infilename = sys.argv[1]
@@ -56,6 +66,9 @@ def main():
                     out = add_html_prefix( basefilename, out )
                 for a,b in REPLACEMENTS:
                     out = out.replace(a,b)
+                if "</body>" in out:
+                    out = NOSAFARI + out
+                    k += 1
                 outfile.write( out )
                 n += 1
                 if out != line:

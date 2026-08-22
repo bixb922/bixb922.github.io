@@ -376,10 +376,12 @@ async function demo_get_progress() {
         progress.tune = setlist[0];
     }
 
-    setState("CURRENT_PROGRESS", progress);
-    progress.boot_session = "BOOT_SESSION";
-    progress.tunelib_signature = "TUNELIB_SIGNATURE";
+    // Must be constant, if not javascript will try to reload pages
+    progress.boot_session = "bbbbb";
+    progress.tunelib_signature = "ttttt";
+    // Always enabled
     progress.playback_enabled = true;   
+    setState("CURRENT_PROGRESS", progress);
     return progress;
 }
 
@@ -542,8 +544,7 @@ async function demo_set_time_zone(){
     return await demo_get_progress();
 }
 
-// --- URI to Function Mapping ---
-
+// -Map URI to local functions
 const routes = [
     ["data/tunelib.json", demo_tunelib_json],
     ["data/config.json", demo_config_json],

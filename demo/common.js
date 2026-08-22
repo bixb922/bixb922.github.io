@@ -200,7 +200,7 @@ class NeedleBar extends HTMLCanvasElement {
         if( value >= 0){
             ctx.fillRect( center, 0,  v-center, this.barHeight);
         }
-        else {
+		else {
             ctx.fillRect( v, 0, center-v, this.barHeight);
         }
         ctx.stroke();

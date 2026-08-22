@@ -87,6 +87,13 @@ If you don't have a microphone installed: you can make this individual pipe soun
     </div>
   
 </div>
+
+<script>
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+if( isSafari ){
+        document.body.innerHTML = "<h1>Safari not supported, demo will not work!</h1>";
+}
+</script>
 </body>
 
 <script>
