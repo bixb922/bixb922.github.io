@@ -1,66 +1,217 @@
 <!DOCTYPE html>
 <!-- Copyright (c) 2025 Hermann von Borries
- MIT License-->
-<html>
+     MIT License -->
+<html lang="es">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Busca organillo</title>
+    <link rel="stylesheet" href="/style.css">
+<!--
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --card-border: #30363d;
+            --text-main: #c9d1d9;
+            --text-heading: #f0f6fc;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --btn-bg: #238636;
+            --btn-hover: #2ea043;
+            --btn-text: #ffffff;
+            --notice-bg: rgba(88, 166, 255, 0.1);
+            --notice-border: rgba(88, 166, 255, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            color: var(--text-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .action-area {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .scan-btn {
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.8rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .scan-btn:hover {
+            background-color: var(--btn-hover);
+        }
+
+        .scan-btn:active {
+            transform: scale(0.98);
+        }
+
+        .status-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-card h2 {
+            font-size: 1.1rem;
+            color: var(--text-heading);
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .status-group {
+            margin-bottom: 1rem;
+        }
+
+        .status-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .status-group span {
+            color: var(--text-main);
+        }
+
+        .status-group a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.25rem;
+        }
+
+        .status-group a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        .log-section {
+            background-color: #010409;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .log-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .logtext {
+            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            word-break: break-word;
+        }
+
+        .privacy-notice {
+            background-color: var(--notice-bg);
+            border: 1px solid var(--notice-border);
+            color: var(--text-muted);
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        @media (min-width: 600px) {
+            body {
+                padding: 3rem 2rem;
+            }
+        }
+    </style>
+-->
 </head>
 <body>
-<style>
-html {
-  font-size: 62.5%; }
-body {
-  font-size: 1.4em; /* 1.4em currently ems cause chrome bug misinterpreting rems on body element */
-  line-height: 1.4;
-  font-weight: 400;
-  font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #222; }
-table {
-  border-collapse: collapse; /* Merges borders into a single line */
-  width: 100%;
-}
-    
-.logtext{
-    font-size:90%;
-    color: #606060;
-}
 
-hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
-    margin: 1em 0;
-    padding: 0;
-}
+    <div class="container">
+        <main>
+            <div class="action-area">
+            <h3>Conéctese a su organillo mediante Bluetooth para obtener su dirección en la red.</h3>
+                <button class="scan-btn" onclick="scan()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg>
+                    Busca organillo
+                </button>
+            </div>
 
-th, td {
-  border: 1px solid black; /* Adds borders to all cells */
-  padding: 8px; /* Adds space between content and border */
-  text-align: left;
-}
-</style>
-<button onclick="scan()">Busca organillo</button>
-<p>
-<span id="sta_texto"></span><a id="sta_link"></a>
-</p>
-<p>
-<span id="ap_texto"></span><a id="ap_link"></a>
-</p>
-<hr>
-<p>
-<span id="result" class="logtext">El organillo debe estar energizado.<br></span>
-</p>
-<p></p>
+            <div class="status-card">
+                <h2>Estado de Conexión</h2>
+                <div class="status-group">
+                    <span id="sta_texto"></span>
+                    <a id="sta_link"></a>
+                </div>
+                <div class="status-group">
+                    <span id="ap_texto"></span>
+                    <a id="ap_link"></a>
+                </div>
+            </div>
 
-<!--
-<center id="qrcode"></center>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
--->
+            <div class="log-section">
+                <div class="log-title">Registro de Diagnóstico</div>
+                <div id="result" class="log-text">El organillo debe estar energizado.<br></div>
+            </div>
+
+            <div class="privacy-notice">
+                🔒 Esta página no registra ninguna información en internet ni se conecta a ningún servidor.
+            </div>
+        </main>
+    </div>
+
 <script>
-
 let MCS_UUID = 0x1848 ; //Media Control Service
 // Some private characteristics
 _CHARACTERISTIC_UUIDS = [
@@ -204,16 +355,6 @@ async function getBtInfo(){
     }
     return btinfo;
 }
-    
-//new QRCode("qrcode", "WIFI:S:esp32s3;T:WPA;P:password;H:false;;");
-//    Generate a Wi-Fi QR Code: You can use a client-side JavaScript QR code 
-//    library (like qrcode.js) to generate a specialized Wi-Fi configuration 
-//    string: 
-//    WIFI:S:<SSID>;T:<WPA|WEP|blank>;P:<PASSWORD>;H:<true|false|blank>;;. 
-//    When users scan this with their phone cameras, their operating system handles the connection securely
-// H:true for hidden network.
-// P: only accepts correct password.
-    
 </script>
-Esta página no registra ninguna información en internet ni se conecta a ningún servidor.
 </body>
+</html>
