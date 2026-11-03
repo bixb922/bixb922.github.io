@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 
 REPLACEMENTS = [ 
     # In HTML files, include demoserver.js before common.js 
@@ -41,35 +42,57 @@ def add_html_prefix( filename, line ):
             pass
     return out
 
+def process_demoserver(infilename, outfilename):
+    assert "../demo/" in outfilename
+        # Just copy demoserver
+    with open(infilename) as infile:
+        today = datetime.today().strftime('%Y/%m/%d')
+        with open(outfilename, "w") as outfile:
+            text = infile.read()
+            text = text.replace('compile_date: "2000/01/01"',f'compile_date: "{today}"')
+            outfile.write(text)
+    print(f"{infilename} copied to {outfilename} with compile date={today}")
+    sys.exit()
+
+
 
 def main():
     infilename = sys.argv[1]
     outfilename = sys.argv[2]
-    
     basefilename = infilename.split("/")[-1]
+    
     if "crank-organ" in outfilename:
         print("error!!!")
         sys.exit()
+    print(f">>>{basefilename=}")
+    if infilename.endswith("demoserver.js"):
+        process_demoserver(infilename, outfilename)
+        sys.exit()
+
     n = 0
     k = 0
     with open( infilename, "r" ) as infile:
-        with open( outfilename, "w") as outfile:
-            while True:
-                line = infile.readline( )
-                if not line:
-                    break
-                out = line
-                if infilename.endswith("html"):
-                    out = add_html_prefix( basefilename, out )
-                for a,b in REPLACEMENTS:
-                    out = out.replace(a,b)
-                if "</body>" in out:
-                    out = NOSAFARI + out
-                    k += 1
-                outfile.write( out )
-                n += 1
-                if out != line:
-                    k += 1
+        lines = infile.read().split("\n")
+        for i,line in enumerate(lines):
+            out = line
+            if infilename.endswith("html"):
+                out = add_html_prefix( basefilename, out )
+            for a,b in REPLACEMENTS:
+                out = out.replace(a,b)
+            if "</body>" in out:
+                out = NOSAFARI + out
+            if '  compile_date: "' in line and "demoserver.js" in infilename:
+                print("demoserver.js:", line)
+                today = datetime.today().strftime('%Y/%m/%d')
+                out = f'        compile_date:"{today}",'
+            n += 1
+            if out != line:
+                k += 1
+                lines[i] = out
+    with open( outfilename, "w") as outfile:
+        for line in lines:
+            outfile.write(line+"\n")
+            
     print(basefilename, "processed to", outfilename, ", ", n, "lines,", k, "changes")
 
 main()

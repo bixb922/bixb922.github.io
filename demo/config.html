@@ -9,8 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="skeleton.css">
 </head>
 
-<body>
-<div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">This page allows configuration of most options.
+<body><div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">This page allows configuration of most options.
 <br>
 After installing you will need to configure one or two WiFi access points for the microcontroller to connect, typically your home WiFi router (to use at home) and an access point on your cell phone or tablet (to use on the road).
 <br>
@@ -19,7 +18,8 @@ The rest of the configuration parameters is explained in the form. Change what y
 In this demo, changes will not be saved.
 <br>
 Configuration is best done on a PC or Mac. You can use the browser to translate to your language.
-<br></div>	<div class="middlediv">Enter password</div>
+<br></div>
+	<div class="middlediv">Enter password</div>
 	When pressing the save button, you may be asked for the password of the microcontroller. 
 
 	Configuration changes only take place after a microcontroller reset.
@@ -50,7 +50,7 @@ Configuration is best done on a PC or Mac. You can use the browser to translate 
 
 
 	<div class="middlediv">Network name and description</div>
-	<label for="name">Network name, WiFi Access Point name and Bluetooth name of this device (up to 15 characters A-Z, a-z, 0-9,
+	<label for="name">Network name, WiFi Access Point name and Bluetooth name of this device. The name must be unique in the WLAN network. Up to 15 characters A-Z, a-z, 0-9,
 		start with a letter):</label>
 	<input id="name" name="name" type="text" size="15" maxlength="15" oninput="markField('name')" />
 	<br>
@@ -96,14 +96,6 @@ Configuration is best done on a PC or Mac. You can use the browser to translate 
 		the oldest note is turned off to protect batteries. Does not apply to RC servos. Integer only:</label>
 	<input id="max_polyphony" name="max_polyphony" type="text" size="4" oninput="markField('max_polyphony')" />
 	<br>
-	<input id="ap_fallback_only" type="checkbox"/>
-	<label for="ap_fallback_only">If checked, the AP mode is activated only
-		for fallback, i.e. when none of the two station SSID responds.
-		There is an battery energy savings of about 0.1W if checked. 
-		If not checked, then the AP mode is activated even when the microcontroller
-		is connected to
-		one of the two station SSIDs.
-	</label>
 
 	<label>USB battery pack heartbeat period (leave 0 if battery is not a USB battery pack), in milliseconds:</label>
 	<input id="battery_heartbeat_period" name="battery_heartbeat_period" type="text" size="4"
@@ -131,7 +123,7 @@ Configuration is best done on a PC or Mac. You can use the browser to translate 
 		varies with the crank speed. This is the setting at startup. Can be changed temporarily on the performance page.</label>
 	<br>
 	<label for="pulses_per_revolution">Pulses per revolution of crank revolution sensor. It's the
-		number of pulses the crank sensor gives for each revolution multiplied by 4 for a encoder or by 2 for a counter. Get the value with the test crank button of the pinout page. Integer only:</label>
+		number of pulses the crank sensor gives for each revolution multiplied by 4 for a encoder (2 pins) or by 2 for a counter (1 pin). Get the value with the test crank button of the pinout page. Integer only:</label>
 	<input id="pulses_per_revolution" type="text" size="4" oninput="markField('pulses_per_revolution')">
 	<br>
 	<label for="crank_interval">Sampling interval for crank speed measurement, in milliseconds:</label>
@@ -314,9 +306,8 @@ Configuration is best done on a PC or Mac. You can use the browser to translate 
 // (c) Copyright 2025 Hermann Paul von Borries. All rights reserved.
 // MIT License
 
-//>>>[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) <input id=​"ap_password" name=​"ap_password" type=​"password" size=​"15" oninput=​"validateNewPasswords()​" style=​"background-color:​ rgb(255, 255, 255)​;​">​
+// >>>[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) <input id=​"ap_password" name=​"ap_password" type=​"password" size=​"15" oninput=​"validateNewPasswords()​" style=​"background-color:​ rgb(255, 255, 255)​;​">​
 
-// PageHeader.setTitle(headerTitle, upAction)
 let pageHeader = new PageHeader().setTitle( "Configuration", "index" );
 // Used by mark fields
 let CHANGED_FIELDS = [];

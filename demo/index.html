@@ -9,8 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="skeleton.css">
 	<link rel="icon" type="image/png" href="favicon.png?a=1"/>	
 </head>
-<body>
-<div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">The crank organ microcontroller has a small web server inside. You select tunes and configure the crank organ software with a browser on a PC or cell phone over WiFi to the microcontroller. 
+<body><div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">The crank organ microcontroller has a small web server inside. You select tunes and configure the crank organ software with a browser on a PC or cell phone over WiFi to the microcontroller. 
 <br>
 Press the <b>Tune list</b> (Lista de melodías, Melodieliste) and select some tunes.
 <br>
@@ -20,6 +19,7 @@ This page does not store any information on the internet nor does it send any in
 <br>
 For detailed description see my Github repository <a href="https://www.github.com/bixb922/crank-organ">here</a>.
 </div>
+
 <div style="clear:both" height=1></div>
 
 <script type="text/javascript" src="/demo/demoserver.js"></script>
@@ -98,7 +98,7 @@ For detailed description see my Github repository <a href="https://www.github.co
                     Configuración pins/MIDI
 				</button>
 			</td>
-			<td id="pinout_description">
+			<td>
 			</td>
 		</tr>
 		<tr>
@@ -187,23 +187,19 @@ All rights reserved.
 // (c) Copyright 2025 Hermann Paul von Borries. All rights reserved.
 // MIT License
 
-// PageHeader.setTitle(headerTitle, upAction)
-let pageHeader = new PageHeader().setTitle( tlt("Índice"), false ) ;
+let pageHeader = new PageHeader().setTitle( tlt("Índice"), null ) ; // No "back" arrow on index page.
 
 async function getPageData(){
     resp = await fetch_json( "/get_index_page_info" ) ;
-    textById( "pinout_description", resp.pinout_description ) ;
-    if( resp["servernode"] ){
+	let server = resp["servernode"]
+    if( server ){
         document.getElementById("serverinfo").style.display = "" ;
-		let server = resp["servernode"];
-		if( server != "" ){
-			if( !server.startsWith("http")){
-				if( server.endsWith(".com")){
-					server = "https://" + server;
-				}
-				else{
-					server = "http://" + server;
-				}
+		if( !server.startsWith("http")){
+			if( server.endsWith(".com")){
+				server = "https://" + server;
+			}
+			else{
+				server = "http://" + server;
 			}
 		}
         document.getElementById("serverlink").href = server;
@@ -226,7 +222,8 @@ async function getBatteryInfo( ) {
     // This is the detailed battery info in the body
     // of the page, the battery info in the header
     // gets updated in common.js class GetProgress/PageHeader.
-	while( true ) {
+	for(;;){
+		await wait_until_visible();
 		updateBatteryInfo( await fetch_json( "/battery" ) ) ;
 		await sleep_ms( 15000 ) ;
 	}
@@ -311,3 +308,4 @@ if( isSafari ){
 </script>
 </body>
 </html>
+

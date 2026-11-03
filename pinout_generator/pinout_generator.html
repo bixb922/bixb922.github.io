@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<!-- Copyright (c) 2023-2025 Hermann von Borries
+ MIT License-->
+ <html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="skeleton.css">
+<style>
+    input[type="number"],
+    input[type="checkbox"],
+    input[type="text"]{
+        border-color:black;
+    }
+    input[type="number"]{
+        width:5em;
+    }
+    textarea{
+        border-color:black
+    }
+</style>
+</head>
+<body>
+<div class="headerdiv">Pinout file generator</div>
+This web page aids to generate a pinout file template for the crank organ software that reflects your hardware structure.
+    
+Provide the information, then copy the resulting pinout with the "Copy to clipboard" button below and save in a file on your PC using a text editor like Notepad (Windows) or TextEdit (Mac). Then upload the resulting file to the microcontroller. Select the file in the Pinout and MIDI Configuration page, and fill out the rest of the information, i.e. mainly the MIDI notes.
+    
+<div class="middlediv">Pinout file generator</div>
+Short description (1 or 2 words): <input type="text" size=20 id="shortDescription" value="my pinout"/>
+<br>
+Long description (1 line): <input type="text" size=40 id="longDescription"/>
+<br>
+Number of electromagnetic valves or devices (e.g. solenoid valves): <input type="number"id="solenoid_count">
+<br>
+Number of RC servo controlled valves or devices: <input type="number"  id="rcservo_count">
+<p></p>
+Common devices
+<br>
+<input type="checkbox" id="touchpad">Will a touchpad type start button be connected?
+<br>
+<input type="checkbox" id="startButton">Will a conventional type start button be connected?
+<br>
+<input type="checkbox" id="microphone">Will microphone be connected?
+<br>
+<input type="checkbox" id="crankSensor">Will a crank rotation sensor be connected?
+<br>
+<input type="checkbox" id="tempo">Will a rotary digital potentionmeter to change tempo be connected?
+<p></p>
+How many I2C buses should be allocated (if needed)?
+<br>
+<input type="radio" name="i2c" value="one" id="i2cOne" checked>Only one I2C bus for both MCP23017 and PCA9685 devices
+<br>
+<input type="radio" name="i2c" id="i2cTwo" value="two">One I2C bus for MCP23017 and one I2C bus for PCA9685
+<br>
+<input type="radio" name="i2c" id="i2cMany" value="many">Each MCP23017 and each PC9685 will have it's own I2C bus
+<br>
+<p></p>
+
+MIDI over serial output #1: Passthrough mode
+<br>
+<input type="checkbox" id="uart1passthrough" />All note on/note off messages not used elsewhere in the pinout file, all other channel messages and Sysex messages are sent to this MIDI output.
+<p></p>
+MIDI over serial output #2: Solenoid driver boards addressable by MIDI channel.
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Number of boards: <input type="number" id="uart2boards"/>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Number of notes per board (typically 16, 32 or 64): <input type="number" id="uart2notes"/>
+<br>
+<div class="middlediv"></div>
+<h2 id="outputHeader">Output</h2>
+<h1 id="error"></h1>
+<span id="log"></span>
+<br>
+Pinout definition: <button onclick="navigator.clipboard.writeText(document.getElementById('pinoutJson').value);">Copy to clipboard</button> then save to filename <span id="outputFilename"></span> and upload to microcontroller.
+<br>
+<textarea id="pinoutJson">
+</textarea>
+    
+<script>
+//Reserved GPIO pins	0,19,20,22-37,43-46	23
+//Available GPIO pins	1-18,21,38-42,47,48	26
+//Available GPIO ADC1 pins	1-10	10
+//Available GPIO Touchpad pins	1,2,5-14	12
+//Available GPIO input pins	1,2,5-18,21,38-42,47,48	24
+
+const ESP32_S3_RESERVED_PINS = new Set([0, 23, 44, 45, 46, 24, 25, 26, 27, 28, 29, 34, 35, 36, 37, 30, 31, 32, 33, 19, 20, 43, 22]);
+const ESP32_S3_AVAILABLE_GPIO_PINS = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 21, 38, 39, 40, 41, 42, 47, 48]);
+const ESP32_S3_NOT_FOR_INPUT = new Set([3,4]);
+const ESP32_S3_ADC1_PINS = new Set([1, 2, 5, 6, 7, 8, 9, 10]);
+const ESP32_S3_TOUCHPAD_PINS = new Set([1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+    
+    
+let usedPins = new Set();
+
+for( const ele of document.getElementsByTagName("input")){
+    ele.addEventListener("input", inputChanged );
+}
+function showElement(id){
+    document.getElementById(id).style.display="";
+}
+function hideElement(id){
+    document.getElementById(id).style.display="none";
+}
+
+function log(s){
+    const d = document.getElementById("log");
+    if(s == undefined){
+        d.innerHTML = "";
+        return;
+    }
+    d.innerHTML += s + "<br>";
+}
+function _getNewPin(test){
+    for( let pin=0; pin<=48; pin++){
+        if(!usedPins.has(pin) && test(pin)){
+            usedPins.add(pin);
+            return pin;
+        }
+    }
+    throw Error("Out of ESP32-S3 pins");
+}
+function getTouchpadPin(){
+    return _getNewPin((pin)=>ESP32_S3_TOUCHPAD_PINS.has(pin));
+}
+function getADC1pin(){
+    return _getNewPin((pin)=>ESP32_S3_ADC1_PINS.has(pin) );
+}
+function getInputPin(){
+    return _getNewPin((pin)=>ESP32_S3_AVAILABLE_GPIO_PINS.has(pin) && !ESP32_S3_NOT_FOR_INPUT.has(pin));
+}
+function getOutputPin(){
+    return _getNewPin((pin)=>ESP32_S3_AVAILABLE_GPIO_PINS.has(pin));
+    
+}
+function isChecked(id){
+    return document.getElementById(id).checked ;
+}
+function radioValue(name){
+    // can also be done with 
+    // return document.querySelector( `input[name="${name}"]:checked`)?.value;
+
+    for( let ele of document.getElementsByName(name)){
+        if( ele.checked ){
+            return ele.value;
+        }
+    }
+}
+    
+function getNumeric(id){
+    const it = document.getElementById(id).value;
+    if( it == "" ){
+        return 0;
+    }
+    return parseInt(it);
+}
+    
+let rows = 0;
+let cols = 0;
+let outputJson = "";
+function addJson(s){
+    if( s.length >= cols ){
+        cols = s.length + 1;
+    }
+    rows += 1;
+    if( s == "["){
+        // Start of json output
+        outputJson = "[\n";
+        rows = 1;
+        cols = 10;
+        return;
+    }
+    if( s == "]"){
+        // end of json output
+        outputJson+= "\n]";
+        const ta =  document.getElementById("pinoutJson");
+        ta.value = outputJson;
+        ta.style.height = `${rows*25}px`;
+        ta.style.width = `${cols}em`;
+        return;
+    }
+    if( outputJson != "[\n"){
+        outputJson += ",\n";
+    }
+    outputJson +=  s;
+
+}
+
+function emitSoleMIDIgpio( gpioSoleCount ){
+    if( gpioSoleCount > 0 ){
+        addJson(`["gpio"]`);
+        for( let i=0; i<gpioSoleCount; i++){
+            addJson(`  ["midi", ${getOutputPin()}, "", "", ""]`);
+        }
+    }
+}
+function emitSoleMIDImcp( mcpCount, i2cCount ){
+    if( mcpCount > 0 ){
+        let mcpAddr = 32;
+        for( let mcp=0; mcp < mcpCount; mcp++){
+            if(i2cCount>0){
+                 addJson(`["i2c",${getInputPin()},${getInputPin()}]`);
+                 mcpAddr = 32;
+                 i2cCount--;
+            };
+            addJson(`  ["mcp23017", ${mcpAddr}]`);
+            for( let pin=0; pin<16; pin++){
+                addJson(`    ["midi", ${pin}, "", "", ""]`);
+            }
+            mcpAddr++;
+        }
+    }
+}
+function emitServoMIDIgpio(gpioServoCount){
+    if( gpioServoCount > 0 ){
+        addJson('["gpioservo", 20000]');
+        for( i=0;i<gpioServoCount;i++){
+            addJson('  ["servopulse", 1500, 1700]')
+            addJson(`  ["midi", ${getOutputPin()}, "", "", ""]`)
+        }
+    }
+}
+function emitServoMIDIpca( pcaCount, i2cCount ){
+    if( pcaCount > 0 ){
+        let pcaAddr = 64;
+        for( let pca=0; pca<pcaCount; pca++){
+            if(i2cCount>0){
+                 addJson(`["i2c",${getInputPin()},${getInputPin()}]`);
+                 pcaAddr = 64;
+                 i2cCount--;
+            };
+            addJson(`  ["pca9685", ${pcaAddr}, 20000]`);
+            for( let pin=0; pin<16; pin++){
+                addJson('    ["servopulse", 1500, 1700]');
+                addJson(`    ["midi", ${pin}, "", "", ""]`);
+            }
+            pcaAddr++;
+        }
+    }
+}
+function computeI2Cbuses( mcpCount, pcaCount ){
+    const i2cType = radioValue("i2c");
+
+    if( i2cType == "one"){
+        return [mcpCount+pcaCount?1:0,0];
+    }
+    else if( i2cType == "two"){
+        return [mcpCount?1:0,pcaCount?1:0];
+    }
+    else if(i2cType == "many"){
+        return [mcpCount, pcaCount];
+    }
+    return null;
+}
+    
+function computePins(solenoidCount, rcServoCount){
+    
+    let gpioSoleCount = 0;
+    let mcpCount = 0;
+    let mcpI2CCount = 0;
+    let gpioServoCount = 0;
+    let pcaCount = 0;
+    let pcaI2CCount = 0;
+    let bestDevices = 9999;
+    availablePins = (ESP32_S3_AVAILABLE_GPIO_PINS.difference(usedPins)).size;
+    // Optimize minimizing number of MCP23017 and PCA9685
+    for( let sole=0; sole<=availablePins; sole++ ){
+        for( let rc=0;rc<=8;rc++ ){
+            let mc = Math.max(Math.floor((solenoidCount-sole+15)/16),0);
+            let pc = Math.max(Math.floor((rcServoCount-rc+15)/16),0);
+            const [mi,pi] = computeI2Cbuses( mc, pc );
+            
+            if( sole+rc+mi*2+pi*2 > availablePins ){
+                continue;
+            }
+            if( mc+pc<bestDevices && (sole+mc*16)>=solenoidCount && (rc+pc*16)>=rcServoCount ){
+                // Store better configuration
+                gpioSoleCount = Math.max(solenoidCount-mc*16,0);
+                mcpCount = mc;
+                mcpI2CCount = mi;
+                gpioServoCount = Math.max(rcServoCount-pc*16,0);
+                pcaCount = pc;
+                pcaI2CCount = pi;
+                bestDevices = mcpCount+pcaCount;
+                // console.log("intermediate devices=", bestDevices, "gpioSoleCount", gpioSoleCount, "mcpCount", mcpCount, "gpioServoCount", gpioServoCount, "pcaCount", pcaCount, "pcaI2CCount", pcaI2CCount);
+            }
+        }
+    }
+    // console.log("best devices=", bestDevices, "gpioSoleCount", gpioSoleCount, "mcpCount", mcpCount, "gpioServoCount", gpioServoCount, "pcaCount", pcaCount, "pcaI2CCount", pcaI2CCount);
+    if( bestDevices == 9999){
+        throw Error("Could not find optimal pin distribution.")
+    }
+    return  [gpioSoleCount, mcpCount, mcpI2CCount, gpioServoCount, pcaCount, pcaI2CCount]
+}
+    
+function orderSet(s){
+    let x = [...s];
+    x.sort((a,b)=>(a-b));
+    return x
+} 
+    
+function fillOutputFilename(solenoidCount, rcServoCount, uart2notes){
+        
+    let shortDescription = document.getElementById("shortDescription").value;
+    shortDescription = shortDescription.replace(" ", "_").replace("/","_");
+    document.getElementById("outputFilename").innerText = `${solenoidCount+rcServoCount+uart2notes}_notes_${shortDescription}.json`;
+    
+}
+function limitInputValue( id, minValue, maxValue ){
+    const limited = Math.min(Math.max(Math.floor(getNumeric(id)),0),maxValue);
+    const ele = document.getElementById(id);
+    if( ele.value != limited){
+        ele.value = limited;
+        log(`Input value of ${id} has been restricted to ${limited} (must be integer from ${minValue} to ${maxValue})`)
+    }
+    return limited;
+}
+function processChange(){
+    log(); // erase log
+    usedPins = new Set();
+    addJson("[");
+    const longDescription = document.getElementById("longDescription").value;
+    addJson(`["description", "${longDescription}"]`);
+    addJson( '["neopixel", 48]');
+    usedPins.add(48);
+    
+    let solenoidCount = limitInputValue( "solenoid_count", 0, 1000);
+    let rcServoCount = limitInputValue( "rcservo_count", 0, 1000);
+
+    if( isChecked("touchpad") ){
+        addJson(`["touchpad", ${getTouchpadPin()},1]`);
+    }
+    if( isChecked("startButton") ){
+        addJson(`["touchpad", ${getInputPin()},2]`);
+    }
+    if( isChecked("microphone")){
+        addJson(`["microphone, ${getInputPin()}]`);
+    }
+    if( isChecked("crankSensor")){
+        addJson(`["tachometer", ${getInputPin()}, ${getInputPin()}]`);
+    }
+    if( isChecked("tempo")){
+        addJson(`["tempo", ${getInputPin()}, ${getInputPin()}, ${getInputPin()}]`);
+    }
+    
+    const [gpioSoleCount, mcpCount, mcpI2CCount, gpioServoCount, pcaCount, pcaI2CCount] = computePins(solenoidCount, rcServoCount);
+    // i2cOption "one i2C" "one per mcp and one per pca" one per device"
+    emitSoleMIDIgpio( gpioSoleCount );
+    emitServoMIDIgpio( gpioServoCount );
+    emitSoleMIDImcp( mcpCount, mcpI2CCount );
+    emitServoMIDIpca( pcaCount, pcaI2CCount );
+    
+    
+
+    // 
+    // Allocate MIDI serial outputs 
+    // just in case use "input" safe pins for MIDI output
+    if( isChecked("uart1passthrough")){
+        // uart, pin, channel, rxpin, passthrough
+        addJson(`["serial", 1, ${getInputPin()}, 0,  ${getInputPin()}, true]`);
+        midiJsonGenerated = true;
+    }
+
+    const uart2boards = limitInputValue( "uart2boards", 0, 16);
+    const uart2notes = limitInputValue( "uart2notes", 0, 1000);
+    if( uart2boards > 0 && uart2notes > 0 ){
+        const txpin = getInputPin();
+        const rxpin = getInputPin()
+        for( let channel=0; channel<uart2boards;channel++){
+            addJson(`["serial", 2, ${txpin}, ${channel},  ${rxpin}, false]`);
+            for( let note=0; note<uart2notes; note++){
+                addJson(`  ["midi", ${note} "", "", ""]`);
+            }
+        }
+    }
+    
+    fillOutputFilename(solenoidCount, rcServoCount, uart2boards*uart2notes);
+    
+    addJson("]");
+    
+    log(`Used ESP32-S3 pins: ${usedPins.size}`);
+    log(`ESP32-S3 pins used for solenoid output ${gpioSoleCount}`);
+    log(`ESP32-S3 pins used for RC Servo output ${gpioServoCount}`);
+    if( mcpI2CCount == 1 && pcaI2CCount == 0){
+        log(`I2C buses for MCP23017 and PCA9685: 1`)
+    }
+    else{
+        log(`I2C buses for MCP23017: ${mcpI2CCount}`);
+        log(`I2C buses for PCA9685: ${pcaI2CCount}`)
+    }
+    log(`MCP23017: ${mcpCount}`);
+    log(`PCA9685: ${pcaCount}`);
+    log(`Requested solenoid outputs ${solenoidCount} allocated ${gpioSoleCount+mcpCount*16}`);
+    log(`Requested RC servo outputs ${rcServoCount} allocated ${gpioServoCount+pcaCount*16}`);
+    
+    if( isChecked("uart1passthrough") ){
+        log("MIDI over serial passthrough enabled on UART1");
+    }
+    if( uart2boards > 0 && uart2notes > 0){
+       log(`MIDI over serial enabled for ${uart2boards} boards of up to ${uart2notes} outputs each on UART2`);
+   }
+    const availableOutputPins = (ESP32_S3_AVAILABLE_GPIO_PINS.difference(usedPins));
+    log(`Available ESP32-S3 output pins: ${availableOutputPins.size} [${orderSet(availableOutputPins)}]`);
+    const availableInputPins = (ESP32_S3_AVAILABLE_GPIO_PINS.difference(usedPins).difference(ESP32_S3_NOT_FOR_INPUT));
+    log(`Available ESP32-S3 input pins: ${availableInputPins.size} [${orderSet(availableInputPins)}]`);
+}
+async function sleep_ms( t ){
+	await new Promise(r => setTimeout(r, t));
+}
+async function inputChanged(){
+    const oh = document.getElementById("outputHeader");
+    const originalHeader = oh.innerText;
+    oh.innerText = "(Wait, generating output...)";
+    await sleep_ms(50);
+    try{
+        processChange();
+    }
+    catch(e){
+        document.getElementById("error").innerHTML = "Aborted, output incomplete: "+ e + "<br>";
+        log("Error:\n" + e.stack);
+    }
+    finally{
+         oh.innerText = originalHeader;
+    }
+}
+inputChanged();
+</script>
+</body>
+

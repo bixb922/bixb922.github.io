@@ -9,8 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="skeleton.css">
 </head>
 
-<body>
-<div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">Tap on tune titles to queue for playing.
+<body><div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">Tap on tune titles to queue for playing.
 <br>
 Tap on the table header to change the order. Click on <b>Date</b> (Fecha, Datum) to view recent additions or click on <b>Hist</b> to view the tunes played frequently or seldom.
 <br>
@@ -20,6 +19,7 @@ Press the <b>Start</b> (Partir) button to start the first tune (marked ⏳(1) �
 <br>
 Press <b>Performance</b> (Actuación, Setlist) to manage the setlist and to see lyrics.
 </div>
+
 <script type="text/javascript" src="/demo/demoserver.js"></script>
 	<script type="text/javascript" src="/demo/common.js"></script>
 <script type="text/javascript" src="/demo/translations.js"></script>
@@ -54,7 +54,6 @@ if( isSafari ){
 
 document.getElementById("searchInput").placeholder = tlt("🔍Búsqueda");
 
-// PageHeader.setTitle(headerTitle, upAction)
 let pageHeader = new PageHeader().setTitle( tlt("Lista de melodías"), "index" );
 
 // keep sorted list in global page context
@@ -62,6 +61,7 @@ let pageHeader = new PageHeader().setTitle( tlt("Lista de melodías"), "index" )
 let HEADERMAP = [ TLCOL_TITLE, TLCOL_GENRE, TLCOL_AUTHOR, TLCOL_TIME, TLCOL_YEAR, TLCOL_HISTORY, TLCOL_INFO, TLCOL_DATEADDED, TLCOL_RATING ];
 let HEADER = map_tlcol_names( HEADERMAP );
 HEADER[3] = "mm:ss"; // time column is in mm:ss format
+let HEADERCOL_VISIBLE = Array(HEADERMAP.length).fill(true);
 
 // Current order
 let sortColumn = 0 ;
@@ -87,18 +87,18 @@ async function updateTunelibWithHistory( tunelib ){
 }
 
 // Keep track of which rows are visible
-function tunelistVisibilityChanges( entries ){
-    // Page has scrolled, update TitleTunes that entered/exited viewport.
-    for( let entry of entries ){
-        // Add/remove class according to visibility in viewport
-        if( entry.isIntersecting ){
-            entry.target.classList.add("tunelist-visible");
-        }
-        else{
-            entry.target.classList.remove("tunelist-visible");
-        }
-    }
-}
+// function tunelistVisibilityChanges( entries ){
+//     // Page has scrolled, update TitleTunes that entered/exited viewport.
+//     for( let entry of entries ){
+//         // Add/remove class according to visibility in viewport
+//         if( entry.isIntersecting ){
+//             entry.target.classList.add("tunelist-visible");
+//         }
+//         else{
+//             entry.target.classList.remove("tunelist-visible");
+//         }
+//     }
+// }
 
 // Called when loading page
 async function pageRefreshProcess( ) {
@@ -134,6 +134,7 @@ function fillHeader( ){
         th.textContent = arrow + HEADER[col];
         th.style.cursor = "pointer";
         th.onclick = function() { changeOrder(col) };
+        th.style.display = HEADERCOL_VISIBLE[col]?"":"none";
         headerRow.appendChild( th );
     }
 }
@@ -141,7 +142,7 @@ let fastSearch = [];
 
 async function fillBody( ) {
     let s = "";
-    let tlbody = document.getElementById( "tunelistbody")
+    let tlbody = document.getElementById( "tunelistbody");
     tlbody.innerHTML = ""; 
     let tunelib = await tunelibCache.get(); // common.js
     await updateTunelibWithHistory( tunelib ); 
@@ -151,7 +152,7 @@ async function fillBody( ) {
         let row = insertRow( tlbody, ["",tune[TLCOL_GENRE],
                 tune[TLCOL_AUTHOR], formatMilliMMSS( tune[TLCOL_TIME] ),
                 tune[TLCOL_YEAR], tune[TLCOL_HISTORY],
-                "", tune[TLCOL_DATEADDED], formatRating(tune)] );
+                "", ymd(tune[TLCOL_DATEADDED]), formatRating(tune)] );
 
         let tuneTitle = document.createElement( "span", {"is":"tune-title"});
         // full format is "hptm%ds"
@@ -177,10 +178,23 @@ async function fillBody( ) {
             formatMilliMMSS( tune[TLCOL_TIME] ) + "\t" +
             tune[TLCOL_YEAR] + "\t" +
             tune[TLCOL_INFO] + "\t" +
-            tune[TLCOL_DATEADDED] + "\t" +
+            ymd(tune[TLCOL_DATEADDED]) + "\t" +
             tune[TLCOL_RATING] ;
         fastSearch.push( normalizaTildes(s) );
 	}
+    // Hide blank columns
+    let hiddenCount = 0;
+    let hideableCols = [TLCOL_GENRE, TLCOL_AUTHOR, TLCOL_YEAR, TLCOL_INFO, TLCOL_RATING];
+    for( let tlcol of hideableCols){
+        if( columnIsBlank(tunelib, tlcol)){
+            let col = HEADERMAP.indexOf( tlcol );
+            hiddenCount += 1;
+            HEADERCOL_VISIBLE[col] = false;
+            for( let row of tlbody.rows ){
+                row.cells[col].style.display = "none";
+            }
+        }
+    }
 }
 
 function navigateToPlayPage() {
@@ -192,14 +206,8 @@ function updateProgress( progress ) {
     let tunelib = progress["tunelib"];
 
     let startButton = document.getElementById("startButton");
-    if( progress["setlist"].length > 0 && 
-        progress["status"] == "waiting"
-    ){
-        startButton.classList.remove("inactive");
-    }
-    else {
-        startButton.classList.add("inactive");
-    }
+    startButton.disabled = !( progress["setlist"].length > 0 && 
+        progress["status"] == "waiting");
     TuneTitle.updateProgress( progress );
 
 }
@@ -298,6 +306,14 @@ function filterTable() {
         let rowText = fastSearch[ parseInt(row.id.substring(1)) ]; // id of row is "r0", "r1", etc.
         row.style.display = rowText.includes(filter) ? "" : "none";
     }
+}
+function columnIsBlank( tunelib, tlcol ){
+    for( const [tuneid, tune] of Object.entries(tunelib)){
+        if( tune[tlcol] != ""){
+            return false;
+        }
+    }
+    return true;
 }
 
 translate_html();

@@ -141,6 +141,8 @@ let translationDict = {
 	["days", "Tage"],
 "editar tunelib": // index.html 
 	["Edit tunelib", "Tunelib bearbeiten"],
+"el setlist está vacío.": // play.html
+	["The setlist is empty.", "Die Setlist ist leer."],
 "en espera": // play.html
 	["waiting","wartet"],
 "errores)": // diag.html 
@@ -225,6 +227,8 @@ let translationDict = {
 	["Show lyrics", "Liedtext anzeigen"],
 "mostrar setlist": // play.html 
 	["Show setlist", "Setlist anzeigen"],
+"✅=mostrar en blanco 🔲=mostrar todos.":
+	["✅=Show blank 🔲=Show all","✅=Leer anzeigen 🔲=Alle anzeigen"],
 "nivel de batería registrado": // index.html 
 	["Battery level registered", "Registiert!"],
 "nivel debe estar entre 0 y 100": // index.html 
@@ -239,6 +243,8 @@ let translationDict = {
 	["No tune in progress", "Es läuft keine Melodie"],
 "no probados": // notelist.html
 	["untested", "nicht getestet"],
+"no se puede realizar esta acción mientras está tocando música": // common.js
+	["Cannot be done while music is playing", "Kann nicht ausgeführt werden, während Musik spielt"],
 "nombre archivo": // tunelibedit.html
 	["Filename", "Dateiname"],
 "nuevos": // common.js
@@ -277,6 +283,8 @@ let translationDict = {
 	["Registers", "Register"],
 "test repetición": // note.html
 	["Repetition test", "Wiederholungstest"],
+"recargue página cuando deje de tocar música:": // common.js
+	["Reload page after music player stops:","Seite neu laden nachdem Musikwiedergabe aufgehört hat:"],
 "repetición progresiva": // note.html 
 	["Progressive repetition", "Wiederholungstest, steigende Rate"],
 "repetición fija": // note.html
@@ -323,8 +331,8 @@ let translationDict = {
 	["Time playing", "Zeit Musikwiedergabe"],
 "título": // tunelist.html play.html 
 	["Title", "Titel"],
-"tocar música deshabilitado por afinador, pinout. debe reiniciar para reestablecer.": // tunelist.html play.html 
-	["Playback disabled by tuner or pinout test. Reboot to reset.", "Stimmgerät oder Pinout test aktiv, keine Musikwiedergabe. Reboot zum zurücksetzen."],
+"tocar música deshabilitado por por funciones de configuración. debe reiniciar para reestablecer.": // tunelist.html play.html 
+	["Playback disabled by configuration functions. Reboot to reset.", "Keine Musikwiedergabe wegen Benutzung von Konfigurationsfunktionen. Reboot zum zurücksetzen."],
 "usar frecuencia media": // notelist.html
 	[ "Use average frequency", "Frequenzmittelwert verwenden"],
 "ver log": // diag.html 
@@ -367,5 +375,6 @@ let translationDict = {
 let language = navigator.language.substring(0,2) ;
 let languageIndex = languageDict[language] ;
 console.info("language=", language, "languageIndex=", languageIndex);
+
 
 

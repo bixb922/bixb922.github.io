@@ -8,18 +8,10 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="/demo/skeleton.css">
 </head>
-<body>
-<div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">If you have a microphone installed on the microcontroller: Press <b>Afinar</b> to record the tuning and volume of a note. 
+<body><div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">If you have a microphone installed on the microcontroller: Press <b>Afinar</b> to record the tuning and volume of a note. 
 <br>
 If you don't have a microphone installed: you can make this individual pipe sound with the <b>Note test</b> button, either with long notes or with a repetition test that increases tempo.
-</div><!--<span id="popup" class="popuptext"></span>
-<div class="headerdiv">
-	<span class="headerleft">
-        <a onclick="pageUp('/demo/notelist')">&#11013;</a>
-    </span>
-	<span class="headerright" id="header_time"></span>
 </div>
--->
 
 <script type="text/javascript" src="/demo/demoserver.js"></script>
 	<script type="text/javascript" src="/demo/common.js"></script>
@@ -100,12 +92,12 @@ if( isSafari ){
 // (c) Copyright 2025 Hermann Paul von Borries. All rights reserved.
 // MIT License
 
-// PageHeader.setTitle(headerTitle, upAction)
 let pageHeader = new PageHeader().setTitle( tlt("Afinar nota"), "notelist" );
 
 // Refresh note info every second
 async function getNoteInfo() {
-	while( true ) {
+	for(;;){
+		await wait_until_visible();
 		await updateNoteInfo( await fetch_json( "/get_organtuner_json" ) ) ;
 		await sleep_ms( 5_000 );
 	}
@@ -316,7 +308,6 @@ async function nextNote(){
 	if( note_number >= notelist.length ){
 		note_number = 0;
 	}
-	// >>> needs testing
 	window.location.href = "/demo/note.html?id=" + note_number ;
 }
 translate_html();

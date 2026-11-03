@@ -8,11 +8,11 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="skeleton.css">
 </head>
-<body>
-<div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">This page shows some internal information about the microcontroller. In this demo, most information is static and buttons do nothing.
+<body><div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">This page shows some internal information about the microcontroller. In this demo, most information is static and buttons do nothing.
 <br>
 <b>Reset</b> will reboot the microcontroller. <b>Deep sleep</b> will enter power saving mode.
 </div>
+
 <script type="text/javascript" src="/demo/demoserver.js"></script>
 	<script type="text/javascript" src="/demo/common.js"></script>
 <script type="text/javascript" src="/demo/translations.js"></script>
@@ -150,7 +150,6 @@ if( isSafari ){
 // (c) Copyright 2025 Hermann Paul von Borries. All rights reserved.
 // MIT License
 
-// PageHeader.setTitle(headerTitle, upAction)
 let pageHeader = new PageHeader().setTitle( "Sistema", "index" );
 
 async function getWifiStatus() {
@@ -184,7 +183,6 @@ async function getDiagInfo( ) {
 	htmlById("solenoid_devices", diag["solenoid_devices"]);
     getWifiStatus() ;
 	showHideElement( "crankGraphButton", diag["crank_installed"]);
-	console.log("mcserver=", diag["mcserver"]);
 	showHideElement( "mcserver_row",  diag["mcserver"] );
 		// value was alredy set by setAllText
 

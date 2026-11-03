@@ -75,6 +75,27 @@ function format_secHHMM( seconds ) {
 	return `${hours}:${minutes}`;
 }
 
+function ymdhms( esp32_timestamp ){
+	if( typeof esp32_timestamp === 'string' || esp32_timestamp instanceof String ){
+		// This is already formatted!
+		return esp32_timestamp;
+	}
+	const date = new Date( (esp32_timestamp+946_684_800)*1_000 );
+	const formatted = `${date.getFullYear()}-${format02i(date.getMonth()+1)}-${format02i(date.getDate())} ${format02i(date.getHours())}:${format02i(date.getMinutes())}:${format02i(date.getSeconds())}`;
+	if( formatted.startsWith("1999")){
+		return "2000-01-01 00:00:00";
+	}
+	return formatted;
+}
+
+function ymdhm( esp32_timestamp ){
+	return ymdhms(esp32_timestamp).substring(0,16);
+}
+
+function ymd( esp32_timestamp ){
+	return ymdhms(esp32_timestamp).substring(0,10);
+}
+
 
 function getResourceFromURL(){
 	let page_url = new URL(window.location.href) ;
@@ -265,16 +286,12 @@ async function fetch_json_REPLACED( url, post_data ){
     let t ;
     let response ;
     let json_result ;
-	let post_arg = make_fetch_args( post_data ) ;
-	// One connect yields 0.75 but one failure still does not lower connects_ok so drastically
-	fetch_json.isConnected = ()=>{ 
-		// timeout value should be 2-3 times commonGetProgress.setSleep()
-		if( (Date.now() - fetch_json.last_ok) > 15_000 ){
-			return false; // should be some activity at least...
-		}
-		/// or if there are on average a fraction of good fetch_jsons.
-		return fetch_json.connects_ok > 0.7; }
-	while( true ) {
+
+	for(;;) {
+		let post_arg = make_fetch_args( post_data ) ;
+		// >>> Timeout seems to speed up recovery from communication errors
+		// Use a new AbortSignal for each fetch (don't reuse!)
+		// >>> post_arg.signal = AbortSignal.timeout(15_000);
 		try {
             t0 = Date.now() ;  // Reports response time
 			fetch_json.last_ok = t0;
@@ -291,7 +308,8 @@ async function fetch_json_REPLACED( url, post_data ){
 			// keep running average of connects, goes faster up than down
 		    fetch_json.connects_ok = (3*fetch_json.connects_ok + 0)/4; 
 			msg = tlt("no conectado") ;
-			popupmsg = (msg + " " + err).replace("TypeError", "Network error" ) ;
+			// Be prepared in case Timeout is added.
+			popupmsg = (msg + " " + err).replace("TypeError", "Network error" ).replace("TimeoutError", "Network error (timeout)") ;
 			showPopup( "", popupmsg );
 			await sleep_ms( 5_000 ) ;
 		}
@@ -310,11 +328,39 @@ async function fetch_json_REPLACED( url, post_data ){
 			}
 			// Fall through and generate 401 message if cancel was pressed.
 		}
-        response_html = await response.text() ; 
+		else if( rstatus == 403 ){
+			// Player is active, show alert and abort
+			json_result = await response.json();
+			// Disable inputs and buttons ... everything that can be disabled
+			// This is better than replacing document.body since scripts will not fail abjectly.
+			for( const ele of document.getElementsByTagName("button")){
+				ele.disabled = true;
+			};
+			for( const ele of document.getElementsByTagName("input")){
+				ele.disabled = true;
+			};
+
+			document.body.insertAdjacentHTML('afterbegin',
+				"<big>" +
+				tlt("No se puede realizar esta acción mientras está tocando música") +
+				" (" + json_result["alert"] + "). " +
+				"<br>" + 
+				tlt("Recargue página cuando deje de tocar música:") +
+				"<button onclick='window.location.reload()'><big>🔄</big></button>" +
+				"</big>"
+			);
+			// Stop ongoing script. Rest of scripts such as getProgress will
+			// continue running, but in general these refresh processes
+			// stall while this page is hidden, so not much overhead should
+			// happen. If a restricted webservice is called when player active
+			// then this rstatus==403 will prevent that from executing.
+			throw new Error(`Server sent error status ${response.status}`);
+		}
+        let response_html = await response.text() ; 
         response_text = response_html.replace(/<[^>]*>/g, ' ');
         console.error("Error response", rstatus, "url", url, "response", response, "text", response_text ) ;
         alert( `Server error ${rstatus} ${response_text}` ) ;
-        throw new Error(`Server sent error status {response.status}`);
+        throw new Error(`Server sent error status ${response.status}`);
 		// Fetch calls and call function will abort unless
 		// there is a try/catch block.
 	}
@@ -346,12 +392,22 @@ async function fetch_json_REPLACED( url, post_data ){
 }
 fetch_json.connects_ok = 0;
 fetch_json.last_ok = Date.now();
+// One connect yields 0.75 but one failure still does not lower connects_ok so drastically
+fetch_json.isConnected = ()=>{ 
+	// timeout value should be 2-3 times commonGetProgress.setSleep()
+	if( (Date.now() - fetch_json.last_ok) > 15_000 ){
+		return false; // should be some activity at least...
+	}
+	/// or if there are on average a fraction of good fetch_jsons.
+	return fetch_json.connects_ok > 0.7; 
+}
+
 
 function make_fetch_args( data ){
-	if( data == undefined ){
-		return undefined ;
+	if( data == undefined || data == null ){
+		return {} ;
 	}
-	// make a post argument for fetch
+	// make a "post" argument for fetch
 	return {
 		method: "POST", // *GET, POST, PUT, DELETE, etc.
 		mode: "same-origin", // no-cors, *cors, same-origin
@@ -369,6 +425,13 @@ function make_fetch_args( data ){
 async function sleep_ms( t ){
 	await new Promise(r => setTimeout(r, t));
 }
+
+async function wait_until_visible(){
+	while( document.hidden ){
+		await sleep_ms( 200 );
+	}
+}
+
 class GetProgress{
 	// Usage: instantiated in common.js only once (like a singleton)
 	// commonGetProgress.registerCallback() to register callback when progress has been updated
@@ -382,9 +445,8 @@ class GetProgress{
 		this.callbackList.push( callback );
 	}
 
-	setSleep( v ){
-		// in milliseconds
-		this.sleep_ms = v ;
+	setSleep( millisec ){
+		this.sleep_ms = millisec ;
 	}
 	getSleep(){
 		return this.sleep_ms;
@@ -403,9 +465,8 @@ class GetProgress{
 			return {};
 		}
 		// Do not refresh hidden/background pages. Stall.
-		while( document.hidden ){
-			await sleep_ms(200);
-		}
+		await wait_until_visible();
+
 		// do a fetch_json that returns a progress, and filter it
 		// before returning.
 		// >>> add timeout
@@ -426,14 +487,20 @@ class GetProgress{
 		progress["setlist"] = progress["setlist"].filter((ele)=>{ return ele in tunelib } );
 		// it is free to pass along tunelib in progress[] object
 		progress["tunelib"] = tunelib ;
+		// Also filter a possible tuneid in progress["tune"]
+		if( progress["tune"] && !tunelib[progress["tune"]]){
+			progress["tune"] = null;
+		}
+
 		for( let callback of this.callbackList){
 			callback(progress);
 		}
+
 	}
 
 	async #backgroundProcess(){
 		let progress;
-		while( true ){
+		for(;;){
 			// first update then wait (better response first time)
 			try{
 				progress = await this.getProgress();
@@ -491,12 +558,13 @@ class PageHeader{
 
 	// Called at the start of each page
 	setTitle( headerTitle, pageupAction ){
+		// The headerTitle is the first div of the page
+		textById( "headerTitle", headerTitle );
 		// pageupAction is one of:
 		// 		a function that handles the page up (go back), used by file manager for folders
-		// 		"back" meaning history.back() 
+		// 		"BACK" meaning history.back() 
 		// 		a page name like "index" or "tunelist" (no /static/, no .html)
-		// 		null, meaning: this is the index page, no arrow.
-		textById( "headerTitle", headerTitle );
+		// 		false, meaning: this is the index page, no arrow.
 		this.pageupAction = pageupAction;
 		// Hide arrow for pages like the index page which has no action here.
 		showHideElement( "uparrow", pageupAction );
@@ -514,22 +582,21 @@ class PageHeader{
 	}
 	#pageUp(){
 		if( typeof this.pageupAction == "function"){
-			return this.pageupAction();
+			this.pageupAction();
 		}
-		let from = document.referrer;
-		if( from == undefined || from.includes(this.pageupAction) || this.pageupAction == "back" ){
-			// to be faster: if the previous page is the "up" page, go back
-			history.back();
-		}
-		else{
-			// Came from another page (not the parent) navigate to this page
-			window.location.href = "/demo/" + this.pageupAction + ".html" ;
+		else if( typeof this.pageupAction == "string"){
+			if( this.pageupAction == "BACK"){
+				history.back();
+			}
+			else{
+				window.location.href = "/demo/" + this.pageupAction + ".html" ;
+			}
 		}
 	}
 	async #updateConnectedProcess( ){
 		// not depending on progress, asks fetch_json for status.
 
-		while( true ){
+		for(;;){
 			await sleep_ms( 5_000 );
 			let isConnected = fetch_json.isConnected();
 			if( isConnected ){
@@ -595,7 +662,7 @@ class PageHeader{
 			}
 		}
 		else if( !progress["playback_enabled"]){
-			banner = tlt("Tocar música deshabilitado por afinador, pinout. Debe reiniciar para reestablecer.")
+			banner = tlt("Tocar música deshabilitado por por funciones de configuración. Debe reiniciar para reestablecer.")
 		}
 	    else if( progress["automatic_delay"] ){
 	 		banner = tlt("Partida automática activada") + `, ${progress["automatic_delay"]} s` ;
@@ -710,9 +777,9 @@ const TLCOL_INFO = 8 ;
 const TLCOL_DATEADDED = 9 ;
 const TLCOL_RATING = 10 ;
 const TLCOL_SIZE = 11 ;
-TLCOL_HISTORY = 12 ;
-TLCOL_LYRICS = 13 ; // lyrics present
-TLCOL_COLUMNS = 14 ;
+const TLCOL_HISTORY = 12 ;
+const TLCOL_LYRICS = 13 ; // lyrics present
+const TLCOL_COLUMNS = 14 ;
 
 
 function map_tlcol_names( header_map ){
@@ -942,8 +1009,9 @@ class JsonCache{
 const configCache = new JsonCache( "/get_current_config");
 const tunelibCache = new JsonCache( "/data/tunelib.json");
 const lyricsCache = new JsonCache( "/data/lyrics.json");
-const timezoneCache = new JsonCache("/set_time_zone")
-// >>> Could also cache: /get_index_page_info, /get_setlist_titles (reset when changed)
+const timezoneCache = new JsonCache("/set_time_zone");
+const setlistTitlesCache = new JsonCache("/get_setlist_titles");
+// >>> Could also cache: /get_index_page_info, 
 
 
 
@@ -963,16 +1031,8 @@ function formatRating( tune ){
 }
 
 // Function for mcserver
-function isUsedFromDemo(){
-	return (""+window.location.href).includes("/demo/");
-}
 function isUsedFromIOT(){
 	return (""+window.location.href).includes("/iot/");
-}
-function isUsedFromServer(){
-	// True if this page resides on the drehorgel.pythonanywhere.com server
-	// as IOT crank organ component (via mcserver)
-	return isUsedFromDemo() || isUsedFromIOT();
 }
 
 
@@ -1420,6 +1480,7 @@ async function queueTune( tuneid, slot ) {
         "slot": slot } ;
 	// queue tune and update page with result
 	await commonGetProgress.fetchProgress( "/queue_tune", postdata) ;
+	setlistTitlesCache.drop();
 }
 
 
@@ -1661,6 +1722,7 @@ class SetlistMenu extends HTMLButtonElement{
 		}
 		else if( SetlistMenu.operation == "saveSetlist"){
 			await fetch_json( "/save_setlist", {"slot": slot} );
+			setlistTitlesCache.drop();
 			showPopup( "", tlt("Setlist guardada") + " " + slot);
 
 		}
@@ -1668,7 +1730,6 @@ class SetlistMenu extends HTMLButtonElement{
 	}
 	static async #openTunelibChangeDialog( tlcol ){
 		let textMap = new Map();
-		// >>> redesign if all columns are available here
 		textMap.set( TLCOL_RATING, tlt("Ingrese") + " " + map_tlcol_names(TLCOL_RATING));
 		textMap.set( TLCOL_INFO, tlt("Ingrese") + " " + map_tlcol_names(TLCOL_INFO));
 		// TLCOL_RATING, TLCOL_INFO, 
@@ -1678,10 +1739,9 @@ class SetlistMenu extends HTMLButtonElement{
 		if( info != null ){
 			const TLOP_REPLACE_FIELD = 3; // see tunemanager.py
 
-			// send a list of tuples just as /save_tunelib likes it
+			// send a list of tuples just as /queue_field_changes likes it
 			// just with one change, but its a list of lists...
-			// >>> should rating be limited to * ** and ***?
-			await fetch_json( "/save_tunelib", [[TLOP_REPLACE_FIELD, SetlistMenu.tuneid, tlcol, info]] );
+			await fetch_json( "/queue_field_changes", [[TLOP_REPLACE_FIELD, SetlistMenu.tuneid, tlcol, info]] );
 			showPopup("", tlt("Cambios almacenados, actualización pendiente")); 
 			await sleep_ms(1000);
 		}
@@ -1848,8 +1908,9 @@ class SetlistMenu extends HTMLButtonElement{
 			return;
 		}
 
-		let titles =  await fetch_json( "/get_setlist_titles" );
-		for( let [slot,title,tunes] of titles ){
+		let resp =  await setlistTitlesCache.get();
+		await sleep_ms(50); // don't delete this, it's essential
+		for( let [slot,title,tunes] of resp.titles ){
 			// info: [slot_number 1 to _MAX_SETLIST_SLOTS-1, title, number of tunes in setlist]
 			// If no title use caption (no title)
 			let no_title = tlt("(sin título)");
@@ -1970,9 +2031,10 @@ class SetlistTitleDialog extends HTMLDivElement{
 
 	}
 	async open(){
-		let titles = await fetch_json( "/get_setlist_titles" );
+		let resp = await setlistTitlesCache.get();
+		await sleep_ms(50); // don't delete this, it's essential
 		// Contains titles from setlist 1 to _MAX_SETLIST_SLOTS-1, 
-		for( let info of titles ){
+		for( let info of resp.titles ){
 			let slot = info[0];
 			document.getElementById( "setlistTitle"+slot ).value = info[1] ;
 		}
@@ -1986,6 +2048,7 @@ class SetlistTitleDialog extends HTMLDivElement{
 			titles.push( document.getElementById(`setlistTitle${slot}`).value );
 		}
 		await fetch_json( "/save_setlist_titles", titles );
+		setlistTitlesCache.drop();
 		this.#close();
 		showPopup( "", tlt("Guardando setlist"));
 	}
@@ -2034,4 +2097,5 @@ function translate_html(){
 		d.innerText = tlt(d.innerText) ;
 	}
 }
+
 

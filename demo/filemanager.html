@@ -10,15 +10,15 @@
     <link rel="stylesheet" type="text/css" href="/demo/skeleton.css">
 </head>
 
-<body>
-<div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">This is a file manager for the microcontroller. The main use is to upload new MIDI files over WiFi. You also can update the software and configuration files here.
+<body><div style="font-size:1.2rem; border-bottom:solid; border-bottom-width:1px; margin-bottom:5px;border-top:solid; border-top-width:1px; margin-top:5px;">This is a file manager for the microcontroller. The main use is to upload new MIDI files over WiFi. You also can update the software and configuration files here.
 <br>
 To upload files, it's easiest to do that with the <b>Upload to auto folder</b> button. It will ask for files to be uploaded, and the correct folder will be selected automatically based on file type.
 <br>
 You can also view and delete files.
 <br>
 In this demo, navigating to folders, upload, download and delete is disabled.
-</div>    <!--<span id="popup" class="popuptext"></span>
+</div>
+    <!--<span id="popup" class="popuptext"></span>
     <div class="headerdiv">
         <span class="headerleft">
             <a onclick="pageUp()">&#11013;</a>
@@ -34,12 +34,12 @@ In this demo, navigating to folders, upload, download and delete is disabled.
 
     <div>
         <input type="file" id="folderDialogButton" style="display:none;" webkitdirectory directory onchange="processFolderDialog()">
-        <button onclick="uploadToCurrentFolder()">Upload to current folder</button>
-        <button onclick="uploadToAutoFolder()">Upload to auto folder</button>
-        <button id="selectIfNotInPCButton" onclick="selectIfNotInPC()">Select if not in PC tunelib</button>
-        <button id="downloadFilesButton" onclick="downloadSelectedFiles()">Download</button>
-        <button id="downloadAsTarButton" onclick="downloadAsTar()">Download as tar</button>
-        <button id="deleteFilesButton" onclick="deleteFiles()" >Delete</button>
+        <button id="uploadCurrent" onclick="uploadToCurrentFolder()">Upload to current folder</button>
+        <button id="uploadAuto" onclick="uploadToAutoFolder()">Upload to auto folder</button>
+        <button id="selectIfNotInPCButton" onclick="selectIfNotInPC()"  style="display:none">Select if not in PC tunelib</button>
+        <button id="downloadFilesButton" onclick="downloadSelectedFiles()" disabled>Download</button>
+        <button id="downloadAsTarButton" onclick="downloadAsTar()" disabled>Download as tar</button>
+        <button id="deleteFilesButton" onclick="deleteFiles()"  disabled>Delete</button>
         <button id="selectForBackup"  onclick="selectForBackup()" style="display:none">Select for backup</button>
     </div>
 
@@ -85,7 +85,6 @@ if( isSafari ){
 // (c) Copyright 2025 Hermann Paul von Borries. All rights reserved.
 // MIT License
 
-    // PageHeader.setTitle(headerTitle, upAction)
     let pageHeader = new PageHeader().setTitle( "File Manager", ()=>{pageUp()} );
     // input dialog with webkitdirectory may upload entire folders...
     // DFWAB.
@@ -175,10 +174,15 @@ if( isSafari ){
         let sizeTitle = document.getElementById("thisFolderSize");
 
         let fileList = document.getElementById("filePicker").files;
+        let n = 0;
         for (let file of fileList) {
             await uploadFile(file, CURRENT_PATH, UPLOAD_MODE);
             body.innerHTML = "";
             sizeTitle.innerHTML = "";
+            n += 1;
+            if( n%10 == 0){
+                logNotification(`${Math.round(n/fileList.length*100)}%`);
+            }
         };
         logNotification("Upload complete");
         // Page should be refreshed, but sometimes this may take too long to be practical
@@ -195,11 +199,14 @@ if( isSafari ){
         if (mode == "autoFolder") {
             destFolder = "__auto__";
         }
+        
+        // Send file modification time in Unix format: UTC seconds since 1/1/1970
+        const file_mtime =  Math.round(file.lastModified/1000);
         // encodePath() will also normalize("NFC")
         let url = "/upload/" + encodePath(destFolder) 
                             + "+" + encodePath(file.name)
                             // convert time to Unix style seconds since 1/1/1970
-                            + "+" + Math.round(file.lastModified/1000)
+                            + "+" + file_mtime
                             + "+" + file.size;
 
         try {
@@ -215,13 +222,27 @@ if( isSafari ){
                 logError(`Could not upload file, http error code ${response.status}`);
                 return;
             }
-            let resp = await response.json();
+            const resp = await response.json();
             if (!resp.error) {
-                if (resp.oldFileSize != null) {
-                    logNotification(`Upload replacing "${file.name}" folder "${resp.folder}" ${file.size} bytes, old size: ${resp.oldFileSize} bytes`);
+                let newSize = `${resp.newFileSize}`;
+                // oldFileMtime and newFileMtime are in ESP32 format
+                let newDate = ymdhm( resp.newFileMtime );
+
+                // Date info is preent but not shown.
+                if( resp.skip ){
+                    logNotification(`No change, skipped: "${file.name}" in folder "${resp.folder}"`);
+                }
+                else if (resp.oldFileSize != null) {
+                    if( resp.oldFileSize != resp.newFileSize ){
+                        newSize = `${resp.oldFileSize}->${resp.newFileSize}`;
+                    }
+                    if( resp.oldFileMtime != null ){
+                        newDate =  ymdhm( resp.oldFileMtime ) + "->" + ymdhm( resp.newFileMtime );
+                    }
+                    logNotification(`Upload replacing "${file.name}" in folder "${resp.folder}",  ${newSize} bytes, ${newDate}`);
                 }
                 else {
-                    logNotification(`Upload creating "${file.name}" to folder "${resp.folder}" ${file.size} bytes`);
+                    logNotification(`Upload creating "${file.name}" to folder "${resp.folder}" ${file.size} bytes, ${newDate}`);
                 }
             }
             else {
@@ -301,19 +322,13 @@ if( isSafari ){
 
 
     function updateButtons() {
-        if (getSelectedFileCount() > 0) {
-            document.getElementById("downloadFilesButton").classList.remove("inactive");
-            document.getElementById("deleteFilesButton").classList.remove("inactive");
-            document.getElementById("downloadAsTarButton").classList.remove("inactive");
-        }
-        else {
-            document.getElementById("downloadFilesButton").classList.add("inactive");
-            document.getElementById("deleteFilesButton").classList.add("inactive");
-            document.getElementById("downloadAsTarButton").classList.add("inactive");
-
-        }
+        const noSelection = (getSelectedFileCount() == 0);
+        document.getElementById("downloadFilesButton").disabled = noSelection;
+        document.getElementById("deleteFilesButton").disabled = noSelection;
+        document.getElementById("downloadAsTarButton").disabled = noSelection;
         showHideElement("selectForBackup", CURRENT_PATH == "/data");
         showHideElement("selectIfNotInPCButton", CURRENT_PATH == "/tunelib");
+        
     }
 
 
@@ -328,10 +343,7 @@ if( isSafari ){
         showPath();
         //let listdir_url = "/listdir?" + new URLSearchParams( {"path":  CURRENT_PATH});
         let listdir_url = "/listdir/" + encodePath(CURRENT_PATH);
-        if( isUsedFromDemo() ){
-            listdir_url = "/demo/listdir"; // demo on server only
-        }
-        data = await fetch_json(listdir_url);
+        const data = await fetch_json(listdir_url);
 
         if (path !== '/' && path != "") {
             let row = insertRow(body, ["", ""]);
@@ -341,7 +353,7 @@ if( isSafari ){
             row.cells[1].appendChild(link);
         }
 
-        let files = data.sort((a, b) => ((1 - a.isDirectory).toString() + "_" + a.name).localeCompare((1 - b.isDirectory).toString() + "_" + b.name));
+        const files = data.sort((a, b) => ((1 - a.isDirectory).toString() + "_" + a.name).localeCompare((1 - b.isDirectory).toString() + "_" + b.name));
         let rownum = 0;
         let sumsize = 0;
         let sumblocks = 0;
@@ -353,14 +365,14 @@ if( isSafari ){
                 mime_fileType = parts.pop().toLowerCase();
             }
             if (file.isDirectory) {
-                let row = insertRow(body, ["", "📁\u{a0}", "", file.date])
+                let row = insertRow(body, ["", "📁\u{a0}", "", ymdhm(file.timestamp)])
                 let link = document.createElement("a");
                 link.href = `/filemanager/${encodePath(file.path)}`;
                 link.innerText = file.name;
                 row.cells[1].appendChild(link);
             }
             else {
-                let row = insertRow(body, ["", `📄\u{a0}`, file.size, file.date])
+                let row = insertRow(body, ["", `📄\u{a0}`, file.size, ymdhm(file.timestamp)])
                 let input = document.createElement("input");
                 let checkbox_id = `checkbox_${rownum}`;
                 input.id = checkbox_id;
@@ -448,6 +460,7 @@ if( isSafari ){
         await refreshAll();
         commonGetProgress.setSleep( 5_000 );
         commonGetProgress.startBackground();
+        commonGetProgress.registerCallback( updateButtons );
     }
 
     async function refreshAll() {
@@ -521,27 +534,18 @@ if( isSafari ){
         if( filelist.length == 0 ){
             return;
         }
+        // All files should be in the same folder.
         let config = await configCache.get();
-        let hostname = config["name"];
-        const now = new Date();
-        const pad = (num) => String(num).padStart(2, '0');
-        const datetime = 
-            now.getFullYear() +
-            pad(now.getMonth() + 1) + 
-            pad(now.getDate()) + "_" +
-            pad(now.getHours()) +
-            pad(now.getMinutes()) +
-            pad(now.getSeconds());
-        let filename = "/data/" + hostname + "_" + datetime + ".tar";
         logNotification(`Creating tarball with ${filelist.length} files, wait...`);
         // Last name = name of output tar archive.
-        filelist.push( filename );
-        await fetch_json("/make_tarball", filelist);
+        const resp = await fetch_json("/make_tarball", filelist);
+        const filename = resp.filename;
         logNotification(filename +" created, starting download");
         downloadFile( filename );
         // no way to know when download is complete, so wait a bit before deleting the tarball
         // Only need to wait until download started. If a file is deleted
-        // after opening, the open file handle will still work in MicroPython/LittleFS2.
+        // after opening, the open file handle will still work in MicroPython/LittleFS2
+        // and the file disappears as it should when closing that handle.
         await sleep_ms(3000); 
         await fetch_json("/delete_file", {"delete_filename": filename });
         logNotification(filename +" deleted");
@@ -695,32 +699,22 @@ if( isSafari ){
 
     async function selectForBackup(){
         // Select files that are useful to backup
-        let pinfo = await fetch_json("/get_pinout_filename");
-        let pinout_filename =  pinfo["pinout_filename"].split("/")[1];
-        // >>> select all json and txt?
-        let check_these = [ "pinout.txt", "config",
-            "drumdef", "history", "setlist_stored_", 
-            "setlist_titles", 
-            "tunelib", "lyrics", pinout_filename ];
-        // organtuner, timezone, battery are rebuilt when necessary
-        // error logs don't need backup. *.mid files are temporary.
-        let body = document.getElementById("fileListBody");
+        const body = document.getElementById("fileListBody");
         for( let row of body.rows ){
             let filename = row.cells[1].innerText ;
-            if( !filename.endsWith(".json")&&
-                !filename.endsWith(".txt")){
-                    continue;
-                }
-            for( let ct of check_these ){
-                if( filename.includes(ct)){
-                    row.cells[0].children[0].checked = true ;
-                    let checkbox = row.cells[0].children[0]; 
-                    selectFile( checkbox.id, checkbox.getAttribute("myfilepath") );
-                    continue;
-                }
+            // json, txt in "data" folder
+            // tsv in "signal" folder
+            if( filename.endsWith(".json") ||
+                filename.endsWith(".txt")||
+                filename.endsWith(".tsv")){
+                row.cells[0].children[0].checked = true ;
+                let checkbox = row.cells[0].children[0]; 
+                selectFile( checkbox.id, checkbox.getAttribute("myfilepath") );
+                logNotification(`${filename} checked for backup`);
             }
         }
     }
+
     createFilePicker();
     startPageRefresh();
 
