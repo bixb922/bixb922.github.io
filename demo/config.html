@@ -212,6 +212,12 @@ Configuration is best done on a PC or Mac. You can use the browser to translate 
 		oninput="markField('auto_purge_history')" />
 	<br>
 
+	<label for="full_sync_limit">If less than this number of tunes are in the tunelib, a full sync is done always when starting the Tunelib Editor page.
+		When more than this number of tunes are present, a fast sync is done instead, i.e. a sync where the date is not checked. A button is made available for a full sync. Integer only, number of tunes:</label>
+	<input id="full_sync_limit" name="full_sync_limit" type="text" size="5"
+		oninput="markField('full_sync_limit')" />
+	<br>
+
 	<button type="button" onclick="save()" name="saveButtons" style="display:none">Save changes</button>
 	<div class="middlediv">RC Servo</div>
 
@@ -347,17 +353,17 @@ function validateNewPasswords() {
 	button = document.getElementById("changePasswords");
 	// For better response check password length here
 	if (p1 != p2) {
-		button.innerText = "(passwords are different, cannot save!)";
+		button.textContent = "(passwords are different, cannot save!)";
 		button.disabled = true;
 		ok = false;
 	}
 	else if (p1.length < 9) {
-		button.innerText = "(password shorter than 9 characters, cannot save!)";
+		button.textContent = "(password shorter than 9 characters, cannot save!)";
 		button.disabled = true;
 		ok = false;
 	}
 	else {
-		button.innerText = "Save password"
+		button.textContent = "Save password"
 		button.disabled = false;
 		ok = true;
 	}
@@ -454,7 +460,7 @@ function clearMarks() {
 getCurrentConfig();
 
 // Refresh with progress to show communication active
-commonGetProgress.setSleep( 5_000 );
+commonGetProgress.setSleep( 2_000 );
 commonGetProgress.startBackground();
 
 </script>

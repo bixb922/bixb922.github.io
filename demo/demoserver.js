@@ -43,7 +43,8 @@ function initSessionState() {
             tune: null,
             registers: [],
             playback_enabled: true,
-            tune_requests: {}
+            tune_requests: {},
+            is_player_active:false
         });
     }
     if (sessionStorage.getItem("CURRENT_VELOCITY") === null) {
@@ -257,8 +258,8 @@ async function demo_start_tune() {
         progress.playtime = 0;
         setState("START_TIME", Date.now() / 1000);
         progress.status = "playing";
+        progress.is_player_active = true;
         progress.tune = setlist.shift();
-
         setState("CURRENT_SETLIST", setlist);
         setState("CURRENT_PROGRESS", progress);
     }
@@ -295,6 +296,7 @@ async function demo_stop_tune_setlist() {
     }
 
     progress.status = "waiting";
+    progress.is_player_active = false;
     progress.playtime = -1;
     progress.tune = null;
     setState("CURRENT_PROGRESS", progress);
@@ -309,6 +311,7 @@ async function demo_back_setlist() {
     if (progress.tune && !setlist.includes(progress.tune)) {
         setlist.unshift(progress.tune);
         progress.status = "waiting";
+        progress.is_player_active = false;
         progress.playtime = -1;
 
         setState("CURRENT_SETLIST", setlist);
@@ -363,6 +366,7 @@ async function demo_get_progress() {
                 await add_to_history(tuneid);
                 progress.status = "waiting";
                 progress.playtime = -1;
+                progress.is_player_active = false;
                 progress.tune = null;
             } else {
                 progress.playtime = elapsedTime * 1000;
@@ -512,7 +516,7 @@ async function demo_diag() {
         tunelib_folder: "/tunelib",
         logfilename: "error34.log",
         errors_since_reboot: 0,
-        compile_date: "2026/11/02",
+        compile_date: "2026/11/16",
         crank_installed: false
     };
 }
@@ -559,6 +563,7 @@ const routes = [
     ["/battery_zero", demo_battery],
     ["/record_battery_level", demo_battery],
     ["/queue_tune", demo_queue_tune],
+    ["/queue_tune_current", demo_queue_tune],
     ["/up_setlist/:tuneid", demo_up_setlist],
     ["/down_setlist/:tuneid", demo_down_setlist],
     ["/top_setlist/:tuneid", demo_top_setlist],
